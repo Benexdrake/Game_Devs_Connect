@@ -1,9 +1,9 @@
 ﻿
 namespace Backend.Data;
 
-public class UserDBContext : DbContext
+public class UserDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
 
-    public UserDBContext(DbContextOptions<UserDBContext> options) : base(options) {}
+    public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) {}
 }
