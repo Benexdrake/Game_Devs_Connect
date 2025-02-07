@@ -3,7 +3,6 @@
     public class Project
     {
         public string Id { get; set; } = string.Empty;
-        public User[] Team { get; set; } = [];
         public string Header { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
