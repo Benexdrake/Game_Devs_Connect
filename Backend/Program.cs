@@ -6,9 +6,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ProjectDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 builder.Services.AddDbContext<UserDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
-builder.Services.AddDbContext<RequestDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
+
 
 var app = builder.Build();
 
