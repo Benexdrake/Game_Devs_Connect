@@ -1,83 +1,83 @@
-﻿using Backend.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Backend.Controllers;
 
-namespace Backend.Controllers
+[Route("[controller]")]
+[ApiController]
+public class UserController(GDCDbContext context) : ControllerBase
 {
-    [Route("[controllr]")]
-    [ApiController]
-    public class UserController(GDCDbContext context) : ControllerBase
+    private readonly GDCDbContext _context = context;
+
+    [HttpGet]
+    public async Task<ActionResult> GetUsers()
     {
-        private readonly GDCDbContext _context = context;
+        var users = await _context.User.ToListAsync();
 
-        [HttpGet]
-        public async Task<ActionResult> GetUsers()
-        {
-            var users = await _context.User.ToListAsync();
+        return Ok(users);
+    }
 
-            return Ok(users);
-        }
+    [HttpGet]
+    public async Task<ActionResult> GetUser(string id)
+    {
+        var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
-        [HttpGet]
-        public async Task<ActionResult> GetUser(string id)
-        {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+        return Ok(user);
+    }
 
-            return Ok(user);
-        }
+    [HttpGet]
+    public async Task<ActionResult> GetUserNamesWithIDs()
+    {
+        var users = await _context.User.Select(x => new ShortUser(x.Id, x.Username)).ToListAsync();
 
-        [HttpPost]
-        public async Task<ActionResult> AddUser(User user)
-        {
-            if(user is null) return BadRequest("Where is the User?");
-            var dbUser = await _context.User.FirstOrDefaultAsync(x=> x.Id == user.Id);
+        return Ok(users);
+    }
 
-            if(dbUser is null)
-            {
-                await _context.AddAsync(user);
-                await _context.SaveChangesAsync();
-            }
+    [HttpPost]
+    public async Task<ActionResult> AddUser(User user)
+    {
+        if(user is null) return BadRequest("Where is the User?");
+        var dbUser = await _context.User.FirstOrDefaultAsync(x=> x.Id == user.Id);
 
-            return Ok(user);
-        }
+        if (dbUser is not null) return BadRequest();
+        
+        await _context.User.AddAsync(user);
+        await _context.SaveChangesAsync();
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateUser(User user)
-        {
-            if (user is null) return BadRequest("Where is the User?");
-            
-            var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == user.Id);
-            
-            if (dbUser is null) return BadRequest();
+        return Ok(user);
+    }
 
-            // Update User
-            dbUser.Username = user.Username;
-            dbUser.Banner = user.Banner;
-            dbUser.Avatar = user.Avatar;
-            dbUser.AccountType = user.AccountType;
-            dbUser.Email = user.Email;
-            dbUser.XUrl = user.XUrl;
-            dbUser.DiscordUrl = user.DiscordUrl;
-            dbUser.WebsiteUrl = user.WebsiteUrl;
+    [HttpPut]
+    public async Task<ActionResult> UpdateUser(User user)
+    {
+        if (user is null) return BadRequest("Where is the User?");
+        
+        var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == user.Id);
+        
+        if (dbUser is null) return BadRequest();
 
-            await _context.SaveChangesAsync();
+        // Update User
+        dbUser.Username = user.Username;
+        dbUser.Banner = user.Banner;
+        dbUser.Avatar = user.Avatar;
+        dbUser.AccountType = user.AccountType;
+        dbUser.Email = user.Email;
+        dbUser.XUrl = user.XUrl;
+        dbUser.DiscordUrl = user.DiscordUrl;
+        dbUser.WebsiteUrl = user.WebsiteUrl;
 
-            return Ok(user);
-        }
+        await _context.SaveChangesAsync();
 
-        [HttpDelete]
-        public async Task<ActionResult> DeleteUser(string userId)
-        {
-            var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
+        return Ok(user);
+    }
 
-            if (dbUser is null) return BadRequest();
+    [HttpDelete]
+    public async Task<ActionResult> DeleteUser(string userId)
+    {
+        var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
 
-            
+        if (dbUser is null) return BadRequest();
 
+        _context.User.Remove(dbUser);
+        await _context.SaveChangesAsync();
 
-            _context.User.Remove(dbUser);
-            await _context.SaveChangesAsync();
-
-            return Ok(dbUser);
-        }
+        return Ok();
     }
 }
