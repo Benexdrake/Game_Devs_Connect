@@ -47,7 +47,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         return projects;
     }
 
-    public async Task<IEnumerable<Project>> GetProjectIdsByUserID(string userId)
+    public Task<IEnumerable<Project>> GetProjectsByUserID(string userId)
     {
         throw new NotImplementedException();
     }
