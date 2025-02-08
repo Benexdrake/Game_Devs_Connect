@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Test
 {
-    public class UnitTest1
+    public class UserTest
     {
         private readonly IUserRepository _userRepository;
         private readonly UserController _userController;
-        public UnitTest1()
+        public UserTest()
         {
             _userRepository = A.Fake<IUserRepository>();
             _userController = new UserController(_userRepository);
@@ -20,7 +20,7 @@ namespace Backend.Test
         private static User CreateFakeUser() => A.Fake<User>();
 
         [Fact]
-        public async void Test1()
+        public async Task Create_User_And_Adding_With_Controller_To_DB()
         {
             // Arrange
             var user = CreateFakeUser();
