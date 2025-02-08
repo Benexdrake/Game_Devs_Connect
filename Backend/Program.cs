@@ -6,10 +6,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
-
+if (builder.Environment.IsDevelopment())
+    builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = UnitTestDb.db"));
+else
+    builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 
 var app = builder.Build();
+
+
 
 app.UseCors();
 
