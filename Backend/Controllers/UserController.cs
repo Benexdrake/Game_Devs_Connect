@@ -2,14 +2,12 @@
 
 [Route("[controller]")]
 [ApiController]
-public class UserController(UserRepository userRepository) : ControllerBase
+public class UserController(IUserRepository userRepository) : ControllerBase
 {
-    private readonly UserRepository _userRepository = userRepository;
-
     [HttpGet("all")]
     public async Task<ActionResult> GetUsersAsync()
     {
-        var users = await _userRepository.GetUsersAsync();
+        var users = await userRepository.GetUsersAsync();
 
         return Ok(users);
     }
@@ -17,7 +15,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
     [HttpGet("id/{id}")]
     public async Task<ActionResult> GetUserAsync(string id)
     {
-        var user = await _userRepository.GetUserAsync(id);
+        var user = await userRepository.GetUserAsync(id);
 
         return Ok(user);
     }
@@ -25,7 +23,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
     [HttpGet("short")]
     public async Task<ActionResult> GetShortUsersAsync()
     {
-        var users = await _userRepository.GetShortUsersAsync();
+        var users = await userRepository.GetShortUsersAsync();
 
         return Ok(users);
     }
@@ -35,7 +33,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
     {
         if (user is null) return BadRequest();
 
-        var result = await _userRepository.AddUserAsync(user);
+        var result = await userRepository.AddUserAsync(user);
 
         return Ok(result);
     }
@@ -45,7 +43,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
     {
         if (user is null) return BadRequest("Where is the User?");
         
-        var result = await _userRepository.UpdateUserAsync(user);
+        var result = await userRepository.UpdateUserAsync(user);
 
         return Ok(result);
     }
@@ -53,7 +51,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
     [HttpDelete("delete/{userId}")]
     public async Task<ActionResult> DeleteUserAsync(string userId)
     {
-        var result = await _userRepository.DeleteUserAsync(userId);
+        var result = await userRepository.DeleteUserAsync(userId);
 
         return Ok(result);
     }

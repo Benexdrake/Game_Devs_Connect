@@ -2,14 +2,12 @@
 
 [Route("[controller]")]
 [ApiController]
-public class ProjectController(ProjectRepository projectRepository) : ControllerBase
+public class ProjectController(IProjectRepository projectRepository) : ControllerBase
 {
-    private readonly ProjectRepository _projectRepository = projectRepository;
-
     [HttpGet("get/{id}")]
     public async Task<ActionResult> GetProject(string id)
     {
-        var project = await _projectRepository.GetProject(id);
+        var project = await projectRepository.GetProject(id);
 
         if (project is null) return NotFound();
 
@@ -19,7 +17,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
     [HttpPost("add")]
     public async Task<ActionResult> AddProject(Project project)
     {
-        var result = await _projectRepository.AddProject(project);
+        var result = await projectRepository.AddProject(project);
 
         return Ok(result);
     }
@@ -27,7 +25,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
     [HttpPut("update")]
     public async Task<ActionResult> UpdateProject(Project project)
     {
-        var result = await _projectRepository.UpdateProject(project);
+        var result = await projectRepository.UpdateProject(project);
 
         return Ok(result);
     }
@@ -35,7 +33,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
     [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteProject(string id)
     {
-        var result = await _projectRepository.DeleteProject(id);
+        var result = await projectRepository.DeleteProject(id);
 
         return Ok(result);
     }
