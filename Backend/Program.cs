@@ -1,3 +1,5 @@
+using Backend.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,6 +12,10 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = UnitTestDb.db"));
 else
     builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
 var app = builder.Build();
 
