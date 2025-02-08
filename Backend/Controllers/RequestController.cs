@@ -6,7 +6,7 @@ public class RequestController(RequestRepository requestRepository) : Controller
 {
     private readonly RequestRepository _requestRepository = requestRepository;
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult> GetRequests()
     {
         var requests = await _requestRepository.GetRequests();
@@ -14,7 +14,7 @@ public class RequestController(RequestRepository requestRepository) : Controller
         return Ok(requests);
     }
 
-    [HttpGet]
+    [HttpGet("id/{id}")]
     public async Task<ActionResult> GetRequestById(string id)
     {
         var request = await _requestRepository.GetRequestById(id);
@@ -22,7 +22,7 @@ public class RequestController(RequestRepository requestRepository) : Controller
         return Ok(request);
     }
 
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<ActionResult> AddRequest(Request request)
     {
         var result = await _requestRepository.AddRequest(request);
@@ -30,7 +30,7 @@ public class RequestController(RequestRepository requestRepository) : Controller
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateRequest(Request request)
     {
         var result = await _requestRepository.UpdateRequest(request);
@@ -38,7 +38,7 @@ public class RequestController(RequestRepository requestRepository) : Controller
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteRequest(string id)
     {
         var result = await _requestRepository.DeleteRequest(id);

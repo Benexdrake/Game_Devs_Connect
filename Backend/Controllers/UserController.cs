@@ -6,7 +6,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
 {
     private readonly UserRepository _userRepository = userRepository;
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult> GetUsersAsync()
     {
         var users = await _userRepository.GetUsersAsync();
@@ -14,7 +14,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet]
+    [HttpGet("id/{id}")]
     public async Task<ActionResult> GetUserAsync(string id)
     {
         var user = await _userRepository.GetUserAsync(id);
@@ -22,7 +22,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
         return Ok(user);
     }
 
-    [HttpGet]
+    [HttpGet("short")]
     public async Task<ActionResult> GetShortUsersAsync()
     {
         var users = await _userRepository.GetShortUsersAsync();
@@ -30,7 +30,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
         return Ok(users);
     }
 
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<ActionResult> AddUserAsync(User user)
     {
         if (user is null) return BadRequest();
@@ -40,7 +40,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateUserAsync(User user)
     {
         if (user is null) return BadRequest("Where is the User?");
@@ -50,7 +50,7 @@ public class UserController(UserRepository userRepository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{userId}")]
     public async Task<ActionResult> DeleteUserAsync(string userId)
     {
         var result = await _userRepository.DeleteUserAsync(userId);

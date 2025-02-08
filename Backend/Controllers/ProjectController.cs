@@ -6,7 +6,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
 {
     private readonly ProjectRepository _projectRepository = projectRepository;
 
-    [HttpGet]
+    [HttpGet("get/{id}")]
     public async Task<ActionResult> GetProject(string id)
     {
         var project = await _projectRepository.GetProject(id);
@@ -16,7 +16,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
         return Ok(project);
     }
 
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<ActionResult> AddProject(Project project)
     {
         var result = await _projectRepository.AddProject(project);
@@ -24,7 +24,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateProject(Project project)
     {
         var result = await _projectRepository.UpdateProject(project);
@@ -32,7 +32,7 @@ public class ProjectController(ProjectRepository projectRepository) : Controller
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteProject(string id)
     {
         var result = await _projectRepository.DeleteProject(id);
