@@ -3,3 +3,4 @@ bin
 
 .vs
 /Backend/appsettings.json
+/Backend/UnitTestDb.db
