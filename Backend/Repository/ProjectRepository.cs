@@ -43,10 +43,11 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
 
     public async Task<Project> GetProject(string id)
     {
-        return await _context.Projects.FirstOrDefaultAsync(x => x.Equals(id));
+        var projects = await _context.Projects.SingleOrDefaultAsync(x => x.Id == id);
+        return projects;
     }
 
-    public async Task<IEnumerable<Project>> GetProjectsByUserID(string userId)
+    public async Task<IEnumerable<Project>> GetProjectIdsByUserID(string userId)
     {
         throw new NotImplementedException();
     }
@@ -58,7 +59,13 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             var DbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
             if (DbProject is null) return false;
 
-            // Update
+            DbProject.Title = project.Title;
+            DbProject.Description = project.Description;
+            DbProject.Header = project.Header;
+            DbProject.UserIds = project.UserIds;
+            DbProject.Elements = project.Elements;
+
+            await _context.SaveChangesAsync();
 
             return true;
         }

@@ -7,6 +7,6 @@
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Elements { get; set; } = string.Empty;
-        public User[] Users { get; set; } = [];
+        public string[] UserIds { get; set; } = [];
     }
 }

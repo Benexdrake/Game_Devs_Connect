@@ -60,7 +60,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
     {
         try
         {
-            var Dbrequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request));
+            var Dbrequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
             if (Dbrequest is null) return false;
 
