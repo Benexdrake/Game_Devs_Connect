@@ -2,14 +2,14 @@
 
 [Route("[controller]")]
 [ApiController]
-public class RequestController(GDCDbContext context) : ControllerBase, IRequestController
+public class RequestController(RequestRepository requestRepository) : ControllerBase
 {
-    private readonly GDCDbContext _context = context;
+    private readonly RequestRepository _requestRepository = requestRepository;
 
     [HttpGet]
     public async Task<ActionResult> GetRequests()
     {
-        var requests = await _context.Requests.ToListAsync();
+        var requests = await _requestRepository.GetRequests();
 
         return Ok(requests);
     }
@@ -17,7 +17,7 @@ public class RequestController(GDCDbContext context) : ControllerBase, IRequestC
     [HttpGet]
     public async Task<ActionResult> GetRequestById(string id)
     {
-        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        var request = await _requestRepository.GetRequestById(id);
 
         return Ok(request);
     }
@@ -25,36 +25,24 @@ public class RequestController(GDCDbContext context) : ControllerBase, IRequestC
     [HttpPost]
     public async Task<ActionResult> AddRequest(Request request)
     {
-        var DbRequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+        var result = await _requestRepository.AddRequest(request);
 
-        if (DbRequest is not null) return BadRequest();
-
-        await _context.Requests.AddAsync(request);
-        await _context.SaveChangesAsync();
-
-        return Ok(request);
+        return Ok(result);
     }
 
     [HttpPut]
     public async Task<ActionResult> UpdateRequest(Request request)
     {
-        var Dbrequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request));
-        
-        // Update
+        var result = await _requestRepository.UpdateRequest(request);
 
-        return Ok(request);
+        return Ok(result);
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteRequest(string id)
     {
-        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        var result = await _requestRepository.DeleteRequest(id);
 
-        if (request is null) return BadRequest();
-
-        _context.Requests.Remove(request);
-        await _context.SaveChangesAsync();
-
-        return Ok();
+        return Ok(result);
     }
 }

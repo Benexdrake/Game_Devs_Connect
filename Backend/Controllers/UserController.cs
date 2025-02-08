@@ -2,14 +2,14 @@
 
 [Route("[controller]")]
 [ApiController]
-public class UserController(GDCDbContext context) : ControllerBase, IUserController
+public class UserController(UserRepository userRepository) : ControllerBase
 {
-    private readonly GDCDbContext _context = context;
+    private readonly UserRepository _userRepository = userRepository;
 
     [HttpGet]
     public async Task<ActionResult> GetUsersAsync()
     {
-        var users = await _context.User.ToListAsync();
+        var users = await _userRepository.GetUsersAsync();
 
         return Ok(users);
     }
@@ -17,7 +17,7 @@ public class UserController(GDCDbContext context) : ControllerBase, IUserControl
     [HttpGet]
     public async Task<ActionResult> GetUserAsync(string id)
     {
-        var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _userRepository.GetUserAsync(id);
 
         return Ok(user);
     }
@@ -25,7 +25,7 @@ public class UserController(GDCDbContext context) : ControllerBase, IUserControl
     [HttpGet]
     public async Task<ActionResult> GetShortUsersAsync()
     {
-        var users = await _context.User.Select(x => new ShortUser(x.Id, x.Username)).ToListAsync();
+        var users = await _userRepository.GetShortUsersAsync();
 
         return Ok(users);
     }
@@ -33,15 +33,11 @@ public class UserController(GDCDbContext context) : ControllerBase, IUserControl
     [HttpPost]
     public async Task<ActionResult> AddUserAsync(User user)
     {
-        if(user is null) return BadRequest("Where is the User?");
-        var dbUser = await _context.User.FirstOrDefaultAsync(x=> x.Id == user.Id);
+        if (user is null) return BadRequest();
 
-        if (dbUser is not null) return BadRequest();
-        
-        await _context.User.AddAsync(user);
-        await _context.SaveChangesAsync();
+        var result = await _userRepository.AddUserAsync(user);
 
-        return Ok(user);
+        return Ok(result);
     }
 
     [HttpPut]
@@ -49,35 +45,16 @@ public class UserController(GDCDbContext context) : ControllerBase, IUserControl
     {
         if (user is null) return BadRequest("Where is the User?");
         
-        var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == user.Id);
-        
-        if (dbUser is null) return BadRequest();
+        var result = await _userRepository.UpdateUserAsync(user);
 
-        // Update User
-        dbUser.Username = user.Username;
-        dbUser.Banner = user.Banner;
-        dbUser.Avatar = user.Avatar;
-        dbUser.AccountType = user.AccountType;
-        dbUser.Email = user.Email;
-        dbUser.XUrl = user.XUrl;
-        dbUser.DiscordUrl = user.DiscordUrl;
-        dbUser.WebsiteUrl = user.WebsiteUrl;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(user);
+        return Ok(result);
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteUserAsync(string userId)
     {
-        var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
+        var result = await _userRepository.DeleteUserAsync(userId);
 
-        if (dbUser is null) return BadRequest();
-
-        _context.User.Remove(dbUser);
-        await _context.SaveChangesAsync();
-
-        return Ok();
+        return Ok(result);
     }
 }

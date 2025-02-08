@@ -2,55 +2,41 @@
 
 [Route("[controller]")]
 [ApiController]
-public class ProjectController(GDCDbContext context) : ControllerBase, IProjectController
+public class ProjectController(ProjectRepository projectRepository) : ControllerBase
 {
-    private readonly GDCDbContext _context = context;
+    private readonly ProjectRepository _projectRepository = projectRepository;
 
     [HttpGet]
     public async Task<ActionResult> GetProject(string id)
     {
-        var project = await _context.Projects.FirstOrDefaultAsync(x => x.Equals(id));
+        var project = await _projectRepository.GetProject(id);
 
         if (project is null) return NotFound();
 
-        return Ok();
+        return Ok(project);
     }
 
     [HttpPost]
     public async Task<ActionResult> AddProject(Project project)
     {
-        var DbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
+        var result = await _projectRepository.AddProject(project);
 
-        if (DbProject is not null) return BadRequest();
-
-        await _context.Projects.AddAsync(project);
-        await _context.SaveChangesAsync();
-
-        return Ok();
+        return Ok(result);
     }
 
     [HttpPut]
     public async Task<ActionResult> UpdateProject(Project project)
     {
-        var DbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
+        var result = await _projectRepository.UpdateProject(project);
 
-        if (DbProject is null) return BadRequest();
-        
-        // Update
-
-        return Ok();
+        return Ok(result);
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteProject(string id)
     {
-        var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        var result = await _projectRepository.DeleteProject(id);
 
-        if (project is null) return NotFound();
-
-        _context.Projects.Remove(project);
-        await _context.SaveChangesAsync();
-
-        return Ok();
+        return Ok(result);
     }
 }
