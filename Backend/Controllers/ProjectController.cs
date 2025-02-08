@@ -2,12 +2,12 @@
 
 [Route("[controller]")]
 [ApiController]
-public class ProjectController(GDCDbContext context) : ControllerBase
+public class ProjectController(GDCDbContext context) : ControllerBase, IProjectController
 {
     private readonly GDCDbContext _context = context;
 
     [HttpGet]
-    public async Task<ActionResult> GetProjectById(string id)
+    public async Task<ActionResult> GetProject(string id)
     {
         var project = await _context.Projects.FirstOrDefaultAsync(x => x.Equals(id));
 

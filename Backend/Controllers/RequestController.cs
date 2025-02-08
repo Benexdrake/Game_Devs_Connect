@@ -2,7 +2,7 @@
 
 [Route("[controller]")]
 [ApiController]
-public class RequestController(GDCDbContext context) : ControllerBase
+public class RequestController(GDCDbContext context) : ControllerBase, IRequestController
 {
     private readonly GDCDbContext _context = context;
 
@@ -15,7 +15,7 @@ public class RequestController(GDCDbContext context) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetRequestByID(string id)
+    public async Task<ActionResult> GetRequestById(string id)
     {
         var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
 

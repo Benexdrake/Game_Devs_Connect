@@ -2,12 +2,12 @@
 
 [Route("[controller]")]
 [ApiController]
-public class UserController(GDCDbContext context) : ControllerBase
+public class UserController(GDCDbContext context) : ControllerBase, IUserController
 {
     private readonly GDCDbContext _context = context;
 
     [HttpGet]
-    public async Task<ActionResult> GetUsers()
+    public async Task<ActionResult> GetUsersAsync()
     {
         var users = await _context.User.ToListAsync();
 
@@ -15,7 +15,7 @@ public class UserController(GDCDbContext context) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetUser(string id)
+    public async Task<ActionResult> GetUserAsync(string id)
     {
         var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -23,7 +23,7 @@ public class UserController(GDCDbContext context) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetUserNamesWithIDs()
+    public async Task<ActionResult> GetShortUsersAsync()
     {
         var users = await _context.User.Select(x => new ShortUser(x.Id, x.Username)).ToListAsync();
 
@@ -31,7 +31,7 @@ public class UserController(GDCDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddUser(User user)
+    public async Task<ActionResult> AddUserAsync(User user)
     {
         if(user is null) return BadRequest("Where is the User?");
         var dbUser = await _context.User.FirstOrDefaultAsync(x=> x.Id == user.Id);
@@ -45,7 +45,7 @@ public class UserController(GDCDbContext context) : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> UpdateUser(User user)
+    public async Task<ActionResult> UpdateUserAsync(User user)
     {
         if (user is null) return BadRequest("Where is the User?");
         
@@ -69,7 +69,7 @@ public class UserController(GDCDbContext context) : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteUser(string userId)
+    public async Task<ActionResult> DeleteUserAsync(string userId)
     {
         var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
 
