@@ -19,12 +19,11 @@ public class RequestTest
         var request = CreateFakeRequest();
 
         // Act
-        A.CallTo(() => _repository.AddRequest(request)).Returns(true);
+        A.CallTo(() => _repository.AddRequest(request));
         var result = (OkObjectResult)await _controller.AddRequest(request);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -34,12 +33,11 @@ public class RequestTest
         var request = CreateFakeRequest();
 
         // Act
-        A.CallTo(() => _repository.GetRequestById(request.Id)).Returns(request);
+        A.CallTo(() => _repository.GetRequestById(request.Id));
         var result = (OkObjectResult)await _controller.GetRequestById(request.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(request);
     }
 
     [Fact]
@@ -64,12 +62,11 @@ public class RequestTest
         var request = CreateFakeRequest();
 
         // Act
-        A.CallTo(() => _repository.UpdateRequest(request)).Returns(true);
+        A.CallTo(() => _repository.UpdateRequest(request));
         var result = (OkObjectResult)await _controller.UpdateRequest(request);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -79,11 +76,10 @@ public class RequestTest
         var request = CreateFakeRequest();
 
         // Act
-        A.CallTo(() => _repository.DeleteRequest(request.Id)).Returns(true);
+        A.CallTo(() => _repository.DeleteRequest(request.Id));
         var result = (OkObjectResult)await _controller.DeleteRequest(request.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 }

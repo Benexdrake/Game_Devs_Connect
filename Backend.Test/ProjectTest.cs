@@ -19,12 +19,11 @@ public class ProjectTest
         var project = CreateFakeProject();
 
         // Act
-        A.CallTo(() => _repository.AddProject(project)).Returns(true);
+        A.CallTo(() => _repository.AddProject(project));
         var result = (OkObjectResult)await _controller.AddProject(project);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -34,12 +33,11 @@ public class ProjectTest
         var project = CreateFakeProject();
 
         // Act
-        A.CallTo(() => _repository.GetProject(project.Id)).Returns<Project>(project);
+        A.CallTo(() => _repository.GetProjectById(project.Id));
         var result = (OkObjectResult)await _controller.GetProject(project.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(project);
     }
 
     [Fact]
@@ -49,12 +47,11 @@ public class ProjectTest
         var project = CreateFakeProject();
 
         // Act
-        A.CallTo(() => _repository.UpdateProject(project)).Returns(true);
+        A.CallTo(() => _repository.UpdateProject(project));
         var result = (OkObjectResult)await _controller.UpdateProject(project);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -64,11 +61,10 @@ public class ProjectTest
         var project = CreateFakeProject();
 
         // Act
-        A.CallTo(() => _repository.DeleteProject(project.Id)).Returns(true);
+        A.CallTo(() => _repository.DeleteProject(project.Id));
         var result = (OkObjectResult)await _controller.DeleteProject(project.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 }

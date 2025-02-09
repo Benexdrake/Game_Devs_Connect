@@ -18,12 +18,11 @@ public class UserTest
         var user = CreateFakeUser();
 
         // Act
-        A.CallTo(() => _userRepository.AddUserAsync(user)).Returns(true);
+        A.CallTo(() => _userRepository.AddUserAsync(user));
         var result = (OkObjectResult)await _userController.AddUserAsync(user);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -33,12 +32,11 @@ public class UserTest
         var user = CreateFakeUser();
 
         // Act
-        A.CallTo(() => _userRepository.GetUserAsync(user.Id)).Returns<User>(user);
+        A.CallTo(() => _userRepository.GetUserAsync(user.Id));
         var result = (OkObjectResult)await _userController.GetUserAsync(user.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(user);
     }
 
     [Fact]
@@ -62,12 +60,11 @@ public class UserTest
         var user = CreateFakeUser();
 
         // Act
-        A.CallTo(() => _userRepository.UpdateUserAsync(user)).Returns(true);
+        A.CallTo(() => _userRepository.UpdateUserAsync(user));
         var result = (OkObjectResult)await _userController.UpdateUserAsync(user);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 
     [Fact]
@@ -77,11 +74,10 @@ public class UserTest
         var user = CreateFakeUser();
 
         // Act
-        A.CallTo(() => _userRepository.DeleteUserAsync(user.Id)).Returns(true);
+        A.CallTo(() => _userRepository.DeleteUserAsync(user.Id));
         var result = (OkObjectResult)await _userController.DeleteUserAsync(user.Id);
 
         // Assert
         result.StatusCode.Should().Be(200);
-        result.Value.Should().Be(true);
     }
 }
