@@ -1,6 +1,6 @@
 ﻿namespace Backend.Controllers;
 
-[Route("[controller]")]
+[Route("request")]
 [ApiController]
 public class RequestController(IRequestRepository requestRepository) : ControllerBase
 {
@@ -12,7 +12,7 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
         return Ok(requests);
     }
 
-    [HttpGet("id/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetRequestById(string id)
     {
         var request = await requestRepository.GetRequestById(id);

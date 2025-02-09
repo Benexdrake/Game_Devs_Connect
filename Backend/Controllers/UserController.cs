@@ -12,25 +12,23 @@ public class UserController(IUserRepository userRepository) : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("id/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetUserAsync(string id)
     {
         var user = await userRepository.GetUserAsync(id);
-        if(user is not null)
-            return Ok(user);
-        return NotFound();
+
+        return Ok(user);
     }
 
 
     [HttpPost("add")]
     public async Task<ActionResult> AddUserAsync(User user)
     {
-        if (user is null) return BadRequest();
+        if (user is null) return BadRequest("Where is the User?");
 
         var result = await userRepository.AddUserAsync(user);
-        if(result)
-            return Ok(result);
-        return BadRequest();
+        
+        return Ok(result);
     }
 
     [HttpPut("update")]
@@ -39,17 +37,15 @@ public class UserController(IUserRepository userRepository) : ControllerBase
         if (user is null) return BadRequest("Where is the User?");
         
         var result = await userRepository.UpdateUserAsync(user);
-        if (result)
-            return Ok(result);
-        return NotFound();
+       
+        return Ok(result);
     }
 
     [HttpDelete("delete/{userId}")]
     public async Task<ActionResult> DeleteUserAsync(string userId)
     {
         var result = await userRepository.DeleteUserAsync(userId);
-        if (result)
-            return Ok(result);
-        return NotFound();
+
+        return Ok(result);
     }
 }

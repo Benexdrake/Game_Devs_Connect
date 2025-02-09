@@ -3,8 +3,8 @@
 public interface IUserRepository
 {
     Task<IEnumerable<User>> GetUsersAsync();
-    Task<User> GetUserAsync(string id);
-    Task<bool> AddUserAsync(User user);
-    Task<bool> UpdateUserAsync(User user);
-    Task<bool> DeleteUserAsync(string id);
+    Task<APIResponse> GetUserAsync(string id);
+    Task<APIResponse> AddUserAsync(User user);
+    Task<APIResponse> UpdateUserAsync(User user);
+    Task<APIResponse> DeleteUserAsync(string id);
 }

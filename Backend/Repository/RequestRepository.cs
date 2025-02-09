@@ -6,49 +6,53 @@ namespace Backend.Repository;
 public class RequestRepository(GDCDbContext context) : IRequestRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<bool> AddRequest(Request request)
+    public async Task<APIResponse> AddRequest(Request request)
     {
         try
         {
             var DbRequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
-            if (DbRequest is not null) return false;
+            if (DbRequest is not null) return new APIResponse("Request Exists in DB",false);
 
             await _context.Requests.AddAsync(request);
             await _context.SaveChangesAsync();
 
-            return true;
+            return new APIResponse("Request saved in DB", true);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;
+            return new APIResponse(ex.Message, false);
         }
     }
 
-    public async Task<bool> DeleteRequest(string id)
+    public async Task<APIResponse> DeleteRequest(string id)
     {
         try
         {
             var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-            if (request is null) return false;
+            if (request is null) return new APIResponse("Request dont exist", false);
 
             _context.Requests.Remove(request);
             await _context.SaveChangesAsync();
 
-            return true;
+            return new APIResponse("Request got deleted", true);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;
+            return new APIResponse(ex.Message, false);
         }
     }
 
-    public async Task<Request> GetRequestById(string id)
+    public async Task<APIResponse> GetRequestById(string id)
     {
-        return await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (request is null) return new APIResponse("Request dont exist", false);
+
+        return new APIResponse("", true, request);
     }
 
     public async Task<IEnumerable<Request>> GetRequests()
@@ -56,13 +60,13 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
         return await _context.Requests.ToListAsync();
     }
 
-    public async Task<bool> UpdateRequest(Request request)
+    public async Task<APIResponse> UpdateRequest(Request request)
     {
         try
         {
             var Dbrequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
-            if (Dbrequest is null) return false;
+            if (Dbrequest is null) return new APIResponse("Request dont exist", false);
 
             // Update Request
             Dbrequest.Title = request.Title;
@@ -71,12 +75,12 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
 
             await _context.SaveChangesAsync();
 
-            return true;
+            return new APIResponse("Request got updated", true);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return false;
+            return new APIResponse(ex.Message, false);
         }
     }
 }

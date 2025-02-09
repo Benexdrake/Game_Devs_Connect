@@ -1,17 +1,15 @@
 ﻿namespace Backend.Controllers;
 
-[Route("[controller]")]
+[Route("project")]
 [ApiController]
 public class ProjectController(IProjectRepository projectRepository) : ControllerBase
 {
-    [HttpGet("get/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetProject(string id)
     {
-        var project = await projectRepository.GetProject(id);
+        var result = await projectRepository.GetProjectById(id);
 
-        if (project is null) return NotFound();
-
-        return Ok(project);
+        return Ok(result);
     }
 
     [HttpPost("add")]
