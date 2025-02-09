@@ -1,6 +1,6 @@
 ﻿namespace Backend.Controllers;
 
-[Route("[controller]")]
+[Route("user")]
 [ApiController]
 public class UserController(IUserRepository userRepository) : ControllerBase
 {
@@ -21,12 +21,6 @@ public class UserController(IUserRepository userRepository) : ControllerBase
         return NotFound();
     }
 
-    [HttpGet("short")]
-    public async Task<ActionResult> GetShortUsersAsync()
-    {
-        var users = await userRepository.GetShortUsersAsync();
-        return Ok(users);
-    }
 
     [HttpPost("add")]
     public async Task<ActionResult> AddUserAsync(User user)

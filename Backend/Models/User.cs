@@ -11,7 +11,6 @@
         public string XUrl { get; set; } = string.Empty;
         public string WebsiteUrl { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string[] ProjectIds { get; set; } = [];
-        public string[] RequestIds { get; set; } = [];
+        public string ProjectId { get; set; } = string.Empty; 
     }
 }

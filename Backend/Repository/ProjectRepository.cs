@@ -62,8 +62,8 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             DbProject.Title = project.Title;
             DbProject.Description = project.Description;
             DbProject.Header = project.Header;
-            DbProject.UserIds = project.UserIds;
-            DbProject.Elements = project.Elements;
+            //DbProject.Users = project.Users;
+            //DbProject.Elements = project.Elements;
 
             await _context.SaveChangesAsync();
 

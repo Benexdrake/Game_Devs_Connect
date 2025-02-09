@@ -6,4 +6,5 @@ public class Element
     public ElementType Type { get; set; }
     public string Content { get; set; } = string.Empty;
     public string Config { get; set; } = string.Empty;
+    public string ProjectId { get; set; } = string.Empty;
 }

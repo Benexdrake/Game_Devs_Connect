@@ -7,11 +7,11 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
 
             if (dbUser is not null) return false;
 
-            await _context.User.AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
             return true;
@@ -27,11 +27,11 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (dbUser is null) return false;
 
-            _context.User.Remove(dbUser);
+            _context.Users.Remove(dbUser);
 
             await _context.SaveChangesAsync();
             
@@ -44,26 +44,21 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<IEnumerable<ShortUser>> GetShortUsersAsync()
-    {
-        return await _context.User.Select(x => new ShortUser(x.Id, x.Username)).ToListAsync();
-    }
-
     public async Task<User> GetUserAsync(string id)
     {
-        return await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<User>> GetUsersAsync()
     {
-        return await _context.User.ToListAsync();
+        return await _context.Users.ToListAsync();
     }
 
     public async Task<bool> UpdateUserAsync(User user)
     {
         try
         {
-            var dbUser = await _context.User.FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
 
             if (dbUser is null) return false;
 

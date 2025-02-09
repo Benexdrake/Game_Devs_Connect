@@ -1,4 +1,4 @@
-﻿namespace Backend.Models;
+﻿namespace Backend.Enum;
 
 public enum ElementType
 {
