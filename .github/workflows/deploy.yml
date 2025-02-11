@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Tests
-        run: dotnet test ./Backend.Test/Backend.Test.csproj --no-build --verbosity normal
+        run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
 
   build-stage:
     needs: test-stage
