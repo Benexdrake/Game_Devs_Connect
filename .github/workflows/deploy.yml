@@ -45,11 +45,16 @@ jobs:
       - name: Create AppSettings Json
         run: echo '${{secrets.APPSETTINGS}}' > ./Backend/bin/Debug/net8.0/appsettings.json
 
+
+      # gzip Files
+      - name: Zip Files
+        run: tar -zcvf backend.tar.gz ./Backend/bin/Debug/net8.0
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: ./Backend/bin/Debug/net8.0
+          path: ./backend.tar.gz
 
   deploy-stage:
     needs: build-stage
@@ -61,10 +66,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
-
-      # gzip Files
-      - name: Zip Files
-        run: tar -zcvf backend.tar.gz ./
     
         # Deploy Files to Server with sftp
       - name: Deploy Files
