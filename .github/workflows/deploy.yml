@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: ./Backend/bin/Debug
+          path: ./Backend/bin/Debug/net8.0
 
   deploy-stage:
     needs: build-stage
