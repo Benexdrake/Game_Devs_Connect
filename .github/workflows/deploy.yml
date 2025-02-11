@@ -3,22 +3,16 @@ name: Deploy
 on:
   workflow_dispatch:
   push:
-    branches: [main]
-    # paths-ignore:
-    #   - .github/**
+    branches: [master]
+    paths-ignore:
+      - .github/**
 
 jobs:
   test-stage:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup .NET 9 SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.x
       - name: Run Tests
-        run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
+        run: dotnet test ./Backend.Test/Backend.Test.csproj --no-build --verbosity normal
 
   build-stage:
     needs: test-stage
@@ -29,31 +23,28 @@ jobs:
       - name: Setup .NET 9 SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
       - name: Restore Dependencies
         run: dotnet restore ./Backend/Backend.csproj
+      
+      - name: Create AppSettings Json
+        run: echo '${{secrets.APPSETTINGS}}' > .Backend/appsettings.json
 
       - name: Build Project
         run: dotnet build ./Backend/Backend.csproj --no-restore
-
-      - name: Create AppSettings Json
-        run: echo '${{secrets.APPSETTINGS}}' > ./Backend/bin/Debug/net8.0/appsettings.json
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: ./Backend/bin/Debug/net8.0
+          path: ./Backend\bin\Debug\net8.0
 
   deploy-stage:
     needs: build-stage
     runs-on: ubuntu-latest
     steps:
-
       # Download Files
       - name: Get build Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: build-files
-      - name: LS Files
-        run: ls -la
