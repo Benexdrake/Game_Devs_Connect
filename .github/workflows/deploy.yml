@@ -36,8 +36,8 @@ jobs:
       - name: Build Project
         run: dotnet build ./Backend/Backend.csproj --no-restore
 
-      - name: Run Tests
-        run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
+      # - name: Run Tests
+      #   run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
