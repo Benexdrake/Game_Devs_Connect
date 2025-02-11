@@ -3,7 +3,7 @@ name: Deploy
 on:
   workflow_dispatch:
   push:
-    branches: [master]
+    branches: [main]
     # paths-ignore:
     #   - .github/**
 
@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: ./
+          path: ./Backend/bin
 
   deploy-stage:
     needs: build-stage
