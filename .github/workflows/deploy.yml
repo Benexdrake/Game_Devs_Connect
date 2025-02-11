@@ -32,9 +32,6 @@ jobs:
           dotnet-version: 9.x
       - name: Restore Dependencies
         run: dotnet restore ./Backend/Backend.csproj
-      
-      - name: Create AppSettings Json
-        run: echo '${{secrets.APPSETTINGS}}' > .Backend/appsettings.json
 
       - name: Build Project
         run: dotnet build ./Backend/Backend.csproj --no-restore
@@ -52,6 +49,8 @@ jobs:
     needs: build-stage
     runs-on: ubuntu-latest
     steps:
+      # - name: Create AppSettings Json
+      #   run: echo '${{secrets.APPSETTINGS}}' > .Backend/appsettings.json
       # Download Files
       - name: Get build Artifacts
         uses: actions/download-artifact@v3
