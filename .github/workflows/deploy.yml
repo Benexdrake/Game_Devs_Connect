@@ -36,9 +36,6 @@ jobs:
       - name: Build Project
         run: dotnet build ./Backend/Backend.csproj --no-restore
 
-      # - name: Run Tests
-      #   run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -53,6 +50,8 @@ jobs:
       #   run: echo '${{secrets.APPSETTINGS}}' > .Backend/appsettings.json
       # Download Files
       - name: Get build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-files
+      - name: LS Files
+        run: ls -la
