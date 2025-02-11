@@ -8,17 +8,17 @@ on:
     #   - .github/**
 
 jobs:
-  # test-stage:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
-  #     - name: Setup .NET 9 SDK
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: 9.x
-  #     - name: Run Tests
-  #       run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
+  test-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - name: Run Tests
+        run: dotnet test ./Backend.Test/Backend.Test.csproj --verbosity normal
 
   build-stage:
     # needs: test-stage
