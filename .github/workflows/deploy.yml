@@ -61,6 +61,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
+
+      # gzip Files
+      - name: Zip Files
+        run: tar -zcvf backend.tar.gz ./
     
         # Deploy Files to Server with sftp
       - name: Deploy Files
@@ -69,5 +73,24 @@ jobs:
             username: ${{ secrets.SERVER_USERNAME }}
             server: ${{ secrets.SERVER_IP }}
             ssh_private_key: ${{ secrets.SERVER_SSH_KEY }} 
-            local_path: './'
+            local_path: './backend.tar.gz'
             remote_path: ${{env.DEPLOY_PATH}}
+
+      # gzip unpack
+      - name: Install Dependencies on Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{env.PORT}}
+          script: |
+            cd ${{env.DEPLOY_PATH}}
+            rm -rf ./*
+            tar -xzvf backend.tar.gz
+            
+
+
+      #       pm2 delete '${{env.APP_NAME}}'
+      #       pm2 start npm --name '${{env.APP_NAME}}' -- start
+      #       pm2 save
