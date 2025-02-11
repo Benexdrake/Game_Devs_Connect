@@ -46,7 +46,9 @@ jobs:
         run: echo '${{secrets.APPSETTINGS}}' > ./Backend/bin/Debug/net8.0/appsettings.json
 
       - name: GZip Files
-        run: tar -czvf backend.tar.gz ./Backend/bin/Debug/net8.0/*
+        run: |
+            cd ./Backend/bin/Debug/net8.0
+            tar -czvf backend.tar.gz ./*
       
 
       - name: Upload Artifacts
