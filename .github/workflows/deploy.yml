@@ -45,10 +45,9 @@ jobs:
       - name: Create AppSettings Json
         run: echo '${{secrets.APPSETTINGS}}' > ./Backend/bin/Debug/net8.0/appsettings.json
 
-
-      # gzip Files
-      - name: Zip Files
-        run: tar -zcvf backend.tar.gz ./Backend/bin/Debug/net8.0
+      - name: GZip Files
+        run: tar -czvf backend.tar.gz /Backend/bin/Debug/net8.0/*
+      
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -66,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files
-    
+
         # Deploy Files to Server with sftp
       - name: Deploy Files
         uses: wlixcc/SFTP-Deploy-Action@v1.2.5
@@ -74,7 +73,7 @@ jobs:
             username: ${{ secrets.SERVER_USERNAME }}
             server: ${{ secrets.SERVER_IP }}
             ssh_private_key: ${{ secrets.SERVER_SSH_KEY }} 
-            local_path: './backend.tar.gz'
+            local_path: './'
             remote_path: ${{env.DEPLOY_PATH}}
 
       # gzip unpack
@@ -87,7 +86,6 @@ jobs:
           port: ${{env.PORT}}
           script: |
             cd ${{env.DEPLOY_PATH}}
-            rm -rf ./*
             tar -xzvf backend.tar.gz
             
 
