@@ -7,7 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = UnitTestDb.db"));
+   builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = UnitTestDb.db"));
 else
     builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
 
@@ -16,8 +16,6 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
 var app = builder.Build();
-
-
 
 app.UseCors();
 
