@@ -46,8 +46,8 @@ jobs:
     needs: build-stage
     runs-on: ubuntu-latest
     steps:
-      # - name: Create AppSettings Json
-      #   run: echo '${{secrets.APPSETTINGS}}' > .Backend/appsettings.json
+      - name: Create AppSettings Json
+        run: echo '${{secrets.APPSETTINGS}}' > appsettings.json
       # Download Files
       - name: Get build Artifacts
         uses: actions/download-artifact@v4
