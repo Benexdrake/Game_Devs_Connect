@@ -43,8 +43,7 @@ jobs:
               tar -xzvf migration.tar.gz
               cd Backend
               dotnet --version
-              dotnet tool install --global dotnet-ef --version 8.*
-              dotnet tool restore
+              dotnet restore .//Backend.csproj
               dotnet ef
               dotnet ef migrations add InitialCreate
               dotnet ef database update
