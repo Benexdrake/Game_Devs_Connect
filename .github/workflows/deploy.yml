@@ -10,7 +10,7 @@ on:
 env:
   DOTNET_VERSION: 8.x
   APP_NAME: 'Backend'
-  DEPLOY_PATH: '/var/www/Backend'
+  DEPLOY_PATH: '/home/ubuntu/Backend'
   PORT: 22
 
 jobs:
