@@ -42,5 +42,6 @@ jobs:
               cd ${{env.DEPLOY_PATH}}
               tar -xzvf migration.tar.gz
               cd Backend
+              touch TEST!!!!!!!!!!!!!!!!!!!!!!!!
               dotnet ef migrations add InitialCreate
-              dotnet ef update database
+              dotnet ef database update
