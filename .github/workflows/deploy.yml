@@ -76,8 +76,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{env.PORT}}
           script: |
-            cd ${{env.DEPLOY_PATH}}
-            rm -rf ./*
+            rm -rf ${{env.DEPLOY_PATH}}
+            
 
         # Deploy Files to Server with sftp
       - name: Deploy Files

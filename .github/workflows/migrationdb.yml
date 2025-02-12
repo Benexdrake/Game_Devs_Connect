@@ -45,8 +45,9 @@ jobs:
               cd ${{env.DEPLOY_PATH}}
               tar -xzvf migration.tar.gz
               cd Backend
+              rm -rf GDC.db
               dotnet --version
-              dotnet restore .//Backend.csproj
+              dotnet restore ./Backend.csproj
 
               dotnet ef
               dotnet ef migrations add InitialCreate
