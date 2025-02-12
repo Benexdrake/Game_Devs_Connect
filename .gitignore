@@ -7,3 +7,4 @@ bin
 /Backend/Migrations
 *.db-shm
 *.db-wal
+Backend/GDC.db
