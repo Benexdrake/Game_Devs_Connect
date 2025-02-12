@@ -1,0 +1,46 @@
+name: MigrationRDSDB
+
+on:
+  workflow_dispatch:
+
+env:
+  DEPLOY_PATH: '/home/ubuntu/Migration'
+  PORT: 22
+
+jobs:
+  migration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create AppSettings Json
+        run: echo '${{secrets.APPSETTINGS}}' > ./appsettings.json
+      
+      - name: GZip Files
+        run: |
+            cd ./
+            tar -czvf migration.tar.gz ./*
+
+      - name: Deploy Files
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        with:
+            username: ${{ secrets.SERVER_USERNAME }}
+            server: ${{ secrets.SERVER_IP }}
+            ssh_private_key: ${{ secrets.SERVER_SSH_KEY }} 
+            local_path: './migration.tar.gz'
+            remote_path: ${{env.DEPLOY_PATH}}
+
+      - name: Unpack and Run
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+            host: ${{ secrets.SERVER_IP }}
+            username: ${{ secrets.SERVER_USERNAME }}
+            key: ${{ secrets.SERVER_SSH_KEY }}
+            port: ${{env.PORT}}
+            script: |
+              cd ${{env.DEPLOY_PATH}}
+              tar -xzvf migration.tar.gz
+              dotnet ef migrations add InitialCreate
+              dotnet ef update database
+              rm -rf ./*
