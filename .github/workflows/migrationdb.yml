@@ -41,6 +41,7 @@ jobs:
             script: |
               cd ${{env.DEPLOY_PATH}}
               tar -xzvf migration.tar.gz
+              ls
               dotnet ef migrations add InitialCreate
               dotnet ef update database
               rm -rf ./*
