@@ -44,6 +44,7 @@ jobs:
               cd Backend
               dotnet --version
               dotnet restore .//Backend.csproj
-              dotnet ef
-              dotnet ef migrations add InitialCreate
-              dotnet ef database update
+
+              dotnet-ef
+              dotnet-ef migrations add InitialCreate
+              dotnet-ef database update
