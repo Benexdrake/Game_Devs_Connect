@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    # paths-ignore:
-    #   - .github/**
+    paths-ignore:
+      - .github/**
 
 env:
   DOTNET_VERSION: 8.x
