@@ -31,6 +31,9 @@ jobs:
             local_path: './migration.tar.gz'
             remote_path: ${{env.DEPLOY_PATH}}
 
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef
+
       - name: Unpack and Run
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -45,6 +48,6 @@ jobs:
               dotnet --version
               dotnet restore .//Backend.csproj
 
-              dotnet-ef
-              dotnet-ef migrations add InitialCreate
-              dotnet-ef database update
+              dotnet ef
+              dotnet ef migrations add InitialCreate
+              dotnet ef database update
