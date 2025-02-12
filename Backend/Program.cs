@@ -6,10 +6,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = GDC.db"));
-else
-    builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DB")));
+builder.Services.AddDbContext<GDCDbContext>(o => o.UseSqlite("Data Source = GDC.db"));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
