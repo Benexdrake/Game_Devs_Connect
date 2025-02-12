@@ -10,7 +10,7 @@ on:
 env:
   DOTNET_VERSION: 8.x
   APP_NAME: 'Backend'
-  DEPLOY_PATH: '/home/ubuntu/Backend'
+  DEPLOY_PATH: '/var/www/Backend'
   PORT: 22
 
 jobs:
@@ -76,7 +76,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{env.PORT}}
           script: |
-            rm -rf ${{env.DEPLOY_PATH}}
+            sudo rm -rf ${{env.DEPLOY_PATH}}
             
 
         # Deploy Files to Server with sftp
