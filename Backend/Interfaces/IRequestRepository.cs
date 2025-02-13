@@ -2,7 +2,7 @@
 
 public interface IRequestRepository
 {
-    Task<IEnumerable<Request>> GetRequests();
+    Task<IEnumerable<string>> GetRequests();
     Task<APIResponse> GetRequestById(string id);
     Task<APIResponse> AddRequest(Request request);
     Task<APIResponse> UpdateRequest(Request request);

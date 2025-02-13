@@ -24,7 +24,6 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     public async Task<ActionResult> AddRequest(Request request)
     {
         var result = await requestRepository.AddRequest(request);
-
         return Ok(result);
     }
 
