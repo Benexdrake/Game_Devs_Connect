@@ -53,11 +53,15 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
         if (request is null) return new APIResponse("Request dont exist", false);
 
         var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
 
         if (u is not null)
         {
+            var title = "";
+            if (p is not null)
+                title = p.Title;
             var user = new {id=u.Id, username=u.Username, avatar=u.Avatar };
-            return new APIResponse("", true, new { request, user });
+            return new APIResponse("", true, new { request, user, title });
         }
             return new APIResponse("", true, request);
     }
