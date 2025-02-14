@@ -1,8 +1,11 @@
-﻿namespace Backend.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public class RequestTags
+namespace Backend.Models;
+
+public partial class RequestTags
 {
-
     public Request Request { get; set; }
-    public Tag[] Tags { get; set; } = [];
+
+    public Tag[] Tags { get; set; }
 }

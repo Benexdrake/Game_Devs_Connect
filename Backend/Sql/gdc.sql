@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS project
 
 CREATE TABLE IF NOT EXISTS project_team
 (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     projectid text,
     teammemberid text
 );
@@ -32,8 +33,7 @@ CREATE TABLE IF NOT EXISTS project_team
 -- Tag
 CREATE TABLE IF NOT EXISTS tag
 (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name text
+    name text PRIMARY KEY
 );
 
 -- Request
@@ -46,6 +46,13 @@ CREATE TABLE IF NOT EXISTS request
     created text,
     projectId text,
     userId text
+);
+
+CREATE TABLE IF NOT EXISTS request_tag
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    requestId text,
+    tagname text
 );
 
 -- Element

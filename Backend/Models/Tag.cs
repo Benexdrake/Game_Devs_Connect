@@ -1,9 +1,9 @@
-﻿namespace Backend.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public class Tag
+namespace Backend.Models;
+
+public partial class Tag
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
 }

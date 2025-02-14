@@ -1,8 +1,8 @@
 ﻿namespace Backend.Repository;
 
-public class ProjectRepository(GDCDbContext context) : IProjectRepository
+public class ProjectRepository(GdcContext context) : IProjectRepository
 {
-    private readonly GDCDbContext _context = context;
+    private readonly GdcContext _context = context;
     public async Task<APIResponse> AddProject(Project project)
     {
         try
@@ -57,9 +57,9 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             var DbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
             if (DbProject is null) return new APIResponse("Project dont exist", false);
 
-            DbProject.Title = project.Title;
+            DbProject.Name = project.Name;
             DbProject.Description = project.Description;
-            DbProject.HeaderImage = project.HeaderImage;
+            DbProject.Headerimage = project.Headerimage;
             //DbProject.Users = project.Users;
             //DbProject.Elements = project.Elements;
 

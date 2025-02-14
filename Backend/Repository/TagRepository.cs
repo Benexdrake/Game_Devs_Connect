@@ -3,9 +3,9 @@ using Backend.Models;
 
 namespace Backend.Repository
 {
-    public class TagRepository(GDCDbContext context) : ITagRepository
+    public class TagRepository(GdcContext context) : ITagRepository
     {
-        private readonly GDCDbContext _context = context;
+        private readonly GdcContext _context = context;
         public async Task<APIResponse> AddTag(Tag tag)
         {
             try

@@ -1,8 +1,8 @@
 ﻿namespace Backend.Repository;
 
-public class UserRepository(GDCDbContext context) : IUserRepository
+public class UserRepository(GdcContext context) : IUserRepository
 {
-    private readonly GDCDbContext _context = context;
+    private readonly GdcContext _context = context;
     public async Task<APIResponse> AddUserAsync(User user)
     {
         try
@@ -72,9 +72,9 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             dbUser.Avatar = user.Avatar;
             dbUser.AccountType = user.AccountType;
             dbUser.Email = user.Email;
-            dbUser.XUrl = user.XUrl;
+            dbUser.Xurl = user.Xurl;
             dbUser.DiscordUrl = user.DiscordUrl;
-            dbUser.WebsiteUrl = user.WebsiteUrl;
+            dbUser.Websiteurl = user.Websiteurl;
 
             await _context.SaveChangesAsync();
 

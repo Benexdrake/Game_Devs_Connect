@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repository;
 
-public class RequestRepository(GDCDbContext context) : IRequestRepository
+public class RequestRepository(GdcContext context) : IRequestRepository
 {
-    private readonly GDCDbContext _context = context;
+    private readonly GdcContext _context = context;
     public async Task<APIResponse> AddRequest(RequestTags rt)
     {
         try
@@ -18,16 +18,16 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             //await _context.SaveChangesAsync();
 
             // Deleting all RequestTag and saving new
-            var requestTags = _context.RequestTag.Where(x => x.RequestId.Equals(rt.Request.Id)).ToList();
+            var requestTags = _context.RequestTags.Where(x => x.RequestId.Equals(rt.Request.Id)).ToList();
 
-            await _context.RequestTag.Where(x => x.RequestId.Equals(rt.Request.Id)).ExecuteDeleteAsync();
+            await _context.RequestTags.Where(x => x.RequestId.Equals(rt.Request.Id)).ExecuteDeleteAsync();
 
             foreach (var tag in rt.Tags)
             {
                 var requestTag = new RequestTag
                 {
                     RequestId = rt.Request.Id,
-                    TagId = tag.Id
+                    Tagname = tag.Name
                 };
 
                 //var tagDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == tag.Id);
@@ -35,7 +35,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
                 //if(tagDb is not null)
                 //{
                 //}
-                _context.RequestTag.Add(requestTag);
+                _context. RequestTags.Add(requestTag);
             }
             await _context.SaveChangesAsync();
             
@@ -77,16 +77,16 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
 
         var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
         var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
-        var tags = _context.RequestTag.Where(x => x.RequestId.Equals(id)).Select(rt => new { name = rt.TagId });
+        var tags = _context.RequestTags.Where(x => x.RequestId.Equals(id)).Select(rt => new { name = rt.Tagname });
 
         if (u is not null)
         {
             var title = "";
             if (p is not null)
-                title = p.Title;
+                title = p.Name;
             var user = new {id=u.Id, username=u.Username, avatar=u.Avatar };
         }
-            return new APIResponse("", true, new { request, user=u, title=p?.Title, tags });
+            return new APIResponse("", true, new { request, user=u, title=p?.Name, tags });
             //return new APIResponse("", true, request);
     }
 
@@ -107,7 +107,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             // Update Request
             Dbrequest.Title = request.Title;
             Dbrequest.Description = request.Description;
-            Dbrequest.FileUrl = request.FileUrl;
+            Dbrequest.Fileurl = request.Fileurl;
 
             await _context.SaveChangesAsync();
 

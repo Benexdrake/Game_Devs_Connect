@@ -1,10 +1,19 @@
-﻿namespace Backend.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public class Element
+namespace Backend.Models;
+
+public partial class Element
 {
-    public string Id { get; set; } = string.Empty;
-    public ElementType Type { get; set; }
-    public string Content { get; set; } = string.Empty;
-    public string Config { get; set; } = string.Empty;
-    public string ProjectId { get; set; } = string.Empty;
+    public string Id { get; set; } = null!;
+
+    public int? Elementtype { get; set; }
+
+    public string? Content { get; set; }
+
+    public string? Config { get; set; }
+
+    public int? Nr { get; set; }
+
+    public string? Projectid { get; set; }
 }

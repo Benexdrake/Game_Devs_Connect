@@ -1,15 +1,25 @@
-﻿namespace Backend.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public class User
+namespace Backend.Models;
+
+public partial class User
 {
-    public string Id { get; set; } = string.Empty;
-    public string Username { get; set; } = string.Empty;
-    public string Avatar { get; set; } = string.Empty;
-    public string AccountType { get; set; } = string.Empty;
-    public string Banner { get; set; } = string.Empty;
-    public string DiscordUrl { get; set; } = string.Empty;
-    public string XUrl { get; set; } = string.Empty;
-    public string WebsiteUrl { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string ProjectId { get; set; } = string.Empty; 
+    public string Id { get; set; } = null!;
+
+    public string? Username { get; set; }
+
+    public string? Avatar { get; set; }
+
+    public string? AccountType { get; set; }
+
+    public string? Banner { get; set; }
+
+    public string? DiscordUrl { get; set; }
+
+    public string? Xurl { get; set; }
+
+    public string? Websiteurl { get; set; }
+
+    public string? Email { get; set; }
 }
