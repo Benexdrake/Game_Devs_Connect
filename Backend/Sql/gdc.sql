@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS project
     ownerid text
 );
 
+CREATE TABLE IF NOT EXISTS project_team
+(
+    projectid text,
+    teammemberid text
+);
+
 -- Tag
 CREATE TABLE IF NOT EXISTS tag
 (

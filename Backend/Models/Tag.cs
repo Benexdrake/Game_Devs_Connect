@@ -3,7 +3,7 @@
 public class Tag
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    //public ICollection<Request> Requests { get; set; } = [];
 }

@@ -15,31 +15,30 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (DbRequest is not null) return new APIResponse("Request Exists in DB",false);
 
             await _context.Requests.AddAsync(rt.Request);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             // Deleting all RequestTag and saving new
             var requestTags = _context.RequestTag.Where(x => x.RequestId.Equals(rt.Request.Id)).ToList();
-            
-            foreach(var x in requestTags)
-            {
-                _context.RequestTag.Remove(x);
-            }
-            
-            await _context.SaveChangesAsync();
+
+            await _context.RequestTag.Where(x => x.RequestId.Equals(rt.Request.Id)).ExecuteDeleteAsync();
 
             foreach (var tag in rt.Tags)
             {
-                var requestTag = new RequestTag();
-                requestTag.RequestId = rt.Request.Id;
-                requestTag.TagId = tag.Name;
+                var requestTag = new RequestTag
+                {
+                    RequestId = rt.Request.Id,
+                    TagId = tag.Id
+                };
 
-                var tagDb = _context.Tags.FirstOrDefaultAsync(x => x.Name.Equals(tag.Name));
+                //var tagDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == tag.Id);
 
-                if(tagDb is not null)
-                    _context.RequestTag.Add(requestTag);
+                //if(tagDb is not null)
+                //{
+                //}
+                _context.RequestTag.Add(requestTag);
             }
-            
             await _context.SaveChangesAsync();
+            
 
             return new APIResponse("Request saved in DB", true);
         }
