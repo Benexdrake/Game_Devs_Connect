@@ -21,9 +21,9 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     }
 
     [HttpPost("add")]
-    public async Task<ActionResult> AddRequest(Request request)
+    public async Task<ActionResult> AddRequest(RequestTags rt)
     {
-        var result = await requestRepository.AddRequest(request);
+        var result = await requestRepository.AddRequest(rt);
         return Ok(result);
     }
 

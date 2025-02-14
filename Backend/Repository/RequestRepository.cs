@@ -6,15 +6,39 @@ namespace Backend.Repository;
 public class RequestRepository(GDCDbContext context) : IRequestRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<APIResponse> AddRequest(Request request)
+    public async Task<APIResponse> AddRequest(RequestTags rt)
     {
         try
         {
-            var DbRequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            var DbRequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(rt.Request.Id));
 
             if (DbRequest is not null) return new APIResponse("Request Exists in DB",false);
 
-            await _context.Requests.AddAsync(request);
+            await _context.Requests.AddAsync(rt.Request);
+            await _context.SaveChangesAsync();
+
+            // Deleting all RequestTag and saving new
+            var requestTags = _context.RequestTag.Where(x => x.RequestId.Equals(rt.Request.Id)).ToList();
+            
+            foreach(var x in requestTags)
+            {
+                _context.RequestTag.Remove(x);
+            }
+            
+            await _context.SaveChangesAsync();
+
+            foreach (var tag in rt.Tags)
+            {
+                var requestTag = new RequestTag();
+                requestTag.RequestId = rt.Request.Id;
+                requestTag.TagId = tag.Name;
+
+                var tagDb = _context.Tags.FirstOrDefaultAsync(x => x.Name.Equals(tag.Name));
+
+                if(tagDb is not null)
+                    _context.RequestTag.Add(requestTag);
+            }
+            
             await _context.SaveChangesAsync();
 
             return new APIResponse("Request saved in DB", true);
@@ -54,6 +78,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
 
         var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
         var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
+        var tags = _context.RequestTag.Where(x => x.RequestId.Equals(id)).Select(rt => new { name = rt.TagId });
 
         if (u is not null)
         {
@@ -61,9 +86,9 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (p is not null)
                 title = p.Title;
             var user = new {id=u.Id, username=u.Username, avatar=u.Avatar };
-            return new APIResponse("", true, new { request, user, title });
         }
-            return new APIResponse("", true, request);
+            return new APIResponse("", true, new { request, user=u, title=p?.Title, tags });
+            //return new APIResponse("", true, request);
     }
 
     public async Task<IEnumerable<string>> GetRequests()

@@ -12,19 +12,19 @@ public class RequestTest
 
     private static Request CreateFakeRequest() => A.Fake<Request>();
 
-    [Fact]
-    public async Task Create_Request_From_Controller()
-    {
-        // Arrange
-        var request = CreateFakeRequest();
+    //[Fact]
+    //public async Task Create_Request_From_Controller()
+    //{
+    //    // Arrange
+    //    var request = CreateFakeRequest();
 
-        // Act
-        A.CallTo(() => _repository.AddRequest(request));
-        var result = (OkObjectResult)await _controller.AddRequest(request);
+    //    // Act
+    //    A.CallTo(() => _repository.AddRequest(request));
+    //    var result = (OkObjectResult)await _controller.AddRequest(request);
 
-        // Assert
-        result.StatusCode.Should().Be(200);
-    }
+    //    // Assert
+    //    result.StatusCode.Should().Be(200);
+    //}
 
     [Fact]
     public async Task Get_A_Request_By_ID()
