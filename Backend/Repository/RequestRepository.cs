@@ -92,7 +92,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
 
     public async Task<IEnumerable<string>> GetRequests()
     {
-        var requests = await _context.Requests.ToListAsync();
+        var requests = await _context.Requests.OrderByDescending(x => x.Created).ToListAsync();
         return requests.Select(x => x.Id).ToList();
     }
 
