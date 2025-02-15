@@ -4,7 +4,7 @@
 [ApiController]
 public class RequestController(IRequestRepository requestRepository) : ControllerBase
 {
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<ActionResult> GetRequests()
     {
         var requests = await requestRepository.GetRequests();

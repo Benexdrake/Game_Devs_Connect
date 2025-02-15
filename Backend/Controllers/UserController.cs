@@ -4,7 +4,7 @@
 [ApiController]
 public class UserController(IUserRepository userRepository) : ControllerBase
 {
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<ActionResult> GetUsersAsync()
     {
         var users = await userRepository.GetUsersAsync();
