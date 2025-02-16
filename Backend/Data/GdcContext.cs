@@ -11,9 +11,12 @@ public partial class GdcContext : DbContext
     {
     }
 
-    public GdcContext(DbContextOptions<GdcContext> options) : base(options)
+    public GdcContext(DbContextOptions<GdcContext> options)
+        : base(options)
     {
     }
+
+    public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<Element> Elements { get; set; }
 
@@ -34,6 +37,16 @@ public partial class GdcContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.ToTable("comment");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Filename).HasColumnName("filename");
+            entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.Parentid).HasColumnName("parentid");
+        });
+
         modelBuilder.Entity<Element>(entity =>
         {
             entity.ToTable("element");
@@ -44,7 +57,6 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Elementtype).HasColumnName("elementtype");
             entity.Property(e => e.Nr).HasColumnName("nr");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
-            entity.HasKey(entity => entity.Id);  
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -56,15 +68,13 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Headerimage).HasColumnName("headerimage");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Ownerid).HasColumnName("ownerid");
-            entity.HasKey(entity => entity.Id);
         });
 
         modelBuilder.Entity<ProjectTeam>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("project_team");
+            entity.ToTable("project_team");
 
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
             entity.Property(e => e.Teammemberid).HasColumnName("teammemberid");
         });
@@ -80,23 +90,24 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.ProjectId).HasColumnName("projectId");
             entity.Property(e => e.Title).HasColumnName("title");
             entity.Property(e => e.UserId).HasColumnName("userId");
-            entity.HasKey(entity => entity.Id);
         });
 
         modelBuilder.Entity<RequestTag>(entity =>
         {
             entity.ToTable("request_tag");
 
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.RequestId).HasColumnName("requestId");
-            entity.Property(e => e.Tagname).HasColumnName("tagname");
-            entity.HasKey(entity => entity.Id);
+            entity.Property(e => e.TagId).HasColumnName("tagid");
         });
 
         modelBuilder.Entity<Tag>(entity =>
         {
+            entity.HasKey(e => e.Name);
+
             entity.ToTable("tag");
+
             entity.Property(e => e.Name).HasColumnName("name");
-            entity.HasKey(entity => entity.Name);
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -112,7 +123,6 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Username).HasColumnName("username");
             entity.Property(e => e.Websiteurl).HasColumnName("websiteurl");
             entity.Property(e => e.Xurl).HasColumnName("xurl");
-            entity.HasKey(entity => entity.Id);
         });
 
         OnModelCreatingPartial(modelBuilder);

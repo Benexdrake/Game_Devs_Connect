@@ -13,7 +13,7 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetRequestById(string id)
+    public async Task<ActionResult> GetRequestById(int id)
     {
         var request = await requestRepository.GetRequestById(id);
 
@@ -36,7 +36,7 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     }
 
     [HttpDelete("delete/{id}")]
-    public async Task<ActionResult> DeleteRequest(string id)
+    public async Task<ActionResult> DeleteRequest(int id)
     {
         var result = await requestRepository.DeleteRequest(id);
 

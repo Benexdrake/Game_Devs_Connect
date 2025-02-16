@@ -26,11 +26,11 @@ namespace Backend.Repository
             }
         }
 
-        public async Task<APIResponse> DeleteTag(string name)
+        public async Task<APIResponse> DeleteTag(int id)
         {
             try
             {
-                var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Name == name);
+                var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (tagsDb is null) return new APIResponse("Tag didnt exist", false);
 

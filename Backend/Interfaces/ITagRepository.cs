@@ -5,5 +5,5 @@ public interface ITagRepository
     Task<APIResponse> GetTags();
     Task<APIResponse> AddTag(Tag tag);
     Task<APIResponse> UpdateTag(Tag tag);
-    Task<APIResponse> DeleteTag(string name);
+    Task<APIResponse> DeleteTag(int id);
 }

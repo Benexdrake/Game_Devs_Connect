@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Backend.Models;
+﻿namespace Backend.Models;
 
 public partial class User
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; } = string.Empty;
 
-    public string? Username { get; set; }
+    public string Username { get; set; } = string.Empty;
 
-    public string? Avatar { get; set; }
+    public string Avatar { get; set; } = string.Empty;
 
-    public string? AccountType { get; set; }
+    public string AccountType { get; set; } = string.Empty;
 
-    public string? Banner { get; set; }
+    public string Banner { get; set; } = string.Empty;
 
-    public string? DiscordUrl { get; set; }
+    public string DiscordUrl { get; set; } = string.Empty;
 
-    public string? Xurl { get; set; }
+    public string Xurl { get; set; } = string.Empty;
 
-    public string? Websiteurl { get; set; }
+    public string Websiteurl { get; set; } = string.Empty;
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 }

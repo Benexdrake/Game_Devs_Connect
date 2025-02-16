@@ -1,3 +1,12 @@
+drop table if exists user;
+drop table if exists project;
+drop table if exists project_team;
+drop table if exists tag;
+drop table if exists request;
+drop table if exists comment;
+drop table if exists request_tag;
+drop table if exists element;
+
 
 -- User
 CREATE TABLE IF NOT EXISTS user
@@ -16,7 +25,7 @@ CREATE TABLE IF NOT EXISTS user
 -- Project
 CREATE TABLE IF NOT EXISTS project
 (
-    id text PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     headerimage text,
     name text,
     description text,
@@ -26,20 +35,21 @@ CREATE TABLE IF NOT EXISTS project
 CREATE TABLE IF NOT EXISTS project_team
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    projectid text,
+    projectid INTEGER,
     teammemberid text
 );
 
 -- Tag
 CREATE TABLE IF NOT EXISTS tag
 (
-    name text PRIMARY KEY
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name text
 );
 
 -- Request
 CREATE TABLE IF NOT EXISTS request
 (
-    id text PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     title text,
     description text,
     fileurl text,
@@ -48,11 +58,20 @@ CREATE TABLE IF NOT EXISTS request
     userId text
 );
 
+CREATE TABLE IF NOT EXISTS comment
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message text,
+    filename text,
+    parentid INTEGER,
+    deleted INTEGER
+);
+
 CREATE TABLE IF NOT EXISTS request_tag
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    requestId text,
-    tagname text
+    requestId INTEGRER,
+    tagid INTEGER
 );
 
 -- Element
@@ -65,3 +84,13 @@ CREATE TABLE IF NOT EXISTS element
     nr INTEGER,
     projectid text
 );
+
+insert into tag (name) VALUES
+('2D'),
+('3D'),
+('Animation'),
+('Model'),
+('Low Poly'),
+('High Poly');
+
+select * from tag;

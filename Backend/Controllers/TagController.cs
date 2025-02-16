@@ -25,10 +25,10 @@ public class TagController(ITagRepository repository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("delete/{name}")]
-    public async Task<ActionResult> DeleteTasks(string name)
+    [HttpDelete("delete/{id}")]
+    public async Task<ActionResult> DeleteTasks(int id)
     {
-        var result = await repository.DeleteTag(name);
+        var result = await repository.DeleteTag(id);
         return Ok(result);
     }
 
