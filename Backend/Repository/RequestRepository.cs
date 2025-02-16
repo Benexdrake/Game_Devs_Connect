@@ -42,7 +42,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
             await _context.SaveChangesAsync();
             
 
-            return new APIResponse("Request saved in DB", true);
+            return new APIResponse("Request saved in DB", true, rt.Request.Id);
         }
         catch (Exception ex)
         {
