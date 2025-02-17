@@ -12,7 +12,7 @@ public interface ICommentRepository
     Task<APIResponse> GetCommentByIdAsync(int commentId);
 
     // Add Comment
-    Task<APIResponse> AddComment(Comment comment);
+    Task<APIResponse> AddCommentAsync(Comment comment);
 
     // Update Comment
     Task<APIResponse> UpdateCommentAsync(Comment comment);

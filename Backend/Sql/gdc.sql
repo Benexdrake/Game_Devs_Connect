@@ -63,7 +63,9 @@ CREATE TABLE IF NOT EXISTS comment
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     message text,
     filename text,
+    filepath text,
     parentid INTEGER,
+    ownerId text,
     deleted INTEGER
 );
 
