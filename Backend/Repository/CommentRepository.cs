@@ -10,7 +10,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         try
         {
             _context.Comments.Add(comment);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return new APIResponse("Comment saved",true, comment.Id);
 
         }
@@ -60,7 +60,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
     {
         try
         {
-            var comments = _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToList();
+            var comments = await _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToListAsync();
             return new APIResponse("",true, comments);
 
         }
@@ -75,7 +75,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
     {
         try
         {
-            var comments = _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToList().Count;
+            var comments = (await _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToListAsync()).Count;
             return new APIResponse("", true, comments);
 
         }
@@ -91,7 +91,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         try
         {
             _context.Comments.Update(comment);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return new APIResponse("Comment Updated", true);
 
         }

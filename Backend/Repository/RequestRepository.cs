@@ -79,7 +79,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
 
             if (request is null) return new APIResponse("Request dont exist", false);
 
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.OwnerId);
             var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
 
             var test = _context.RequestTags.ToList();
@@ -116,9 +116,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
             if (Dbrequest is null) return new APIResponse("Request dont exist", false);
 
             // Update Request
-            Dbrequest.Title = request.Title;
-            Dbrequest.Description = request.Description;
-            Dbrequest.Fileurl = request.Fileurl;
+            _context.Requests.Update(request);
 
             await _context.SaveChangesAsync();
 
