@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Backend.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace Backend.Data;
+﻿namespace Backend.Data;
 
 public partial class GdcContext : DbContext
 {
@@ -31,6 +26,7 @@ public partial class GdcContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Models.File> Files { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Name=ConnectionStrings:DefaultConnection");
@@ -42,8 +38,7 @@ public partial class GdcContext : DbContext
             entity.ToTable("comment");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Filename).HasColumnName("filename");
-            entity.Property(e => e.FilePath).HasColumnName("filepath");
+            entity.Property(e => e.FileId).HasColumnName("fileid");
             entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.ParentId).HasColumnName("parentid");
             entity.Property(e => e.OwnerId).HasColumnName("ownerid");
@@ -59,6 +54,16 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Elementtype).HasColumnName("elementtype");
             entity.Property(e => e.Nr).HasColumnName("nr");
             entity.Property(e => e.Projectid).HasColumnName("projectid");
+        });
+
+        modelBuilder.Entity<Models.File>(entity =>
+        {
+            entity.ToTable("file");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Size).HasColumnName("size");
+            entity.Property(e => e.OwnerId).HasColumnName("ownerid");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -88,10 +93,10 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Created).HasColumnName("created");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Fileurl).HasColumnName("fileurl");
+            entity.Property(e => e.FileId).HasColumnName("fileid");
             entity.Property(e => e.ProjectId).HasColumnName("projectId");
             entity.Property(e => e.Title).HasColumnName("title");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.OwnerId).HasColumnName("ownerid");
         });
 
         modelBuilder.Entity<RequestTag>(entity =>
