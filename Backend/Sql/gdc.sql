@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS request
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title text,
     description text,
-    fileurl text,
+    fileid INTEGER,
     created text,
     projectId text,
     userId text
@@ -62,11 +62,18 @@ CREATE TABLE IF NOT EXISTS comment
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     message text,
-    filename text,
-    filepath text,
+    fileid INTEGER,
     parentid INTEGER,
     ownerId text,
     deleted INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS file
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name text,
+    size INTEGER,
+    ownerId text
 );
 
 CREATE TABLE IF NOT EXISTS request_tag
