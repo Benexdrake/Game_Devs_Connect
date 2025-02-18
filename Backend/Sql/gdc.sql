@@ -6,6 +6,7 @@ drop table if exists request;
 drop table if exists comment;
 drop table if exists request_tag;
 drop table if exists element;
+drop table if exists file;
 
 
 -- User
@@ -55,7 +56,7 @@ CREATE TABLE IF NOT EXISTS request
     fileid INTEGER,
     created text,
     projectId text,
-    userId text
+    ownerId text
 );
 
 CREATE TABLE IF NOT EXISTS comment
@@ -65,6 +66,7 @@ CREATE TABLE IF NOT EXISTS comment
     fileid INTEGER,
     parentid INTEGER,
     ownerId text,
+    created text,
     deleted INTEGER
 );
 
@@ -103,3 +105,5 @@ insert into tag (name) VALUES
 ('High Poly');
 
 select * from tag;
+
+select * from files;

@@ -41,6 +41,7 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.FileId).HasColumnName("fileid");
             entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.ParentId).HasColumnName("parentid");
+            entity.Property(e => e.Created).HasColumnName("created");
             entity.Property(e => e.OwnerId).HasColumnName("ownerid");
         });
 

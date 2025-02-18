@@ -60,7 +60,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
     {
         try
         {
-            var comments = await _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToListAsync();
+            var comments = await _context.Comments.Where(x => x.ParentId == parentId).OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
             return new APIResponse("",true, comments);
 
         }
