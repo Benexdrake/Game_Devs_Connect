@@ -29,6 +29,7 @@ public partial class GdcContext : DbContext
     public virtual DbSet<Models.File> Files { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //=> optionsBuilder.UseSqlServer("Server=.;Database=GDC;Trusted_Connection=True;TrustServerCertificate=True");
         => optionsBuilder.UseSqlite("Name=ConnectionStrings:DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
