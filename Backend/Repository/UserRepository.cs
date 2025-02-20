@@ -9,17 +9,17 @@ public class UserRepository(GdcContext context) : IUserRepository
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
 
-            if (dbUser is not null) return new APIResponse("User exists in DB", false);
+            if (dbUser is not null) return new APIResponse("User exists in DB", false, new { });
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("User was saved in DB", true);
+            return new APIResponse("User was saved in DB", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false); ;
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -29,18 +29,18 @@ public class UserRepository(GdcContext context) : IUserRepository
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (dbUser is null) return new APIResponse("User dont exist", false);
+            if (dbUser is null) return new APIResponse("User dont exist", false, new { });
 
             _context.Users.Remove(dbUser);
 
             await _context.SaveChangesAsync();
             
-            return new APIResponse("User got deleted", true);
+            return new APIResponse("User got deleted", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -48,7 +48,7 @@ public class UserRepository(GdcContext context) : IUserRepository
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        if (user is null) return new APIResponse("User dont exist",false);
+        if (user is null) return new APIResponse("User dont exist",false, new { });
 
         return new APIResponse("", true, user);
     }
@@ -62,28 +62,19 @@ public class UserRepository(GdcContext context) : IUserRepository
     {
         try
         {
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-            if (dbUser is null) return new APIResponse("", false);
+            if (dbUser is null) return new APIResponse("", false, new { });
 
-            // Update User
-            dbUser.Username = user.Username;
-            dbUser.Banner = user.Banner;
-            dbUser.Avatar = user.Avatar;
-            dbUser.AccountType = user.AccountType;
-            dbUser.Email = user.Email;
-            dbUser.Xurl = user.Xurl;
-            dbUser.DiscordUrl = user.DiscordUrl;
-            dbUser.Websiteurl = user.Websiteurl;
-
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("User got updated", true);
+            return new APIResponse("User got updated", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 }

@@ -65,6 +65,7 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Size).HasColumnName("size");
+            entity.Property(e => e.Created).HasColumnName("created");
             entity.Property(e => e.OwnerId).HasColumnName("ownerid");
         });
 

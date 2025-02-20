@@ -16,7 +16,7 @@ namespace Backend.Repository
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new APIResponse(ex.Message, false);
+                return new APIResponse(ex.Message, false, new { });
             }
         }
 
@@ -25,17 +25,17 @@ namespace Backend.Repository
             try
             {
                 var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileId);
-                if (fileDb is null) return new APIResponse("File not exist", false);
+                if (fileDb is null) return new APIResponse("File not exist", false, new { });
 
                 _context.Files.Remove(fileDb);
                 await _context.SaveChangesAsync();
 
-                return new APIResponse("File deleted", true);
+                return new APIResponse("File deleted", true, new { });
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new APIResponse(ex.Message, false);
+                return new APIResponse(ex.Message, false, new { });
             }
         }
 
@@ -44,14 +44,14 @@ namespace Backend.Repository
             try
             {
                 var file = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileId);
-                if (file is null) return new APIResponse("File not exist", false);
+                if (file is null) return new APIResponse("File not exist", false, new { });
 
                 return new APIResponse("",true,file);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new APIResponse(ex.Message, false);
+                return new APIResponse(ex.Message, false, new { });
             }
         }
 
@@ -65,7 +65,7 @@ namespace Backend.Repository
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new APIResponse(ex.Message, false);
+                return new APIResponse(ex.Message, false, new { });
             }
         }
 
@@ -74,17 +74,17 @@ namespace Backend.Repository
             try
             {
                 var fileDb = await _context.Files.AsNoTracking().FirstOrDefaultAsync(x => x.Id == file.Id);
-                if(fileDb is null) return new APIResponse("File not exist", false);
+                if(fileDb is null) return new APIResponse("File not exist", false, new { });
 
                 _context.Files.Update(file);
                 await _context.SaveChangesAsync();
 
-                return new APIResponse("File updated", true);
+                return new APIResponse("File updated", true, new { });
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new APIResponse(ex.Message, false);
+                return new APIResponse(ex.Message, false, new { });
             }
         }
     }

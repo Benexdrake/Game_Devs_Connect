@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS file
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name text,
     size INTEGER,
+    created text,
     ownerId text
 );
 

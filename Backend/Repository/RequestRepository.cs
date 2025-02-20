@@ -12,7 +12,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         {
             var DbRequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(rt.Request.Id));
 
-            if (DbRequest is not null) return new APIResponse("Request Exists in DB",false);
+            if (DbRequest is not null) return new APIResponse("Request Exists in DB",false, new { });
 
             var test = await _context.Requests.AddAsync(rt.Request);
             _context.SaveChanges();
@@ -32,11 +32,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
                     TagId = tag.Id
                 };
 
-                //var tagDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == tag.Id);
 
-                //if(tagDb is not null)
-                //{
-                //}
                 _context. RequestTags.Add(requestTag);
             }
             await _context.SaveChangesAsync();
@@ -47,7 +43,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -57,17 +53,17 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         {
             var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-            if (request is null) return new APIResponse("Request dont exist", false);
+            if (request is null) return new APIResponse("Request dont exist", false, new { });
 
             _context.Requests.Remove(request);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("Request got deleted", true);
+            return new APIResponse("Request got deleted", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -77,7 +73,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         {
             var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-            if (request is null) return new APIResponse("Request dont exist", false);
+            if (request is null) return new APIResponse("Request dont exist", false, new { });
 
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.OwnerId);
             var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
@@ -97,7 +93,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -111,21 +107,19 @@ public class RequestRepository(GdcContext context) : IRequestRepository
     {
         try
         {
-            var Dbrequest = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            var Dbrequest = await _context.Requests.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
-            if (Dbrequest is null) return new APIResponse("Request dont exist", false);
+            if (Dbrequest is null) return new APIResponse("Request dont exist", false, new { });
 
-            // Update Request
             _context.Requests.Update(request);
-
             await _context.SaveChangesAsync();
 
-            return new APIResponse("Request got updated", true);
+            return new APIResponse("Request got updated", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 }

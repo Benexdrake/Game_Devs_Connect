@@ -17,7 +17,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new {});
         }
     }
 
@@ -26,16 +26,16 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         try
         {
             var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id == commentId);
-            if (commentDb is null) return new APIResponse("Comment dont exists", false);
+            if (commentDb is null) return new APIResponse("Comment dont exists", false, new { });
 
             _context.Comments.Remove(commentDb);
 
-            return new APIResponse("Comment deleted",true);
+            return new APIResponse("Comment deleted",true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message,false);
+            return new APIResponse(ex.Message,false, new { });
         }
 
     }
@@ -45,14 +45,14 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         try
         {
             var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id == commentId);
-            if (commentDb is null) return new APIResponse("Comment dont exists", false);
+            if (commentDb is null) return new APIResponse("Comment dont exists", false, new { });
 
             return new APIResponse("",true,commentDb);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message,false);
+            return new APIResponse(ex.Message,false, new { });
         }
     }
 
@@ -67,7 +67,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -82,7 +82,7 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -90,15 +90,19 @@ public class CommentRepository(GdcContext context) : ICommentRepository
     {
         try
         {
+            var commentDB = _context.Comments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == comment.Id);
+            if (commentDB is null) return new APIResponse("Comment dont exist", false, new { });
+
             _context.Comments.Update(comment);
             await _context.SaveChangesAsync();
-            return new APIResponse("Comment Updated", true);
+
+            return new APIResponse("Comment Updated", true, new { });
 
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 }

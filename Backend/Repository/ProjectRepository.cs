@@ -8,16 +8,16 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
         try
         {
             var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
-            if(dbProject is not null) return new APIResponse("Project exists in DB",false);
+            if(dbProject is not null) return new APIResponse("Project exists in DB",false, new { });
 
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
-            return new APIResponse("Project saved", true);
+            return new APIResponse("Project saved", true, new { });
         }
         catch(Exception ex) 
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -27,17 +27,17 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
         {
             var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-            if (project is null) return new APIResponse("Project didnt exist", false);
+            if (project is null) return new APIResponse("Project didnt exist", false, new { });
 
             _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("Project got deleted", true);
+            return new APIResponse("Project got deleted", true, new { });
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 
@@ -45,7 +45,7 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
     {
         var project = await _context.Projects.SingleOrDefaultAsync(x => x.Id == id);
 
-        if (project is null) return new APIResponse("Project didnt exist", false);
+        if (project is null) return new APIResponse("Project didnt exist", false, new { });
 
         return new APIResponse("", true, project);
     }
@@ -54,23 +54,18 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
     {
         try
         {
-            var DbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
-            if (DbProject is null) return new APIResponse("Project dont exist", false);
+            var DbProject = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(project.Id));
+            if (DbProject is null) return new APIResponse("Project dont exist", false, new { });
 
-            DbProject.Name = project.Name;
-            DbProject.Description = project.Description;
-            DbProject.Headerimage = project.Headerimage;
-            //DbProject.Users = project.Users;
-            //DbProject.Elements = project.Elements;
-
+            _context.Projects.Update(project);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("Project updated", true);
+            return new APIResponse("Project updated", true, new { });
         }
         catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new APIResponse(ex.Message, false);
+            return new APIResponse(ex.Message, false, new { });
         }
     }
 }
