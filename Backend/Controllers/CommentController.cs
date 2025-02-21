@@ -18,6 +18,13 @@ public class CommentController(ICommentRepository repository) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("count/{parentId}")]
+    public async Task<ActionResult> GetCommentsCount(int parentId)
+    {
+        var result = await repository.GetCommentsCountByParentIdAsync(parentId);
+        return Ok(result);
+    }
+
     [HttpPost("add")]
     public async Task<ActionResult> AddComment(Comment comment)
     {

@@ -1,7 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-
-namespace Backend.Repository;
+﻿namespace Backend.Repository;
 
 public class RequestRepository(GdcContext context) : IRequestRepository
 {
@@ -14,7 +11,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
 
             if (DbRequest is not null) return new APIResponse("Request Exists in DB",false, new { });
 
-            var test = await _context.Requests.AddAsync(rt.Request);
+            await _context.Requests.AddAsync(rt.Request);
             _context.SaveChanges();
 
             // Deleting all RequestTag and saving new
@@ -67,6 +64,13 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         }
     }
 
+    public async Task<APIResponse> GetFilesByRequestId(int id)
+    {
+        var fileIds = await _context.Comments.Where(x => x.ParentId == id).Where(x => x.FileId != 0).Select(x => x.FileId).ToListAsync();
+
+        return new APIResponse("", true, fileIds);
+    }
+
     public async Task<APIResponse> GetRequestById(int id)
     {
         try
@@ -75,20 +79,8 @@ public class RequestRepository(GdcContext context) : IRequestRepository
 
             if (request is null) return new APIResponse("Request dont exist", false, new { });
 
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.OwnerId);
-            var p = await _context.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId);
-
-            var test = _context.RequestTags.ToList();
-            var tags = _context.RequestTags.Where(x => x.RequestId == id).Select(rt => _context.Tags.FirstOrDefault(t => t.Id == rt.TagId)).ToList();
-
-            if (u is not null)
-            {
-                var title = "";
-                if (p is not null)
-                    title = p.Name;
-                var user = new {id=u.Id, username=u.Username, avatar=u.Avatar };
-            }
-                return new APIResponse("", true, new { request, user=u, title=p?.Name, tags });
+           
+            return new APIResponse("", true, request);
         }
         catch (Exception ex)
         {

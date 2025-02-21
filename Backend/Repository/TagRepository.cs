@@ -1,7 +1,4 @@
-﻿
-using Backend.Models;
-
-namespace Backend.Repository
+﻿namespace Backend.Repository
 {
     public class TagRepository(GdcContext context) : ITagRepository
     {
@@ -59,6 +56,12 @@ namespace Backend.Repository
                 Console.WriteLine(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
+        }
+
+        public async Task<APIResponse> GetTagsByRequestId(int requestId)
+        {
+            var tags = await _context.RequestTags.Where(x => x.RequestId == requestId).Select(rt => _context.Tags.FirstOrDefault(t => t.Id == rt.TagId)).ToListAsync();
+            return new APIResponse("", true, tags);
         }
 
         public async Task<APIResponse> UpdateTag(Tag tag)

@@ -107,4 +107,4 @@ insert into tag (name) VALUES
 
 select * from tag;
 
-select * from files;
+select * from file;

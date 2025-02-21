@@ -7,17 +7,34 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     [HttpGet]
     public async Task<ActionResult> GetRequests()
     {
-        var requests = await requestRepository.GetRequests();
+        var result = await requestRepository.GetRequests();
 
-        return Ok(requests);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult> GetRequestById(int id)
     {
-        var request = await requestRepository.GetRequestById(id);
+        var result = await requestRepository.GetRequestById(id);
 
-        return Ok(request);
+        return Ok(result);
+    }
+
+    [HttpGet("check/{id}")]
+    public async Task<ActionResult> GetRequestCheck(int id)
+    {
+        var result = await requestRepository.GetRequestById(id);
+        result.Data = new { };
+
+        return Ok(result);
+    }
+
+    [HttpGet("files/{id}")]
+    public async Task<ActionResult> GetFilesByRequestId(int id)
+    {
+        var result = await requestRepository.GetFilesByRequestId(id);
+
+        return Ok(result);
     }
 
     [HttpPost("add")]

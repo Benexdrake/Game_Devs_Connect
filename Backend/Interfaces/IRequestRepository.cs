@@ -7,4 +7,5 @@ public interface IRequestRepository
     Task<APIResponse> AddRequest(RequestTags rt);
     Task<APIResponse> UpdateRequest(Request request);
     Task<APIResponse> DeleteRequest(int id);
+    Task<APIResponse> GetFilesByRequestId(int id);
 }

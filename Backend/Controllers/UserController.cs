@@ -20,6 +20,14 @@ public class UserController(IUserRepository userRepository) : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("short/{id}")]
+    public async Task<ActionResult> GetShortUserAsync(string id)
+    {
+        var user = await userRepository.GetShortUserAsync(id);
+
+        return Ok(user);
+    }
+
 
     [HttpPost("add")]
     public async Task<ActionResult> AddUserAsync(User user)

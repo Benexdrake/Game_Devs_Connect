@@ -44,6 +44,15 @@ public class UserRepository(GdcContext context) : IUserRepository
         }
     }
 
+    public async Task<APIResponse> GetShortUserAsync(string id)
+    {
+        var u = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(id));
+
+        if (u is null) return new APIResponse("User dont exist", false, new{ });
+
+        return new APIResponse("", true, new { id = u.Id, username = u.Username, avatar = u.Avatar });
+    }
+
     public async Task<APIResponse> GetUserAsync(string id)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);

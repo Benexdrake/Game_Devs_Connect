@@ -32,7 +32,7 @@ public class UserTest
         var user = CreateFakeUser();
 
         // Act
-        A.CallTo(() => _userRepository.GetUserAsync(user.Id));
+        A.CallTo(() => _userRepository.GetShortUserAsync(user.Id));
         var result = (OkObjectResult)await _userController.GetUserAsync(user.Id);
 
         // Assert
