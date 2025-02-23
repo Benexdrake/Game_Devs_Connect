@@ -22,6 +22,7 @@ public partial class GdcContext : DbContext
     public virtual DbSet<Request> Requests { get; set; }
 
     public virtual DbSet<RequestTag> RequestTags { get; set; }
+    public virtual DbSet<RequestLikes> RequestLikes { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
 
@@ -109,6 +110,17 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.RequestId).HasColumnName("requestId");
             entity.Property(e => e.TagId).HasColumnName("tagid");
+        });
+
+        modelBuilder.Entity<RequestLikes>(entity =>
+        {
+            entity.ToTable("request_like");
+            entity.HasKey(e => e.Id);
+
+
+            entity.Property(e => e.Id).HasColumnName("Id");
+            entity.Property(e => e.RequestId).HasColumnName("requestId");
+            entity.Property(e => e.UserId).HasColumnName("userId");
         });
 
         modelBuilder.Entity<Tag>(entity =>

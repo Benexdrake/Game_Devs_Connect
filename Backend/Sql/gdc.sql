@@ -7,6 +7,9 @@ drop table if exists comment;
 drop table if exists request_tag;
 drop table if exists element;
 drop table if exists file;
+drop table if exists request_like;
+drop table if exists request_likes;
+
 
 
 -- User
@@ -84,6 +87,13 @@ CREATE TABLE IF NOT EXISTS request_tag
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     requestId INTEGRER,
     tagid INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS request_like
+(
+    id text PRIMARY KEY,
+    requestId INTEGER,
+    userId text
 );
 
 -- Element

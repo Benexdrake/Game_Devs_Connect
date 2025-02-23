@@ -20,6 +20,14 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
         return Ok(result);
     }
 
+    [HttpGet("full/{id}")]
+    public async Task<ActionResult> GetFullRequestById(int id, string userId)
+    {
+        var result = await requestRepository.getFullRequestById(id, userId);
+
+        return Ok(result);
+    }
+
     [HttpGet("check/{id}")]
     public async Task<ActionResult> GetRequestCheck(int id)
     {
@@ -48,6 +56,14 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
     public async Task<ActionResult> UpdateRequest(Request request)
     {
         var result = await requestRepository.UpdateRequest(request);
+
+        return Ok(result);
+    }
+
+    [HttpPost("liked")]
+    public async Task<ActionResult> UpdatedLikeRequest(int requestId, string userId, bool liked)
+    {
+        var result = await requestRepository.LikesOnRequest(requestId, userId, liked);
 
         return Ok(result);
     }

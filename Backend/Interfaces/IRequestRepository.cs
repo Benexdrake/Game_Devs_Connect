@@ -8,4 +8,6 @@ public interface IRequestRepository
     Task<APIResponse> UpdateRequest(Request request);
     Task<APIResponse> DeleteRequest(int id);
     Task<APIResponse> GetFilesByRequestId(int id);
+    Task<APIResponse> getFullRequestById(int id, string userId);
+    Task<APIResponse> LikesOnRequest(int requestId, string userId, bool liked);
 }

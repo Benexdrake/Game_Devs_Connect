@@ -32,6 +32,7 @@ public class RequestRepository(GdcContext context) : IRequestRepository
 
                 _context. RequestTags.Add(requestTag);
             }
+
             await _context.SaveChangesAsync();
             
 
@@ -71,6 +72,35 @@ public class RequestRepository(GdcContext context) : IRequestRepository
         return new APIResponse("", true, fileIds);
     }
 
+    public async Task<APIResponse> getFullRequestById(int id, string userId)
+    {
+        try
+        {
+            var likeId = userId + "-" + id;
+
+            var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+            if (request is null) return new APIResponse("Request dont exist", false, new { });
+
+            var tags = await _context.RequestTags.Where(rt => rt.RequestId == id).Select(rt => _context.Tags.FirstOrDefault(t => t.Id == rt.TagId)).ToListAsync();
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(request.OwnerId));
+
+            var commentIds = (await _context.Comments.Where(x => x.ParentId == id).Select(x => x.Id).ToListAsync()).Count;
+
+            var likes = (await _context.RequestLikes.Where(x => x.RequestId == id).ToListAsync()).Count;
+
+            var liked = await _context.RequestLikes.AnyAsync(x => x.Id.Equals(likeId));
+
+            return new APIResponse("", true, new {request, tags, user= new { id = user?.Id, username = user?.Username, avatar = user?.Avatar }, commentIds, likes, liked });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new APIResponse(ex.Message, false, new { });
+        }
+    }
+
     public async Task<APIResponse> GetRequestById(int id)
     {
         try
@@ -93,6 +123,22 @@ public class RequestRepository(GdcContext context) : IRequestRepository
     {
         var requests = await _context.Requests.OrderByDescending(x => x.Created).ToListAsync();
         return requests.Select(x => x.Id).ToList();
+    }
+
+    public async Task<APIResponse> LikesOnRequest(int requestId, string userId, bool liked)
+    {
+        var id = userId + "-" + requestId;
+
+        var request_likes = await _context.RequestLikes.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (request_likes is null)
+            _context.RequestLikes.Add(new() { Id = id, RequestId=requestId, UserId=userId });
+        else if(request_likes is not null)
+            _context.RequestLikes.Remove(request_likes);
+
+        await _context.SaveChangesAsync();
+
+        return new APIResponse("Likes changed", true, new { });
     }
 
     public async Task<APIResponse> UpdateRequest(Request request)
