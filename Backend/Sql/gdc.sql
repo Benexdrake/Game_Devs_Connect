@@ -9,6 +9,7 @@ drop table if exists element;
 drop table if exists file;
 drop table if exists request_like;
 drop table if exists request_likes;
+drop table if exists notification;
 
 
 
@@ -107,6 +108,16 @@ CREATE TABLE IF NOT EXISTS element
     projectid text
 );
 
+CREATE TABLE IF NOT EXISTS notification
+(
+    id text PRIMARY KEY,
+    requestId INTEGER,
+    type INTEGER,
+    ownerId text,
+    userId text,
+    seen text
+);
+
 insert into tag (name) VALUES
 ('2D'),
 ('3D'),
@@ -118,3 +129,5 @@ insert into tag (name) VALUES
 select * from tag;
 
 select * from file;
+
+select * from notification;

@@ -1,8 +1,10 @@
 ﻿namespace Backend.Repository;
 
-public class RequestRepository(GdcContext context) : IRequestRepository
+public class RequestRepository(GdcContext context, INotificationRepository repository) : IRequestRepository
 {
     private readonly GdcContext _context = context;
+    private readonly INotificationRepository _repository = repository;
+
     public async Task<APIResponse> AddRequest(RequestTags rt)
     {
         try
@@ -137,6 +139,14 @@ public class RequestRepository(GdcContext context) : IRequestRepository
             _context.RequestLikes.Remove(request_likes);
 
         await _context.SaveChangesAsync();
+
+        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(requestId));
+
+        if (request is not null)
+        {
+            var notification = new Notification() { Id = id, RequestId = requestId, UserId = userId, Seen = "", Type = 1, OwnerId = request.OwnerId };
+            var response = await _repository.AddNotification(notification);
+        }
 
         return new APIResponse("Likes changed", true, new { });
     }

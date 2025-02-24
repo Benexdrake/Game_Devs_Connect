@@ -1,5 +1,4 @@
-﻿
-namespace Backend.Repository;
+﻿namespace Backend.Repository;
 
 public class CommentRepository(GdcContext context) : ICommentRepository
 {
@@ -11,8 +10,13 @@ public class CommentRepository(GdcContext context) : ICommentRepository
         {
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            return new APIResponse("Comment saved",true, comment.Id);
 
+            var id = comment.OwnerId + "-" + comment.ParentId + "-" + comment.Id;
+            var notification = new Notification() { Id = id, OwnerId = "", RequestId = comment.ParentId, Seen = "", Type = 2, UserId = comment.OwnerId };
+
+            await new NotificationRepository(_context).AddNotification(notification);
+
+            return new APIResponse("Comment saved",true, comment.Id);
         }
         catch (Exception ex)
         {

@@ -1,11 +1,6 @@
 ﻿namespace Backend.Data;
-
 public partial class GdcContext : DbContext
 {
-    public GdcContext()
-    {
-    }
-
     public GdcContext(DbContextOptions<GdcContext> options)
         : base(options)
     {
@@ -28,6 +23,8 @@ public partial class GdcContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Models.File> Files { get; set; }
+    public virtual DbSet<Notification> Notifications { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //=> optionsBuilder.UseSqlServer("Server=.;Database=GDC;Trusted_Connection=True;TrustServerCertificate=True");
@@ -130,6 +127,19 @@ public partial class GdcContext : DbContext
             entity.ToTable("tag");
 
             entity.Property(e => e.Name).HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.ToTable("notification");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.RequestId).HasColumnName("requestId");
+            entity.Property(e => e.Type).HasColumnName("type");
+            entity.Property(e => e.OwnerId).HasColumnName("ownerId");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.Seen).HasColumnName("seen");
         });
 
         modelBuilder.Entity<User>(entity =>
