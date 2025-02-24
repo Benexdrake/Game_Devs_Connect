@@ -1,8 +1,9 @@
 ﻿namespace Backend.Repository;
 
-public class CommentRepository(GdcContext context) : ICommentRepository
+public class CommentRepository(GdcContext context, INotificationRepository repository) : ICommentRepository
 {
     private readonly GdcContext _context = context;
+    private readonly INotificationRepository _repository = repository;
 
     public async Task<APIResponse> AddCommentAsync(Comment comment)
     {
@@ -11,10 +12,14 @@ public class CommentRepository(GdcContext context) : ICommentRepository
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            var id = comment.OwnerId + "-" + comment.ParentId + "-" + comment.Id;
-            var notification = new Notification() { Id = id, OwnerId = "", RequestId = comment.ParentId, Seen = "", Type = 2, UserId = comment.OwnerId };
+            var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id == comment.ParentId);
 
-            await new NotificationRepository(_context).AddNotification(notification);
+            if (request is not null && request.OwnerId != comment.OwnerId)
+            {
+                var id = comment.OwnerId + "-" + comment.ParentId + "-" + comment.Id;
+                var notification = new Notification() { Id = id, OwnerId = "", RequestId = comment.ParentId, Seen = "", Type = 2, UserId = comment.OwnerId };
+                await _repository.AddNotification(notification);
+            }
 
             return new APIResponse("Comment saved",true, comment.Id);
         }

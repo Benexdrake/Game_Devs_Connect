@@ -13,6 +13,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
             var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id == notification.RequestId);
             if (request is null) return new APIResponse("Cant save Notification, missing request", false, new { });
             notification.OwnerId = request.OwnerId;
+            notification.Created = string.Format("{0:yyyy-MM-ddTHH:mm:ss.fffZ}", DateTime.UtcNow);
 
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
@@ -34,13 +35,6 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
 
             if (notification is null) return new APIResponse("Notification dont exist",false, new { });
 
-            if(notification.Seen.Equals(""))
-            {
-                notification.Seen = string.Format("{0:yyyy-MM-ddTHH:mm:ss.fffZ}", DateTime.UtcNow);
-                _context.Notifications.Update(notification);
-                await _context.SaveChangesAsync();
-            }
-
             return new APIResponse("", true, notification);
         }
         catch (Exception ex)
@@ -54,7 +48,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
     {
         try
         {
-            var notificationIds = await _context.Notifications.Where(x => x.OwnerId.Equals(userId)).Select(x => x.Id).ToListAsync();
+            var notificationIds = await _context.Notifications.Where(x => x.OwnerId.Equals(userId)).OrderByDescending(n => n.Created).Select(x => x.Id).ToListAsync();
             return new APIResponse("", true, notificationIds);
         }
         catch (Exception ex)
@@ -70,15 +64,19 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         return new APIResponse("", true, count);
     }
 
-    public async Task<APIResponse> UpdateNotification(Notification notification)
+    public async Task<APIResponse> UpdateNotification(string notificationId)
     {
         try
         {
-            var notifivationDb = await _context.Notifications.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(notification.Id));
-            if (notifivationDb is null) return new APIResponse("Notification dont exist exist", false, new { });
+            var notificationDb = await _context.Notifications.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(notificationId));
+            if (notificationDb is null) return new APIResponse("Notification dont exist exist", false, new { });
 
-            _context.Notifications.Update(notification);
-            await _context.SaveChangesAsync();
+            if (notificationDb.Seen.Equals(""))
+            {
+                notificationDb.Seen = string.Format("{0:yyyy-MM-ddTHH:mm:ss.fffZ}", DateTime.UtcNow);
+                _context.Notifications.Update(notificationDb);
+                await _context.SaveChangesAsync();
+            }
 
             return new APIResponse("Notification Updated", true, new { });
         }

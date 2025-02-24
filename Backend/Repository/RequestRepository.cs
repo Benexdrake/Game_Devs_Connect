@@ -140,9 +140,11 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
 
         await _context.SaveChangesAsync();
 
-        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(requestId));
 
-        if (request is not null)
+        var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(requestId));
+        // Check if userId == ownerId
+
+        if (request is not null && !request.OwnerId.Equals(userId))
         {
             var notification = new Notification() { Id = id, RequestId = requestId, UserId = userId, Seen = "", Type = 1, OwnerId = request.OwnerId };
             var response = await _repository.AddNotification(notification);

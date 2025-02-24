@@ -140,6 +140,7 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.OwnerId).HasColumnName("ownerId");
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.Seen).HasColumnName("seen");
+            entity.Property(e => e.Created).HasColumnName("created");
         });
 
         modelBuilder.Entity<User>(entity =>

@@ -8,4 +8,5 @@ public class Notification
     public string OwnerId { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
     public string Seen { get; set; } = string.Empty;
+    public string Created { get; set; } = string.Empty;
 }

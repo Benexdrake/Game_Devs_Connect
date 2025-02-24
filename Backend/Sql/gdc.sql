@@ -115,7 +115,8 @@ CREATE TABLE IF NOT EXISTS notification
     type INTEGER,
     ownerId text,
     userId text,
-    seen text
+    seen text,
+    created text
 );
 
 insert into tag (name) VALUES

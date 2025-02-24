@@ -37,12 +37,12 @@ public class NotificationController(INotificationRepository repository) : Contro
     //    return Ok(result);
     //}
 
-    // Should happen after getting a Notification and its only change unseen = new Date UTC Date
-    //[HttpPut]
-    //public async Task<ActionResult> UpdateNotification(Notification notification)
-    //{
-    //    var result = await repository.UpdateNotification(notification);
+   
+    [HttpPut]
+    public async Task<ActionResult> UpdateNotification(string notificationId)
+    {
+        var result = await repository.UpdateNotification(notificationId);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 }
