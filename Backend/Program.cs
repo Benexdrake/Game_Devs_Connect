@@ -16,7 +16,6 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
-var app = builder.Build();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(o =>
@@ -27,6 +26,8 @@ builder.Services.AddCors(o =>
                           policy.AllowAnyHeader().AllowAnyOrigin();
                       });
 });
+
+var app = builder.Build();
 
 app.UseCors(MyAllowSpecificOrigins);
 
