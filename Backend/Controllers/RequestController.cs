@@ -20,6 +20,14 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
         return Ok(result);
     }
 
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult> GetRequestsByUserId(string userId)
+    {
+        var result = await requestRepository.GetRequestsByUserId(userId);
+
+        return Ok(result);
+    }
+
     [HttpGet("full/{id}")]
     public async Task<ActionResult> GetFullRequestById(int id, string userId)
     {

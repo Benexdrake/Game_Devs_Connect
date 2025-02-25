@@ -127,6 +127,12 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         return requests.Select(x => x.Id).ToList();
     }
 
+    public async Task<APIResponse> GetRequestsByUserId(string userId)
+    {
+        var requests = await _context.Requests.Where(x => x.OwnerId.Equals(userId)).OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
+        return new APIResponse("", true, requests);
+    }
+
     public async Task<APIResponse> LikesOnRequest(int requestId, string userId, bool liked)
     {
         var id = userId + "-" + requestId;
