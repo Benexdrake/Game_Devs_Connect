@@ -1,4 +1,6 @@
-﻿namespace Backend.Data;
+﻿using Models;
+
+namespace Backend.Data;
 public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContext(options)
 {
     public virtual DbSet<Comment> Comments { get; set; }
@@ -120,14 +122,26 @@ public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContex
             entity.ToTable("user");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Username).HasColumnName("username");
             entity.Property(e => e.AccountType).HasColumnName("accountType");
             entity.Property(e => e.Avatar).HasColumnName("avatar");
+
+        });
+
+        modelBuilder.Entity<Profile>(entity =>
+        {
+            entity.ToTable("profile");
+
             entity.Property(e => e.Banner).HasColumnName("banner");
             entity.Property(e => e.DiscordUrl).HasColumnName("discordUrl");
             entity.Property(e => e.Email).HasColumnName("email");
-            entity.Property(e => e.Username).HasColumnName("username");
-            entity.Property(e => e.Websiteurl).HasColumnName("websiteurl");
-            entity.Property(e => e.Xurl).HasColumnName("xurl");
+            entity.Property(e => e.WebsiteUrl).HasColumnName("websiteurl");
+            entity.Property(e => e.XUrl).HasColumnName("xurl");
+            entity.Property(e => e.ShowDiscord).HasColumnName("showdiscord");
+            entity.Property(e => e.ShowX).HasColumnName("showx");
+            entity.Property(e => e.ShowEmail).HasColumnName("showemail");
+            entity.Property(e => e.ShowWebsite).HasColumnName("showwebsite");
+
         });
 
         OnModelCreatingPartial(modelBuilder);

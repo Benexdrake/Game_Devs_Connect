@@ -16,12 +16,24 @@ CREATE TABLE IF NOT EXISTS user
     id text PRIMARY KEY,
     username text,
     avatar text,
-    accountType text,
+    accountType text
+);
+
+-- Profile
+CREATE TABLE IF NOT EXISTS profile
+(
+    userid text PRIMARY KEY,
     banner text,
+
     discordUrl text,
     xurl text,
     websiteurl text,
-    email text    
+    email text,
+
+    showdiscord integer,
+    showx integer,
+    showwebsite integer,
+    showemail integer
 );
 
 -- Project
