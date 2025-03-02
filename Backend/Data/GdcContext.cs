@@ -1,26 +1,13 @@
 ﻿namespace Backend.Data;
-public partial class GdcContext : DbContext
+public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContext(options)
 {
-    public GdcContext(DbContextOptions<GdcContext> options)
-        : base(options)
-    {
-    }
-
     public virtual DbSet<Comment> Comments { get; set; }
-
-    public virtual DbSet<Element> Elements { get; set; }
-
     public virtual DbSet<Project> Projects { get; set; }
-
     public virtual DbSet<ProjectTeam> ProjectTeams { get; set; }
-
     public virtual DbSet<Request> Requests { get; set; }
-
     public virtual DbSet<RequestTag> RequestTags { get; set; }
     public virtual DbSet<RequestLikes> RequestLikes { get; set; }
-
     public virtual DbSet<Tag> Tags { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Models.File> Files { get; set; }
     public virtual DbSet<Notification> Notifications { get; set; }
@@ -44,18 +31,6 @@ public partial class GdcContext : DbContext
             entity.Property(e => e.OwnerId).HasColumnName("ownerid");
         });
 
-        modelBuilder.Entity<Element>(entity =>
-        {
-            entity.ToTable("element");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Config).HasColumnName("config");
-            entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.Elementtype).HasColumnName("elementtype");
-            entity.Property(e => e.Nr).HasColumnName("nr");
-            entity.Property(e => e.Projectid).HasColumnName("projectid");
-        });
-
         modelBuilder.Entity<Models.File>(entity =>
         {
             entity.ToTable("file");
@@ -72,8 +47,6 @@ public partial class GdcContext : DbContext
             entity.ToTable("project");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Headerimage).HasColumnName("headerimage");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Ownerid).HasColumnName("ownerid");
         });
@@ -113,7 +86,6 @@ public partial class GdcContext : DbContext
         {
             entity.ToTable("request_like");
             entity.HasKey(e => e.Id);
-
 
             entity.Property(e => e.Id).HasColumnName("Id");
             entity.Property(e => e.RequestId).HasColumnName("requestId");

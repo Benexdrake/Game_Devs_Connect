@@ -5,13 +5,10 @@ drop table if exists tag;
 drop table if exists request;
 drop table if exists comment;
 drop table if exists request_tag;
-drop table if exists element;
 drop table if exists file;
 drop table if exists request_like;
 drop table if exists request_likes;
 drop table if exists notification;
-
-
 
 -- User
 CREATE TABLE IF NOT EXISTS user
@@ -30,17 +27,16 @@ CREATE TABLE IF NOT EXISTS user
 -- Project
 CREATE TABLE IF NOT EXISTS project
 (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    headerimage text,
+    id text PRIMARY KEY,
     name text,
-    description text,
     ownerid text
 );
 
+-- Project Team
 CREATE TABLE IF NOT EXISTS project_team
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    projectid INTEGER,
+    projectid text,
     teammemberid text
 );
 
@@ -97,17 +93,6 @@ CREATE TABLE IF NOT EXISTS request_like
     userId text
 );
 
--- Element
-CREATE TABLE IF NOT EXISTS element
-(
-    id text PRIMARY KEY,
-    elementtype INTEGER,
-    content text,
-    config text,
-    nr INTEGER,
-    projectid text
-);
-
 CREATE TABLE IF NOT EXISTS notification
 (
     id text PRIMARY KEY,
@@ -126,9 +111,3 @@ insert into tag (name) VALUES
 ('Model'),
 ('Low Poly'),
 ('High Poly');
-
-select * from tag;
-
-select * from file;
-
-select * from notification;
