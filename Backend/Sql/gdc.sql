@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS request_tag
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     requestId INTEGRER,
-    tagid INTEGER
+    tagid integer
 );
 
 CREATE TABLE IF NOT EXISTS request_like

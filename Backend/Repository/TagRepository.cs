@@ -68,10 +68,10 @@
         {
             try
             {
-                var tagsDb = await _context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.Name == tag.Name);
+                var tagsDb = await _context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.Id == tag.Id);
                 if (tagsDb is null) return new APIResponse("Tag didnt exist", false, new { });
 
-                _context.Tags.Update(tag);
+                tagsDb.Name = tag.Name;
                 await _context.SaveChangesAsync();
 
                 return new APIResponse("Tag updated", true, new { });

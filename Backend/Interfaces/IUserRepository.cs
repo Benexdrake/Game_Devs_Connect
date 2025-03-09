@@ -2,7 +2,7 @@
 
 public interface IUserRepository
 {
-    Task<IEnumerable<User>> GetUsersAsync();
+    Task<APIResponse> GetUsersAsync();
     Task<APIResponse> GetUserAsync(string id);
     Task<APIResponse> AddUserAsync(User user);
     Task<APIResponse> UpdateUserAsync(User user);

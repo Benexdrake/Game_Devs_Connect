@@ -53,9 +53,11 @@ public class UserRepository(GdcContext context) : IUserRepository
         return new APIResponse("", true, user);
     }
 
-    public async Task<IEnumerable<User>> GetUsersAsync()
+    public async Task<APIResponse> GetUsersAsync()
     {
-        return await _context.Users.ToListAsync();
+        var userIds = await _context.Users.Select(x => x.Id).ToListAsync();
+
+        return new APIResponse("",true, userIds);
     }
 
     public async Task<APIResponse> UpdateUserAsync(User user)

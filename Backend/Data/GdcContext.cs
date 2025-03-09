@@ -132,6 +132,9 @@ public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContex
         {
             entity.ToTable("profile");
 
+            entity.HasKey(e => e.UserId);
+
+            entity.Property(e => e.UserId).HasColumnName("id");
             entity.Property(e => e.Banner).HasColumnName("banner");
             entity.Property(e => e.DiscordUrl).HasColumnName("discordUrl");
             entity.Property(e => e.Email).HasColumnName("email");
