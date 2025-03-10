@@ -39,7 +39,7 @@ public class CommentController(ICommentRepository repository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("delete")]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteComment(int id)
     {
         var result = await repository.DeleteCommentByIdAsync(id);

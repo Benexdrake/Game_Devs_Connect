@@ -123,3 +123,17 @@ insert into tag (name) VALUES
 ('Model'),
 ('Low Poly'),
 ('High Poly');
+
+select * from notification;
+
+delete from notification;
+
+select * from project;
+
+select * from comment;
+
+delete from comment;
+
+select * from file;
+
+delete from file;

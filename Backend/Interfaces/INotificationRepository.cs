@@ -6,4 +6,5 @@ public interface INotificationRepository
     Task<APIResponse> AddNotification(Notification notification);
     Task<APIResponse> UpdateNotification(string notificationId);
     Task<APIResponse> GetUnseenNotificationsCount(string userId);
+    Task<APIResponse> DeleteNotification(string notificationId);
 }

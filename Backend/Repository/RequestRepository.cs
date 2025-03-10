@@ -121,10 +121,10 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
     }
 
-    public async Task<IEnumerable<int>> GetRequests()
+    public async Task<APIResponse> GetRequests()
     {
-        var requests = await _context.Requests.OrderByDescending(x => x.Created).ToListAsync();
-        return requests.Select(x => x.Id).ToList();
+        var requests = await _context.Requests.OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
+        return new APIResponse("", true, requests);
     }
 
     public async Task<APIResponse> GetRequestsByUserId(string userId)

@@ -34,7 +34,7 @@ public class FileController(IFileRepository repository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteFile(int id)
     {
         var result = await _repo.DeleteFileAsync(id);

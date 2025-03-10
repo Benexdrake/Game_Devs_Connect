@@ -9,6 +9,10 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
     {
         try
         {
+            var commentDb = _context.Comments.FirstOrDefault(x => x.Id == comment.Id);
+
+            if (commentDb != null) return new APIResponse("Comment already exist", false, new { });
+
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
@@ -38,6 +42,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
             if (commentDb is null) return new APIResponse("Comment dont exists", false, new { });
 
             _context.Comments.Remove(commentDb);
+            await _context.SaveChangesAsync();
 
             return new APIResponse("Comment deleted",true, new { });
         }

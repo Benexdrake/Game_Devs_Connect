@@ -45,4 +45,12 @@ public class NotificationController(INotificationRepository repository) : Contro
 
         return Ok(result);
     }
+
+    [HttpDelete("delete/{notificationId}")]
+    public async Task<ActionResult> DeleteNotification(string notificationId)
+    {
+        var result = await repository.DeleteNotification(notificationId);
+
+        return Ok(result);
+    }
 }

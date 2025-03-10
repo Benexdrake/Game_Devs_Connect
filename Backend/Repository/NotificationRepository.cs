@@ -1,4 +1,6 @@
-﻿namespace Backend.Repository;
+﻿using Backend.Models;
+
+namespace Backend.Repository;
 public class NotificationRepository(GdcContext context) : INotificationRepository
 {
     private readonly GdcContext _context = context;
@@ -19,6 +21,25 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
             await _context.SaveChangesAsync();
 
             return new APIResponse("Notification saved in DB", true, new {});
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new APIResponse(ex.Message, false, new { });
+        }
+    }
+
+    public async Task<APIResponse> DeleteNotification(string notificationId)
+    {
+        try
+        {
+            var notifivationDb = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(notificationId));
+            if (notifivationDb is null) return new APIResponse("Notification dont exist", false, new { });
+
+            _context.Notifications.Remove(notifivationDb);
+            await _context.SaveChangesAsync();
+
+            return new APIResponse("Notification removed from DB", true, new { });
         }
         catch (Exception ex)
         {

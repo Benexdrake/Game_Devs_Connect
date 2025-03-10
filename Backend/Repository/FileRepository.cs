@@ -9,6 +9,10 @@ namespace Backend.Repository
         {
             try
             {
+                var fileDb = _context.Files.AsNoTracking().FirstOrDefault(x => x.Id == file.Id);
+
+                if (fileDb is not null) return new APIResponse("File already exist", false, new { });
+
                 await _context.Files.AddAsync(file);
                 await _context.SaveChangesAsync();
                 return new APIResponse("Files Saved in DB", true, file.Id);
