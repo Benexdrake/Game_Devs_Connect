@@ -20,14 +20,22 @@ public class FileController(IFileRepository repository) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpGet("request/{id}")]
+    public async Task<ActionResult> GetFilesByRequestId(int id)
+    {
+        var result = await _repo.GetFilesByRequestId(id);
+
+        return Ok(result);
+    }
+
+    [HttpPost("add")]
     public async Task<ActionResult> AddFile(Models.File file)
     {
         var result = await _repo.AddFileAsync(file);
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult> UpdateFile(Models.File file)
     {
         var result = await _repo.UpdateFileAsync(file);

@@ -67,13 +67,6 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
     }
 
-    public async Task<APIResponse> GetFilesByRequestId(int id)
-    {
-        var fileIds = await _context.Comments.Where(x => x.ParentId == id).Where(x => x.FileId != 0).Select(x => x.FileId).ToListAsync();
-
-        return new APIResponse("", true, fileIds);
-    }
-
     public async Task<APIResponse> getFullRequestById(int id, string userId)
     {
         try

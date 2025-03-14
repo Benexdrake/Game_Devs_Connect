@@ -137,3 +137,5 @@ delete from comment;
 select * from file;
 
 delete from file;
+
+select * from request;

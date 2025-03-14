@@ -45,14 +45,6 @@ public class RequestController(IRequestRepository requestRepository) : Controlle
         return Ok(result);
     }
 
-    [HttpGet("files/{id}")]
-    public async Task<ActionResult> GetFilesByRequestId(int id)
-    {
-        var result = await requestRepository.GetFilesByRequestId(id);
-
-        return Ok(result);
-    }
-
     [HttpPost("add")]
     public async Task<ActionResult> AddRequest(RequestTags rt)
     {
