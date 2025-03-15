@@ -139,3 +139,5 @@ select * from file;
 delete from file;
 
 select * from request;
+
+select * from user;

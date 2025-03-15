@@ -27,18 +27,8 @@ public class NotificationController(INotificationRepository repository) : Contro
 
         return Ok(result);
     }
-
-    // Add happens in Request Repository
-    //[HttpPost]
-    //public async Task<ActionResult> AddNotification(Notification notification)
-    //{
-    //    var result = await repository.AddNotification(notification);
-
-    //    return Ok(result);
-    //}
-
    
-    [HttpPut]
+    [HttpPut("seen/{notificationId}")]
     public async Task<ActionResult> UpdateNotification(string notificationId)
     {
         var result = await repository.UpdateNotification(notificationId);
