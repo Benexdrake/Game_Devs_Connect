@@ -1,3 +1,5 @@
+using Backend;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -28,6 +30,8 @@ builder.Services.AddCors(o =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseCors(MyAllowSpecificOrigins);
 

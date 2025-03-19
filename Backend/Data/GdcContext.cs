@@ -16,8 +16,8 @@ public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContex
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //=> optionsBuilder.UseSqlServer("Server=.;Database=GDC;Trusted_Connection=True;TrustServerCertificate=True");
-        => optionsBuilder.UseSqlite("Name=ConnectionStrings:DefaultConnection");
+        //=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:MSSQLConnection");
+    => optionsBuilder.UseSqlite("Name=ConnectionStrings:SQLiteConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
