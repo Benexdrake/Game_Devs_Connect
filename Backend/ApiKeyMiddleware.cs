@@ -3,7 +3,7 @@
 public class ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
 {
     private readonly RequestDelegate _next = next;
-    private readonly string _apiKey = configuration.GetSection("ApiToken").Value;
+    private readonly string? _apiKey = configuration.GetSection("ApiToken").Value;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -21,9 +21,7 @@ public class ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration
             return;
         }
 
-        Console.WriteLine(referer);
-
-        string apiKeyHeader = context.Request.Headers?.Authorization;
+        string? apiKeyHeader = context.Request.Headers?.Authorization;
 
         if (string.IsNullOrEmpty(apiKeyHeader) || apiKeyHeader != _apiKey)
         {

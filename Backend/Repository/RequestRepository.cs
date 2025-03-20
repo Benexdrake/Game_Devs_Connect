@@ -1,6 +1,8 @@
-﻿namespace Backend.Repository;
+﻿using Serilog;
 
-public class RequestRepository(GdcContext context, INotificationRepository repository) : IRequestRepository
+namespace Backend.Repository;
+
+public class RequestRepository(GdcContext context, INotificationRepository repository, ILogger<RequestRepository> logger) : IRequestRepository
 {
     private readonly GdcContext _context = context;
     private readonly INotificationRepository _repository = repository;
@@ -116,6 +118,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
 
     public async Task<APIResponse> GetRequests()
     {
+        Log.Information("Get Request IDs");
         var requests = await _context.Requests.OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
         return new APIResponse("", true, requests);
     }

@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Models;
 
 namespace Backend.Data;
 public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContext(options)
@@ -16,8 +17,8 @@ public partial class GdcContext(DbContextOptions<GdcContext> options) : DbContex
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:MSSQLConnection");
-    => optionsBuilder.UseSqlite("Name=ConnectionStrings:SQLiteConnection");
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:MSSQLConnection");
+    //=> optionsBuilder.UseSqlite("Name=ConnectionStrings:SQLiteConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
