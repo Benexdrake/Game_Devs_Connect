@@ -29,7 +29,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new {});
         }
     }
@@ -48,7 +48,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message,false, new { });
         }
 
@@ -65,7 +65,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message,false, new { });
         }
     }
@@ -80,7 +80,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -95,7 +95,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -115,7 +115,7 @@ public class CommentRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }

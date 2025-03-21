@@ -19,7 +19,7 @@ namespace Backend.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -38,7 +38,7 @@ namespace Backend.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -54,7 +54,7 @@ namespace Backend.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -68,7 +68,7 @@ namespace Backend.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -94,7 +94,7 @@ namespace Backend.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }

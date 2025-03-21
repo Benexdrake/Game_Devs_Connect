@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Backend.Repository;
+﻿namespace Backend.Repository;
 
 public class RequestRepository(GdcContext context, INotificationRepository repository, ILogger<RequestRepository> logger) : IRequestRepository
 {
@@ -44,7 +42,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -64,7 +62,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -93,7 +91,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -111,7 +109,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -170,7 +168,7 @@ public class RequestRepository(GdcContext context, INotificationRepository repos
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }

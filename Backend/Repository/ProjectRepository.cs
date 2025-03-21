@@ -16,7 +16,7 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
         }
         catch(Exception ex) 
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -36,7 +36,7 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -64,7 +64,7 @@ public class ProjectRepository(GdcContext context) : IProjectRepository
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }

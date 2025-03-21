@@ -18,7 +18,7 @@ public class UserRepository(GdcContext context) : IUserRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -39,7 +39,7 @@ public class UserRepository(GdcContext context) : IUserRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -75,7 +75,7 @@ public class UserRepository(GdcContext context) : IUserRepository
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }

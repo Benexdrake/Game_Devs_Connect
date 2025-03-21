@@ -24,7 +24,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -43,7 +43,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -60,7 +60,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -74,7 +74,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }
@@ -103,7 +103,7 @@ public class NotificationRepository(GdcContext context) : INotificationRepositor
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Log.Error(ex.Message);
             return new APIResponse(ex.Message, false, new { });
         }
     }

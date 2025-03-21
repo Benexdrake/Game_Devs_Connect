@@ -7,6 +7,7 @@ public class ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration
 
     public async Task InvokeAsync(HttpContext context)
     {
+
         if (context.Request.Path.StartsWithSegments("/swagger"))
         {
             await _next(context);

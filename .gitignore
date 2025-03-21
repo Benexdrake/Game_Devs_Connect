@@ -8,3 +8,4 @@ bin
 *.db-shm
 *.db-wal
 Backend/Sql/gdc.db
+Backend/auth.db

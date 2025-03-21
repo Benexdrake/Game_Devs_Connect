@@ -18,7 +18,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -38,7 +38,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -53,7 +53,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
@@ -78,7 +78,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return new APIResponse(ex.Message, false, new { });
             }
         }
