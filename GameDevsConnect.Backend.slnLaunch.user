@@ -1,0 +1,43 @@
+[
+  {
+    "Name": "All Controller",
+    "Projects": [
+      {
+        "Path": "GameDevsConnect.Backend.API.User\\GameDevsConnect.Backend.API.User.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Tag\\GameDevsConnect.Backend.API.Tag.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Request\\GameDevsConnect.Backend.API.Request.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Project\\GameDevsConnect.Backend.API.Project.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Notification\\GameDevsConnect.Backend.API.Notification.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.File\\GameDevsConnect.Backend.API.File.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Comment\\GameDevsConnect.Backend.API.Comment.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.Auth\\GameDevsConnect.Backend.API.Auth.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GameDevsConnect.Backend.API.AWS\\GameDevsConnect.Backend.API.AWS.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+@GameDevsConnect.Backend.API.Tag_HostAddress = http://localhost:5294
+
+GET {{GameDevsConnect.Backend.API.Tag_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

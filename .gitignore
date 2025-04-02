@@ -9,3 +9,4 @@ bin
 *.db-wal
 Backend/Sql/gdc.db
 Backend/auth.db
+/GameDevsConnect.Backend.Shared/appsettings.json

@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "gamedevsconnect.backend.api.auth": "StartDebugging",
+        "gamedevsconnect.backend.api.aws": "StartDebugging",
+        "gamedevsconnect.backend.api.comment": "StartDebugging",
+        "gamedevsconnect.backend.api.file": "StartDebugging",
+        "gamedevsconnect.backend.api.notification": "StartDebugging",
+        "gamedevsconnect.backend.api.project": "StartDebugging",
+        "gamedevsconnect.backend.api.request": "StartDebugging",
+        "gamedevsconnect.backend.api.tag": "StartDebugging",
+        "gamedevsconnect.backend.api.user": "StartDebugging"
+      }
+    }
+  }
+}
