@@ -3,13 +3,13 @@
 public interface ICommentRepository
 {
     // Get Count from Comments by Parent ID
-    Task<APIResponse> GetCountByParentIdAsync(int parentId);
+    Task<APIResponse> GetCountByParentIdAsync(string requestId);
 
     // Get Comments by Parent ID
-    Task<APIResponse> GetByParentsIdAsync(int parentId);
+    Task<APIResponse> GetByParentsIdAsync(string requestId);
 
     // Get Comment by ID
-    Task<APIResponse> GetByIdAsync(int commentId);
+    Task<APIResponse> GetByIdAsync(string commentId);
 
     // Add Comment
     Task<APIResponse> AddAsync(CommentModel comment);
@@ -18,5 +18,5 @@ public interface ICommentRepository
     Task<APIResponse> UpdateAsync(CommentModel comment);
 
     // Delete Comment
-    Task<APIResponse> DeleteAsync(int commentId);
+    Task<APIResponse> DeleteAsync(string commentId);
 }

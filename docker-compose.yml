@@ -1,11 +1,10 @@
-version: "3.8"
 services:
   mssql:
-    image: "mcr.microsoft.com/mssql/server"
-    container_name: sql.server
+    image: "benexdrake/gamedevsconnectdb"
+    container_name: backend.sql.server
     hostname: mssql
     environment:
-      - SA_PASSWORD=P@ssword1
+      - MSSQL_SA_PASSWORD=P@ssword1
       - ACCEPT_EULA=Y
     restart: unless-stopped
     ports:
@@ -16,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Auth/Dockerfile
-    container_name: api.auth
+    container_name: backend.api.auth
     ports:
         - "7001:8080"
     environment:
@@ -29,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Azure/Dockerfile
-    container_name: api.azure
+    container_name: backend.api.azure
     ports:
         - "7002:8080"
     environment:
@@ -42,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Comment/Dockerfile
-    container_name: api.comment
+    container_name: backend.api.comment
     ports:
         - "7003:8080"
     environment:
@@ -55,7 +54,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.File/Dockerfile
-    container_name: api.file
+    container_name: backend.api.file
     ports:
         - "7004:8080"
     environment:
@@ -68,7 +67,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Notification/Dockerfile
-    container_name: api.notification
+    container_name: backend.api.notification
     ports:
         - "7005:8080"
     environment:
@@ -81,7 +80,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Project/Dockerfile
-    container_name: api.project
+    container_name: backend.api.project
     ports:
         - "7006:8080"
     environment:
@@ -94,7 +93,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Request/Dockerfile
-    container_name: api.request
+    container_name: backend.api.request
     ports:
         - "7007:8080"
     environment:
@@ -107,7 +106,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Tag/Dockerfile
-    container_name: api.tag
+    container_name: backend.api.tag
     ports:
         - "7008:8080"
     environment:
@@ -120,7 +119,7 @@ services:
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.User/Dockerfile
-    container_name: api.user
+    container_name: backend.api.user
     ports:
         - "7009:8080"
     environment:

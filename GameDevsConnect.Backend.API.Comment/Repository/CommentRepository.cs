@@ -8,7 +8,7 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
     {
         try
         {
-            var commentDb = _context.Comments.FirstOrDefault(x => x.Id == comment.Id);
+            var commentDb = _context.Comments.FirstOrDefault(x => x.Id.Equals(comment.Id));
 
             if (commentDb != null) return new APIResponse("Comment already exist", false, new { });
 
@@ -24,11 +24,11 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
         }
     }
 
-    public async Task<APIResponse> DeleteAsync(int commentId)
+    public async Task<APIResponse> DeleteAsync(string commentId)
     {
         try
         {
-            var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id == commentId);
+            var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id.Equals(commentId));
             if (commentDb is null) return new APIResponse("Comment dont exists", false, new { });
 
             _context.Comments.Remove(commentDb);
@@ -44,11 +44,11 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
 
     }
 
-    public async Task<APIResponse> GetByIdAsync(int commentId)
+    public async Task<APIResponse> GetByIdAsync(string commentId)
     {
         try
         {
-            var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id == commentId);
+            var commentDb = await _context.Comments.FirstOrDefaultAsync(x => x.Id.Equals(commentId));
             if (commentDb is null) return new APIResponse("Comment dont exists", false, new { });
 
             return new APIResponse("",true,commentDb);
@@ -60,11 +60,11 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
         }
     }
 
-    public async Task<APIResponse> GetByParentsIdAsync(int parentId)
+    public async Task<APIResponse> GetByParentsIdAsync(string requestId)
     {
         try
         {
-            var comments = await _context.Comments.Where(x => x.ParentId == parentId).OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
+            var comments = await _context.Comments.Where(x => x.RequestId.Equals(requestId)).OrderByDescending(x => x.Created).Select(x => x.Id).ToListAsync();
             return new APIResponse("",true, comments);
 
         }
@@ -75,11 +75,11 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
         }
     }
 
-    public async Task<APIResponse> GetCountByParentIdAsync(int parentId)
+    public async Task<APIResponse> GetCountByParentIdAsync(string requestId)
     {
         try
         {
-            var comments = (await _context.Comments.Where(x => x.ParentId == parentId).Select(x => x.Id).ToListAsync()).Count;
+            var comments = (await _context.Comments.Where(x => x.RequestId.Equals(requestId)).Select(x => x.Id).ToListAsync()).Count;
             return new APIResponse("", true, comments);
 
         }
@@ -94,7 +94,7 @@ public class CommentRepository(CommentDBContext context) : ICommentRepository
     {
         try
         {
-            var commentDB = _context.Comments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == comment.Id);
+            var commentDB = _context.Comments.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(comment.Id));
             if (commentDB is null) return new APIResponse("Comment dont exist", false, new { });
 
             _context.Comments.Update(comment);

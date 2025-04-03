@@ -1,12 +1,24 @@
 ﻿namespace GameDevsConnect.Backend.Shared.Models;
 
-public class CommentModel
+public partial class CommentModel
 {
-    public int Id { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public int FileId { get; set; }
-    public int ParentId { get; set; }
-    public string OwnerId { get; set; } = string.Empty;
-    public string Created { get; set; } = string.Empty;
-    public bool Deleted { get; set; }
+    public string Id { get; set; } = null!;
+
+    public string? Message { get; set; }
+
+    public string? RequestId { get; set; }
+
+    public string? FileId { get; set; }
+
+    public string? OwnerId { get; set; }
+
+    public string? Created { get; set; }
+
+    public byte? Deleted { get; set; }
+
+    public virtual FileModel? File { get; set; }
+
+    public virtual UserModel? Owner { get; set; }
+
+    public virtual RequestModel? Request { get; set; }
 }

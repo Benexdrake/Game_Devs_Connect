@@ -45,7 +45,7 @@ public class NotificationRepository(NotificationDBContext context) : INotificati
     {
         try
         {
-            var notification = await _context.Notifications.FirstOrDefaultAsync(x => x.Id == id);
+            var notification = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             if (notification is null) return new APIResponse("Notification dont exist",false, new { });
 
@@ -85,9 +85,9 @@ public class NotificationRepository(NotificationDBContext context) : INotificati
             var notificationDb = await _context.Notifications.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(notificationId));
             if (notificationDb is null) return new APIResponse("Notification dont exist exist", false, new { });
 
-            if (notificationDb.Seen.Equals(""))
+            if (notificationDb.Seen == false)
             {
-                notificationDb.Seen = string.Format("{0:yyyy-MM-ddTHH:mm:ss.fffZ}", DateTime.UtcNow);
+                notificationDb.Seen = true;
                 _context.Notifications.Update(notificationDb);
                 await _context.SaveChangesAsync();
             }

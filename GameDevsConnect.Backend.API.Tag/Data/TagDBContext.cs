@@ -8,13 +8,14 @@ public partial class TagDBContext(DbContextOptions<TagDBContext> options) : DbCo
     {
         modelBuilder.Entity<TagModel>(entity =>
         {
-            entity.HasKey(e => e.Id);
-
-            entity.ToTable("tag");
+            entity.HasKey(e => e.Id).HasName("PK__Tags__3213E83FFFD2E1F7");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Tag)
+                .HasMaxLength(128)
+                .HasColumnName("tag");
         });
+
         OnModelCreatingPartial(modelBuilder);
     }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

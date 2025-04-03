@@ -1,12 +1,27 @@
-﻿namespace GameDevsConnect.Backend.Shared.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public class NotificationModel
+namespace GameDevsConnect.Backend.Shared.Models;
+public partial class NotificationModel
 {
-    public string Id { get; set; } = string.Empty;
-    public int RequestId { get; set; }
-    public int Type { get; set; }
-    public string OwnerId { get; set; } = string.Empty;
-    public string UserId { get; set; } = string.Empty;
-    public string Seen { get; set; } = string.Empty;
-    public string Created { get; set; } = string.Empty;
+    public int Id { get; set; }
+
+    public string? RequestId { get; set; }
+
+    public int? Type { get; set; }
+
+    public string? OwnerId { get; set; }
+
+    public string? UserId { get; set; }
+
+    public bool Seen { get; set; }
+
+    public string? Created { get; set; }
+
+    public virtual UserModel? Owner { get; set; }
+
+
+    public virtual RequestModel? Request { get; set; }
+
+
+    public virtual UserModel? User { get; set; }
 }

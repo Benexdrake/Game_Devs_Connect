@@ -1,16 +1,29 @@
+﻿using GameDevsConnect.Backend.Shared.Models;
+using System;
+using System.Collections.Generic;
 namespace GameDevsConnect.Backend.Shared.Models;
-public class ProfileModel
-{
-    public string UserId { get; set; } = string.Empty;
-    public string Banner { get; set; } = string.Empty;
-    
-    public string DiscordUrl { get; set; } = string.Empty;
-    public string XUrl { get; set; } = string.Empty;
-    public string WebsiteUrl { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
 
-    public bool ShowDiscord { get; set; }
-    public bool ShowX { get; set; }
-    public bool ShowWebsite { get; set; }
-    public bool ShowEmail { get; set; }
+public partial class ProfileModel
+{
+    public string Id { get; set; } = null!;
+
+    public string? UserId { get; set; }
+
+    public string? DiscordUrl { get; set; }
+
+    public string? XUrl { get; set; }
+
+    public string? WebsiteUrl { get; set; }
+
+    public string? Email { get; set; }
+
+    public byte? ShowDiscord { get; set; }
+
+    public byte? ShowX { get; set; }
+
+    public byte? ShowWebsite { get; set; }
+
+    public byte? ShowEmail { get; set; }
+
+    public virtual UserModel? User { get; set; }
 }

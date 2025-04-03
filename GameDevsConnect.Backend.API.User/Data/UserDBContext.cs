@@ -8,13 +8,22 @@ public partial class UserDBContext(DbContextOptions<UserDBContext> options) : Db
     {
         modelBuilder.Entity<UserModel>(entity =>
         {
-            entity.ToTable("user");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F1FAE596D");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Username).HasColumnName("username");
-            entity.Property(e => e.AccountType).HasColumnName("accountType");
-            entity.Property(e => e.Avatar).HasColumnName("avatar");
+            entity.Property(e => e.Id)
+                .HasMaxLength(64)
+                .HasColumnName("id");
+            entity.Property(e => e.Accounttype)
+                .HasMaxLength(64)
+                .HasColumnName("accounttype");
+            entity.Property(e => e.Avatar)
+                .HasMaxLength(128)
+                .HasColumnName("avatar");
+            entity.Property(e => e.Username)
+                .HasMaxLength(128)
+                .HasColumnName("username");
         });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

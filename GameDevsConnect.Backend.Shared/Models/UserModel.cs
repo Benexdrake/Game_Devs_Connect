@@ -1,12 +1,22 @@
 ﻿namespace GameDevsConnect.Backend.Shared.Models;
 
-public class UserModel
+public partial class UserModel
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; set; } = null!;
 
-    public string Username { get; set; } = string.Empty;
+    public string? Username { get; set; }
 
-    public string Avatar { get; set; } = string.Empty;
+    public string? Avatar { get; set; }
 
-    public string AccountType { get; set; } = string.Empty;
+    public string? Accounttype { get; set; }
+
+    public virtual ICollection<CommentModel> Comments { get; set; } = [];
+
+    public virtual ICollection<FileModel> Files { get; set; } = [];
+
+    public virtual ICollection<ProfileModel> Profiles { get; set; } = [];
+
+    public virtual ICollection<ProjectModel> Projects { get; set; } = [];
+
+    public virtual ICollection<RequestModel> Requests { get; set; } = [];
 }

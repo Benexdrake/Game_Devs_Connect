@@ -13,13 +13,13 @@
             });
 
             // Get Files by Request Id
-            group.MapGet("{id}", async (IFileRepository rep, int id) =>
+            group.MapGet("{id}", async (IFileRepository rep, string id) =>
             {
                 return await rep.GetByIdAsync(id);
             });
 
             // Get Files by Request Id
-            group.MapGet("request/{id}", async (IFileRepository rep, int id) =>
+            group.MapGet("request/{id}", async (IFileRepository rep, string id) =>
             {
                 return await rep.GetByRequestIdAsync(id);
             });
@@ -37,7 +37,7 @@
             });
 
             // Delete a File
-            group.MapDelete("delete/{id}", async (IFileRepository rep, int id) =>
+            group.MapDelete("delete/{id}", async (IFileRepository rep, string id) =>
             {
                 return await rep.DeleteAsync(id);
             });

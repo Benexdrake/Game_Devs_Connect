@@ -7,19 +7,19 @@
             var group = app.MapGroup("api/comment");
 
             // Get all Comments
-            group.MapGet("count/{id}", async (ICommentRepository rep, int id) =>
+            group.MapGet("count/{id}", async (ICommentRepository rep, string id) =>
             {
                 return await rep.GetCountByParentIdAsync(id);
             });
 
             // Get Comments by Request Id
-            group.MapGet("{id}", async (ICommentRepository rep, int id) =>
+            group.MapGet("{id}", async (ICommentRepository rep, string id) =>
             {
                 return await rep.GetByIdAsync(id);
             });
 
             // Get Comments by Request Id
-            group.MapGet("request/{id}", async (ICommentRepository rep, int id) =>
+            group.MapGet("request/{id}", async (ICommentRepository rep, string id) =>
             {
                 return await rep.GetByParentsIdAsync(id);
             });
@@ -37,7 +37,7 @@
             });
 
             // Delete a Comment
-            group.MapDelete("delete/{id}", async (ICommentRepository rep, int id) =>
+            group.MapDelete("delete/{id}", async (ICommentRepository rep, string id) =>
             {
                 return await rep.DeleteAsync(id);
             });

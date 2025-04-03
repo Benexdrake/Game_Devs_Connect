@@ -8,7 +8,7 @@ public class FileRepository(FileDBContext context) : IFileRepository
     {
         try
         {
-            var fileDb = _context.Files.AsNoTracking().FirstOrDefault(x => x.Id == file.Id);
+            var fileDb = _context.Files.AsNoTracking().FirstOrDefault(x => x.Id.Equals(file.Id));
 
             if (fileDb is not null) return new APIResponse("File already exist", false, new { });
 
@@ -23,11 +23,11 @@ public class FileRepository(FileDBContext context) : IFileRepository
         }
     }
 
-    public async Task<APIResponse> DeleteAsync(int fileId)
+    public async Task<APIResponse> DeleteAsync(string fileId)
     {
         try
         {
-            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileId);
+            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId));
             if (fileDb is null) return new APIResponse("File not exist", false, new { });
 
             _context.Files.Remove(fileDb);
@@ -42,11 +42,11 @@ public class FileRepository(FileDBContext context) : IFileRepository
         }
     }
 
-    public async Task<APIResponse> GetByIdAsync(int fileId)
+    public async Task<APIResponse> GetByIdAsync(string fileId)
     {
         try
         {
-            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileId);
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId));
             if (file is null) return new APIResponse("File not exist", false, new { });
 
             return new APIResponse("",true,file);
@@ -72,11 +72,11 @@ public class FileRepository(FileDBContext context) : IFileRepository
         }
     }
 
-    public async Task<APIResponse> GetByRequestIdAsync(int id)
+    public async Task<APIResponse> GetByRequestIdAsync(string id)
     {
-        var fileIds = await _context.Comments.Where(x => x.ParentId == id).Where(x => x.FileId != 0).Select(x => x.FileId).ToListAsync();
+        //var fileIds = await _context.Comments.Where(x => x.ParentId == id).Where(x => x.FileId != 0).Select(x => x.FileId).ToListAsync();
 
-        return new APIResponse("", true, fileIds);
+        return new APIResponse("", true, new {});
     }
 
     public async Task<APIResponse> UpdateAsync(FileModel file)
