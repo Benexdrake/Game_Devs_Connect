@@ -1,5 +1,6 @@
 using GameDevsConnect.Backend.Shared;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Http.Features;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("YARP"));
 
 builder.Services.AddAuthentication(BearerTokenDefaults.AuthenticationScheme).AddBearerToken();
+
+builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 * 1024 * 1024; });
 
 // Get appsettings.json from Shared
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
