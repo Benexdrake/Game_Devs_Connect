@@ -1,8 +1,10 @@
-﻿namespace GameDevsConnect.Backend.API.File.Repository;
+﻿using GameDevsConnect.Backend.Shared.Data;
 
-public class FileRepository(FileDBContext context) : IFileRepository
+namespace GameDevsConnect.Backend.API.File.Repository;
+
+public class FileRepository(GDCDbContext context) : IFileRepository
 {
-    private readonly FileDBContext _context = context;
+    private readonly GDCDbContext _context = context;
 
     public async Task<APIResponse> AddAsync(FileModel file)
     {

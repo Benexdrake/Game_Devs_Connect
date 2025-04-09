@@ -1,8 +1,10 @@
-﻿namespace GameDevsConnect.Backend.API.Project.Repository;
+﻿using GameDevsConnect.Backend.Shared.Data;
 
-public class ProjectRepository(ProjectDBContext context) : IProjectRepository
+namespace GameDevsConnect.Backend.API.Project.Repository;
+
+public class ProjectRepository(GDCDbContext context) : IProjectRepository
 {
-    private readonly ProjectDBContext _context = context;
+    private readonly GDCDbContext _context = context;
     public async Task<APIResponse> AddAsync(ProjectModel project)
     {
         try

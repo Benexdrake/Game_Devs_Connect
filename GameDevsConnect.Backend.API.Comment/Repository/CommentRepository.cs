@@ -1,8 +1,10 @@
-﻿namespace GameDevsConnect.Backend.API.Comment.Repository;
+﻿using GameDevsConnect.Backend.Shared.Data;
 
-public class CommentRepository(CommentDBContext context) : ICommentRepository
+namespace GameDevsConnect.Backend.API.Comment.Repository;
+
+public class CommentRepository(GDCDbContext context) : ICommentRepository
 {
-    private readonly CommentDBContext _context = context;
+    private readonly GDCDbContext _context = context;
 
     public async Task<APIResponse> AddAsync(CommentModel comment)
     {

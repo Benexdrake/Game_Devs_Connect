@@ -1,0 +1,13 @@
+@GameDevsConnect.Backend.API.Gateway_HostAddress = http://localhost:7100
+@AccessToken = ''
+@ApiToken = ''
+
+### Get AccessToken
+GET {{GameDevsConnect.Backend.API.Gateway_HostAddress}}/login/{{ApiToken}}
+Accept: application/json
+
+### Try Access Get User
+
+GET {{GameDevsConnect.Backend.API.Gateway_HostAddress}}/api/user
+Authorization: Bearer {{AccessToken}}
+

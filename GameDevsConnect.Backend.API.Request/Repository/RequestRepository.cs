@@ -1,8 +1,10 @@
-﻿namespace GameDevsConnect.Backend.API.Request.Repository;
+﻿using GameDevsConnect.Backend.Shared.Data;
 
-public class RequestRepository(RequestDBContext context) : IRequestRepository
+namespace GameDevsConnect.Backend.API.Request.Repository;
+
+public class RequestRepository(GDCDbContext context) : IRequestRepository
 {
-    private readonly RequestDBContext _context = context;
+    private readonly GDCDbContext _context = context;
 
     public async Task<APIResponse> AddAsync(RequestModel request)
     {
@@ -26,7 +28,7 @@ public class RequestRepository(RequestDBContext context) : IRequestRepository
         }
     }
 
-    public async Task<APIResponse> DeleteAsync(int id)
+    public async Task<APIResponse> DeleteAsync(string id)
     {
         try
         {
@@ -46,7 +48,7 @@ public class RequestRepository(RequestDBContext context) : IRequestRepository
         }
     }
 
-    public async Task<APIResponse> GetByIdAsync(int id)
+    public async Task<APIResponse> GetByIdAsync(string id)
     {
         try
         {
@@ -54,7 +56,6 @@ public class RequestRepository(RequestDBContext context) : IRequestRepository
 
             if (request is null) return new APIResponse("Request dont exist", false, new { });
 
-           
             return new APIResponse("", true, request);
         }
         catch (Exception ex)

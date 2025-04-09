@@ -1,3 +1,4 @@
+using GameDevsConnect.Backend.Shared.Data;
 using GameDevsConnect.Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,7 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<UserDBContext>(options =>
+builder.Services.AddDbContext<GDCDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
 });
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<AuthMiddleware>();
+//app.UseMiddleware<AuthMiddleware>();
 
 app.UseHttpsRedirection();
 

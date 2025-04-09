@@ -1,12 +1,15 @@
-﻿namespace GameDevsConnect.Backend.API.Tag.Repository
+﻿using GameDevsConnect.Backend.Shared.Data;
+
+namespace GameDevsConnect.Backend.API.Tag.Repository
 {
-    public class TagRepository(TagDBContext context) : ITagRepository
+    public class TagRepository(GDCDbContext context) : ITagRepository
     {
-        private readonly TagDBContext _context = context;
+        private readonly GDCDbContext _context = context;
         public async Task<APIResponse> AddAsync(TagModel tag)
         {
             try
             {
+                tag.Id = 0;
                 var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Tag.Equals(tag.Tag));
 
                 if (tagsDb is not null) return new APIResponse("Tag exists in DB", false, new { });
@@ -43,15 +46,13 @@
             }
         }
 
-        public async Task<APIResponse> GetAsync(int id)
+        public async Task<APIResponse> GetAsync()
         {
-             try
+            try
             {
-                var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+                var tags = await _context.Tags.ToListAsync();
 
-                if (tagsDb is null) return new APIResponse("Tag didnt exist", false, new { });
-
-                return new APIResponse("", true, tagsDb);
+                return new APIResponse("", true, tags);
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@
             }
         }
 
-        public async Task<APIResponse> GetIdsAsync()
+        public async Task<APIResponse> GetByRequestIdAsync(string id)
         {
             try
             {

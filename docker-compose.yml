@@ -1,6 +1,6 @@
 services:
   mssql:
-    image: "benexdrake/gamedevsconnectdb"
+    image: "benexdrake012/gamedevsconnectdb"
     container_name: backend.sql.server
     hostname: mssql
     environment:
@@ -10,21 +10,21 @@ services:
     ports:
       - "1401:1433"
 
-  gamedevsconnect.backend.api.auth:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapiauth
+  gamedevsconnect.backend.api.gateway:
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapigateway
     build:
       context: .
-      dockerfile: GameDevsConnect.Backend.API.Auth/Dockerfile
-    container_name: backend.api.auth
+      dockerfile: GameDevsConnect.Backend.API.Gateway/Dockerfile
+    container_name: backend.api.gateway
     ports:
         - "7001:8080"
     environment:
-        - "ASPNETCORE_URL=http://*:7001"
+        - "ASPNETCORE_URL=http://*:7100"
     depends_on:
      - mssql
 
   gamedevsconnect.backend.api.azure:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapiazure
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapiazure
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Azure/Dockerfile
@@ -37,7 +37,7 @@ services:
      - mssql
 
   gamedevsconnect.backend.api.comment:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapicomment
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapicomment
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Comment/Dockerfile
@@ -50,7 +50,7 @@ services:
      - mssql
 
   gamedevsconnect.backend.api.file:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapifile
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapifile
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.File/Dockerfile
@@ -63,7 +63,7 @@ services:
      - mssql
 
   gamedevsconnect.backend.api.notification:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapinotification
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapinotification
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Notification/Dockerfile
@@ -76,7 +76,7 @@ services:
      - mssql
 
   gamedevsconnect.backend.api.project:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapiproject
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapiproject
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.Project/Dockerfile
@@ -88,12 +88,12 @@ services:
     depends_on:
      - mssql
 
-  gamedevsconnect.backend.api.request:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapirequest
+  gamedevsconnect.backend.api.profile:
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapiprofile
     build:
       context: .
-      dockerfile: GameDevsConnect.Backend.API.Request/Dockerfile
-    container_name: backend.api.request
+      dockerfile: GameDevsConnect.Backend.API.Profile/Dockerfile
+    container_name: backend.api.profile
     ports:
         - "7007:8080"
     environment:
@@ -101,12 +101,12 @@ services:
     depends_on:
      - mssql
 
-  gamedevsconnect.backend.api.tag:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapitag
+  gamedevsconnect.backend.api.request:
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapirequest
     build:
       context: .
-      dockerfile: GameDevsConnect.Backend.API.Tag/Dockerfile
-    container_name: backend.api.tag
+      dockerfile: GameDevsConnect.Backend.API.Request/Dockerfile
+    container_name: backend.api.request
     ports:
         - "7008:8080"
     environment:
@@ -114,15 +114,28 @@ services:
     depends_on:
      - mssql
 
+  gamedevsconnect.backend.api.tag:
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapitag
+    build:
+      context: .
+      dockerfile: GameDevsConnect.Backend.API.Tag/Dockerfile
+    container_name: backend.api.tag
+    ports:
+        - "7009:8080"
+    environment:
+        - "ASPNETCORE_URL=http://*:7009"
+    depends_on:
+     - mssql
+
   gamedevsconnect.backend.api.user:
-    image: ${DOCKER_REGISTRY-}gamedevsconnectbackendapiuser
+    image: ${DOCKER_REGISTRY-}benexdrake012/gamedevsconnectbackendapiuser
     build:
       context: .
       dockerfile: GameDevsConnect.Backend.API.User/Dockerfile
     container_name: backend.api.user
     ports:
-        - "7009:8080"
+        - "7010:8080"
     environment:
-        - "ASPNETCORE_URL=http://*:7009"
+        - "ASPNETCORE_URL=http://*:7010"
     depends_on:
      - mssql

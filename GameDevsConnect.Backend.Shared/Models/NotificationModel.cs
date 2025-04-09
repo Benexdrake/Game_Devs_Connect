@@ -16,12 +16,4 @@ public partial class NotificationModel
     public bool Seen { get; set; }
 
     public string? Created { get; set; }
-
-    public virtual UserModel? Owner { get; set; }
-
-
-    public virtual RequestModel? Request { get; set; }
-
-
-    public virtual UserModel? User { get; set; }
 }

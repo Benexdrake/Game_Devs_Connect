@@ -11,10 +11,4 @@ public partial class FileModel
     public string? Created { get; set; }
 
     public string? OwnerId { get; set; }
-
-    public virtual ICollection<CommentModel> Comments { get; set; } = [];
-
-    public virtual UserModel? Owner { get; set; }
-
-    public virtual ICollection<RequestModel> Requests { get; set; } = [];
 }

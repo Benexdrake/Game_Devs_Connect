@@ -24,6 +24,4 @@ public partial class ProfileModel
     public byte? ShowWebsite { get; set; }
 
     public byte? ShowEmail { get; set; }
-
-    public virtual UserModel? User { get; set; }
 }

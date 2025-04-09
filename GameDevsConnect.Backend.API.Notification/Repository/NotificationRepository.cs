@@ -1,7 +1,9 @@
-﻿namespace GameDevsConnect.Backend.API.Notification.Repository;
-public class NotificationRepository(NotificationDBContext context) : INotificationRepository
+﻿using GameDevsConnect.Backend.Shared.Data;
+
+namespace GameDevsConnect.Backend.API.Notification.Repository;
+public class NotificationRepository(GDCDbContext context) : INotificationRepository
 {
-    private readonly NotificationDBContext _context = context;
+    private readonly GDCDbContext _context = context;
 
     public async Task<APIResponse> AddAsync(NotificationModel notification)
     {

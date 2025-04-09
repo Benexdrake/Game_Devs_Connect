@@ -1,8 +1,10 @@
-﻿namespace GameDevsConnect.Backend.API.User.Repository;
+﻿using GameDevsConnect.Backend.Shared.Data;
 
-public class UserRepository(UserDBContext context) : IUserRepository
+namespace GameDevsConnect.Backend.API.User.Repository;
+
+public class UserRepository(GDCDbContext context) : IUserRepository
 {
-    private readonly UserDBContext _context = context;
+    private readonly GDCDbContext _context = context;
     public async Task<APIResponse> AddAsync(UserModel user)
     {
         try

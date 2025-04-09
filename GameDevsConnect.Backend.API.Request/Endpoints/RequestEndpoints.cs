@@ -13,7 +13,7 @@
             });
 
             // Get Tags by Request Id
-            group.MapGet("{id}", async (IRequestRepository rep, int id) =>
+            group.MapGet("{id}", async (IRequestRepository rep, string id) =>
             {
                 return await rep.GetByIdAsync(id);
             });
@@ -37,7 +37,7 @@
             });
 
             // Delete a Tag
-            group.MapDelete("delete/{id}", async (IRequestRepository rep, int id) =>
+            group.MapDelete("delete/{id}", async (IRequestRepository rep, string id) =>
             {
                 return await rep.DeleteAsync(id);
             });

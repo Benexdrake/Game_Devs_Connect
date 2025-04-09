@@ -9,8 +9,4 @@ public partial class ProjectModel
     public string? Description { get; set; }
 
     public string? OwnerId { get; set; }
-
-    public virtual UserModel? Owner { get; set; }
-
-    public virtual ICollection<RequestModel> Requests { get; set; } = [];
 }

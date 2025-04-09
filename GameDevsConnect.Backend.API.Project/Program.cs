@@ -1,4 +1,5 @@
 using GameDevsConnect.Backend.Middleware;
+using GameDevsConnect.Backend.Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,7 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ProjectDBContext>(options =>
+builder.Services.AddDbContext<GDCDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
 });

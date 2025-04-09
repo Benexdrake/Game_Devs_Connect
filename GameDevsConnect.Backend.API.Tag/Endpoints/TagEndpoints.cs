@@ -9,13 +9,13 @@
             // Get all Tags
             group.MapGet("", async (ITagRepository rep) =>
             {
-                return await rep.GetIdsAsync();
+                return await rep.GetAsync();
             });
 
             // Get Tags by Request Id
-            group.MapGet("{id}", async (ITagRepository rep, int id) =>
+            group.MapGet("{id}", async (ITagRepository rep, string id) =>
             {
-                return await rep.GetAsync(id);
+                return await rep.GetByRequestIdAsync(id);
             });
 
             // Add a Tag

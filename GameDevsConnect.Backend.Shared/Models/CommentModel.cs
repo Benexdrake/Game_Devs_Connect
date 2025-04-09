@@ -15,10 +15,4 @@ public partial class CommentModel
     public string? Created { get; set; }
 
     public byte? Deleted { get; set; }
-
-    public virtual FileModel? File { get; set; }
-
-    public virtual UserModel? Owner { get; set; }
-
-    public virtual RequestModel? Request { get; set; }
 }
