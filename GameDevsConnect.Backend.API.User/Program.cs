@@ -1,5 +1,4 @@
 using GameDevsConnect.Backend.Shared.Data;
-using GameDevsConnect.Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 

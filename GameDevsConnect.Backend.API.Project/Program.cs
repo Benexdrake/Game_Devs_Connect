@@ -1,4 +1,3 @@
-using GameDevsConnect.Backend.Middleware;
 using GameDevsConnect.Backend.Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +25,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseMiddleware<AuthMiddleware>();
 
 app.UseHttpsRedirection();
 
