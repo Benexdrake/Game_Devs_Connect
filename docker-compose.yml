@@ -19,7 +19,7 @@ services:
     ports:
         - "7001:8080"
     environment:
-        - "ASPNETCORE_URL=http://*:7100"
+        - "ASPNETCORE_URL=http://*:7001"
     depends_on:
      - mssql
 
