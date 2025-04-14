@@ -2,6 +2,8 @@ using GameDevsConnect.Backend.Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
 builder.Configuration.AddConfiguration(sharedConfiguration);
 
@@ -18,6 +20,8 @@ builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Gateway", "GameDevsConnect.Backend.API.Gateway\GameDevsConnect.Backend.API.Gateway.csproj", "{E574A9AA-A8B8-4E50-B6F1-43C526E65718}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.AppHost", "GameDevsConnect.Backend.AppHost\GameDevsConnect.Backend.AppHost.csproj", "{7F6E10EF-4CDB-480F-99A5-04BD7D3F94EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.ServiceDefaults", "GameDevsConnect.Backend.ServiceDefaults\GameDevsConnect.Backend.ServiceDefaults.csproj", "{4FF2FF9C-0A95-E237-5131-DBF20ED5B20B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{E574A9AA-A8B8-4E50-B6F1-43C526E65718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E574A9AA-A8B8-4E50-B6F1-43C526E65718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E574A9AA-A8B8-4E50-B6F1-43C526E65718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6E10EF-4CDB-480F-99A5-04BD7D3F94EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6E10EF-4CDB-480F-99A5-04BD7D3F94EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6E10EF-4CDB-480F-99A5-04BD7D3F94EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6E10EF-4CDB-480F-99A5-04BD7D3F94EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FF2FF9C-0A95-E237-5131-DBF20ED5B20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FF2FF9C-0A95-E237-5131-DBF20ED5B20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FF2FF9C-0A95-E237-5131-DBF20ED5B20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FF2FF9C-0A95-E237-5131-DBF20ED5B20B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
 builder.Configuration.AddConfiguration(sharedConfiguration);
 
@@ -15,6 +17,8 @@ builder.Services.AddScoped<IBlobRepository, BlobRepository>();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

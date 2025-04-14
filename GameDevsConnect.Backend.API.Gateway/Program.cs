@@ -6,6 +6,8 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("YARP"));
 
 builder.Services.AddAuthentication(BearerTokenDefaults.AuthenticationScheme).AddBearerToken();
@@ -18,6 +20,8 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 
 app.Use(async (context, next) =>
@@ -28,7 +32,7 @@ app.Use(async (context, next) =>
     if (string.IsNullOrEmpty(apiKey) || apiKey != expectedApiKey)
     {
         context.Response.StatusCode = 401;
-        await context.Response.WriteAsync("Unauthorized: Ungültiger API-Schlüssel");
+        await context.Response.WriteAsync("Unauthorized: UngÃ¼ltiger API-SchlÃ¼ssel");
         return;
     }
 

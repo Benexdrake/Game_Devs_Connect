@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>20926224-ef96-41e6-bcda-33f1931764de</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Azure\GameDevsConnect.Backend.API.Azure.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Comment\GameDevsConnect.Backend.API.Comment.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.File\GameDevsConnect.Backend.API.File.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Gateway\GameDevsConnect.Backend.API.Gateway.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Notification\GameDevsConnect.Backend.API.Notification.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Profile\GameDevsConnect.Backend.API.Profile.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Project\GameDevsConnect.Backend.API.Project.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Request\GameDevsConnect.Backend.API.Request.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Tag\GameDevsConnect.Backend.API.Tag.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.User\GameDevsConnect.Backend.API.User.csproj" />
+  </ItemGroup>
+
+</Project>
