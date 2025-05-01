@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest Name="GameDevsConnect.Backend.AppHostPkg"
+                 Version="1.0.0"
+                 xmlns="http://schemas.microsoft.com/2011/01/fabric"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ServiceTypes>
+    <!-- Dies ist der Name Ihres ServiceType.
+         Das UseImplicitHost-Attribut gibt an, dass es sich um einen Gastdienst handelt. -->
+    <StatelessServiceType ServiceTypeName="GameDevsConnect.Backend.AppHostType" UseImplicitHost="true" />
+  </ServiceTypes>
+
+  <!-- Das Codepaket ist Ihre ausführbare Dienstdatei. -->
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <!-- Folgen Sie diesem Link, um weitere Informationen zum Bereitstellen von Windows-Containern in Service Fabric zu erhalten: https://aka.ms/sfguestcontainers -->
+      <ContainerHost>
+        <ImageName>gamedevsconnect.backend.apphost:dev</ImageName>
+      </ContainerHost>
+    </EntryPoint>
+    <!-- Umgebungsvariablen an Ihren Container übergeben: -->
+    <!--
+    <EnvironmentVariables>
+      <EnvironmentVariable Name="VariableName" Value="VariableValue"/>
+    </EnvironmentVariables>
+    -->
+  </CodePackage>
+
+  <!-- Das Konfigurationspaket stellt den Inhalt des Konfigurationsverzeichnisses unter "PackageRoot" dar, das eine 
+       unabhängig aktualisierbare und mit einer Versionsangabe versehene Sammlung benutzerdefinierter Konfigurationseinstellungen für Ihren Dienst enthält. -->
+  <ConfigPackage Name="Config" Version="1.0.0" />
+
+  <Resources>
+    <Endpoints>
+      <!-- Dieser Endpunkt wird vom Kommunikationslistener zum Abrufen des Ports verwendet, an dem 
+           gelauscht werden soll. Wenn Ihr Dienst partitioniert ist, beachten Sie bitte, dass dieser Port mit 
+           Replikaten anderer Partitionen gemeinsam verwendet wird, die in Ihrem Code platziert wurden. -->
+      <Endpoint Name="GameDevsConnect.Backend.AppHostTypeEndpoint" />
+    </Endpoints>
+  </Resources>
+</ServiceManifest>

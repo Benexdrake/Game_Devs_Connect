@@ -1,7 +1,6 @@
 ﻿using Backend.Models;
 using GameDevsConnect.Backend.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GameDevsConnect.Backend.Shared.Data;
 public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbContext(options)
