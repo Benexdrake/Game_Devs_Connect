@@ -1,0 +1,124 @@
+services:
+  gamedevsconnect-backend-api-user:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_USER_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8000"
+    ports:
+      - "8001:8000"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-tag:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_TAG_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8002"
+    ports:
+      - "8003:8002"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-request:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_REQUEST_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8004"
+    ports:
+      - "8005:8004"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-project:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_PROJECT_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8006"
+    ports:
+      - "8007:8006"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-profile:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_PROFILE_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8008"
+    ports:
+      - "8009:8008"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-notification:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_NOTIFICATION_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8010"
+    ports:
+      - "8011:8010"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-file:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_FILE_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8012"
+    ports:
+      - "8013:8012"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-comment:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_COMMENT_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8014"
+    ports:
+      - "8015:8014"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-azure:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_AZURE_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8016"
+    ports:
+      - "8017:8016"
+    networks:
+      - "aspire"
+  gamedevsconnect-backend-api-gateway:
+    image: "${GAMEDEVSCONNECT_BACKEND_API_GATEWAY_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8018"
+    ports:
+      - "8019:8018"
+    networks:
+      - "aspire"
+networks:
+  aspire:
+    driver: "bridge"

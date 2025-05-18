@@ -1,6 +1,17 @@
-﻿# Stellen Sie sicher, dass der Service Fabric-Cluster, für den Sie bereitstellen, das von Ihnen verwendete Containerimage unterstützt. Informationen zur Versionskompatibilität von Windows-Containern finden Sie unter "https://aka.ms/containerimagehelp".
-FROM mcr.microsoft.com/dotnet/runtime:8.0-nanoserver-1809
-ARG source
+# Verwende das offizielle .NET SDK Image als Basis für den Build-Prozess
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY . .
+
+# Stelle die Projektdateien wieder her
+RUN dotnet restore "GameDevsConnect.Backend.AppHost.csproj"
+# Veröffentliche die Anwendung im Release-Modus
+RUN dotnet publish "GameDevsConnect.Backend.AppHost.csproj" -c Release -o /app/publish
+
+# Verwende das offizielle .NET Runtime Image als Basis für das finale Image
+FROM ubuntu/dotnet-runtime:candidate AS final
 WORKDIR /app
-COPY ${source:-obj/Docker/publish} .
+# Kopiere die veröffentlichte Anwendung aus dem Build-Image
+COPY --from=build /app/publish .
+# Lege den Entry Point für den Container fest
 ENTRYPOINT ["dotnet", "GameDevsConnect.Backend.AppHost.dll"]

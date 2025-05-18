@@ -12,16 +12,16 @@ public class AuthRepository(AuthDbContext context) : IAuthRepository
     {
         try
         {
-            var authDb = await context.Auths.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
+            var authDb = await context.Auth.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
 
             if (authDb is null)
             {
-                context.Auths.Add(auth);
+                context.Auth.Add(auth);
                 await context.SaveChangesAsync();
                 return;
             }
 
-            context.Auths.Update(auth);
+            context.Auth.Update(auth);
             await context.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -34,11 +34,11 @@ public class AuthRepository(AuthDbContext context) : IAuthRepository
     {
         try
         {
-            var authDb = await context.Auths.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
+            var authDb = await context.Auth.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
 
             if(authDb is not null)
             {
-                context.Auths.Remove(auth);
+                context.Auth.Remove(auth);
                 await context.SaveChangesAsync();
             }
         }
@@ -52,23 +52,40 @@ public class AuthRepository(AuthDbContext context) : IAuthRepository
     {
         try
         {
-            var authDb = await context.Auths.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
+            var authDb = await context.Auth.FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
             if (authDb is null)
                 return false;
 
             var expiresAt = DateTimeOffset.FromUnixTimeMilliseconds(auth.Expires);
 
-            if(expiresAt.UtcDateTime <= DateTime.UtcNow)
-            {
-                context.Auths.Remove(auth);
-                await context.SaveChangesAsync();
-                return false;
-            }
+            //if(expiresAt.UtcDateTime <= DateTime.UtcNow)
+            //{
+            //    context.Auth.Remove(auth);
+            //    await context.SaveChangesAsync();
+            //    return false;
+            //}
 
             if (auth.Token == authDb.Token)
                 return true;
 
             return false;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return false;
+        }
+    }
+
+    public async Task<bool> AuthenticateAsync2(string token)
+    {
+        try
+        {
+            var authDb = await context.Auth.FirstOrDefaultAsync(x => x.Token.Equals(token));
+            if (authDb is null)
+                return false;
+
+            return true;
         }
         catch (Exception ex)
         {

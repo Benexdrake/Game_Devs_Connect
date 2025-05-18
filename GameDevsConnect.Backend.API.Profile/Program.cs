@@ -30,8 +30,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseMiddleware<AuthMiddleware>();
-
 app.UseHttpsRedirection();
 
 app.MapEndpoints();

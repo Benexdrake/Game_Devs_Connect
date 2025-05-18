@@ -5,7 +5,10 @@ using GameDevsConnect.Backend.Shared.Data;
 using GameDevsConnect.Backend.Shared.Models;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,11 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Auth"));
+});
+
+builder.Services.AddDbContext<GDCDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
 });
 
 builder.AddServiceDefaults();
@@ -32,56 +40,157 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var serviceProvider = scope.ServiceProvider;
+        try
+        {
+            var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
+            var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
+            gdcDbContext.Database.Migrate();
+            authDbContext.Database.Migrate();
+
+            var tags = new List<string>() {"2D","3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
+
+            tags.ForEach(t => gdcDbContext.Tags.Add(new TagModel() { Id=0, Tag=t }));
+
+            await gdcDbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
+        }
+    }
+if (app.Environment.IsDevelopment())
+{
+}
+
+
 app.Use(async (context, next) =>
 {
-    try
+    string? apiKey = context.Request.Headers.Authorization;
+
+    //string? userId = context.Request.Headers["ID"];
+    string? expectedApiKey = app.Configuration["LoginApiKey"];
+    var endpoint = context.Request.Path.Value.ToLower();
+
+    if (string.IsNullOrEmpty(apiKey))
     {
-        var endpoint = context.Request.Path.Value;
-        if (!string.IsNullOrEmpty(endpoint) && (endpoint.Equals("/Login") || endpoint.Equals("/Logout")))
-        {
-            string? apiKey = context.Request.Headers.Authorization;
-            string? expectedApiKey = app.Configuration["LoginApiKey"];
-            if (!string.IsNullOrEmpty(apiKey) && (!string.IsNullOrEmpty(expectedApiKey) && apiKey.Contains(expectedApiKey)))
-            {
-                await next(context);
-                return;
-            }
-        }
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsync("Access Denied");
+    }
 
-        var repo = context.RequestServices.GetService<IAuthRepository>();
-        if (repo is null)
-            return;
-
-        var authModel = await JsonSerializer.DeserializeAsync<AuthModel>(context.Request.Body);
-        if (authModel is null)
-            return;
-            
-        var response = await repo.AuthenticateAsync(authModel);
-        if (response == true)
+    if (!string.IsNullOrEmpty(endpoint) && (endpoint.Equals("/login") || endpoint.Equals("/logout")))
+    {
+        if (!string.IsNullOrEmpty(expectedApiKey) && apiKey.Equals(expectedApiKey))
         {
             await next(context);
             return;
         }
     }
-    catch (Exception ex)
+
+    var repo = context.RequestServices.GetService<IAuthRepository>();
+    if (repo is null)
+        return;
+
+    var auth = await repo.AuthenticateAsync2(apiKey);
+
+    if (auth)
     {
-        Log.Error(ex.Message.ToString());
+        await next(context);
+        return;
     }
 
+    //try
+    //{
+    //    var endpoint = context.Request.Path.Value.ToLower();
+    //    if (!string.IsNullOrEmpty(endpoint) && (endpoint.Equals("/login") || endpoint.Equals("/logout")))
+    //    {
+    //        string? apiKey = context.Request.Headers.Authorization;
+    //        string? expectedApiKey = app.Configuration["LoginApiKey"];
+    //        if (!string.IsNullOrEmpty(apiKey) && (!string.IsNullOrEmpty(expectedApiKey) && apiKey.Contains(expectedApiKey)))
+    //        {
+    //            await next(context);
+    //            return;
+    //        }
+    //    }
 
-    context.Response.StatusCode = 401;
-    await context.Response.WriteAsync("Unauthorized: Ung�ltiger API-Schl�ssel");
+    //    var repo = context.RequestServices.GetService<IAuthRepository>();
+    //    if (repo is null)
+    //        return;
+
+    //    string? jwtTokenString = context.Request.Query["authModel"].FirstOrDefault();
+
+    //    if (string.IsNullOrEmpty(jwtTokenString))
+    //    {
+    //        context.Response.StatusCode = 400;
+    //        await context.Response.WriteAsync("Access Denied");
+    //        return;
+    //    }
+
+    //    var tokenHandler = new JwtSecurityTokenHandler();
+    //    SecurityToken? validatedToken = null;
+    //    ClaimsPrincipal? principal = null;
+
+    //    var tokenValidationParameters = new TokenValidationParameters
+    //    {
+    //        ValidateIssuerSigningKey = false,
+    //        ValidateIssuer = false,
+    //        ValidateAudience = false,
+    //        ClockSkew = TimeSpan.Zero
+    //    };
+
+    //    principal = tokenHandler.ValidateToken(jwtTokenString, tokenValidationParameters, out validatedToken);
+
+    //    if (validatedToken is JwtSecurityToken jwtToken)
+    //    {
+    //        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userid")?.Value;
+    //        var tokenClaim = jwtToken.RawData;
+    //        var expiresClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
+
+    //        if (userIdClaim == null || tokenClaim == null || expiresClaim == null)
+    //        {
+    //            context.Response.StatusCode = 400;
+    //            await context.Response.WriteAsync("Access Denied");
+    //            return;
+    //        }
+
+    //        if (long.TryParse(expiresClaim, out long expiresUnix))
+    //        {
+    //            var authModel = new AuthModel
+    //            {
+    //                UserId = userIdClaim,
+    //                Token = tokenClaim,
+    //                Expires = expiresUnix
+    //            };
+
+    //            var response = await repo.AuthenticateAsync(authModel);
+    //            if (response)
+    //            {
+    //                await next(context);
+    //                return;
+    //            }
+    //        }
+
+    //    }
+    //}
+    //catch (Exception ex)
+    //{
+    //    Log.Error(ex.Message.ToString());
+    //}
+
+    //context.Response.StatusCode = 400;
+    //await context.Response.WriteAsync("Access Denied");
 });
 
-app.MapGet("/", () => "Hello im a Gateway");
-
-app.MapPost("/Login", async (IAuthRepository repo, AuthModel auth) =>
+app.MapPost("/login", async (IAuthRepository repo, AuthModel auth) =>
 {
     await repo.UpsertAsync(auth);
     return "";
 });
 
-app.MapPost("Logout", async (IAuthRepository repo, AuthModel auth) =>
+app.MapPost("/logout", async (IAuthRepository repo, AuthModel auth) =>
 {
     await repo.DeleteAsync(auth);
     return "";
