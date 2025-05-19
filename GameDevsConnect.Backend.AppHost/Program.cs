@@ -24,12 +24,13 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Comment>("gamedevsconnec
 
 builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("gamedevsconnect-backend-api-azure").WithEndpoint(port: 7001, scheme: "http", name: "azure").WaitFor(gateway);
 
-builder.AddDockerfile(
-    name: "gamedevsconnect-frontend",
-    dockerfilePath: "../../GameDevsConnect.Frontend/GameDevsConnect.Frontend.Web/Dockerfile",
-    contextPath: "../../GameDevsConnect.Frontend/GameDevsConnect.Frontend.Web" )
-        .WithEndpoint(port:3000, scheme: "http", name: "frontend", targetPort:3000)
-        .WaitFor(gateway);
+// Wird nicht benötigt, nur für Demo Zwecke, jedoch hat er ein Problem beim starten, findet die Datei nicht wenn im Root Ordner statt zuvor paralelle zum root ordner.
+//builder.AddDockerfile(
+//    name: "gamedevsconnect-frontend",
+//    dockerfilePath: "../GameDevsConnect.Frontend/GameDevsConnect.Frontend.Web/Dockerfile",
+//    contextPath: "../GameDevsConnect.Frontend/GameDevsConnect.Frontend.Web")
+//        .WithEndpoint(port:3000, scheme: "http", name: "frontend", targetPort:3000)
+//        .WaitFor(gateway);
 
 builder.AddDockerComposePublisher();
 
