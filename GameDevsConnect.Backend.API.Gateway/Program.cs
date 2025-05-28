@@ -40,7 +40,8 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 
-
+if (app.Environment.IsDevelopment())
+{
     using (var scope = app.Services.CreateScope())
     {
         var serviceProvider = scope.ServiceProvider;
@@ -48,8 +49,15 @@ app.UseHttpsRedirection();
         {
             var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
             var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
-            gdcDbContext.Database.Migrate();
-            authDbContext.Database.Migrate();
+
+            var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
+            var authCreated = await authDbContext.Database.EnsureCreatedAsync();
+
+            if (!gdcCreated)
+                gdcDbContext.Database.Migrate();
+            
+            if(!authCreated)
+                authDbContext.Database.Migrate();
 
             var tags = new List<string>() {"2D","3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
 
@@ -62,13 +70,15 @@ app.UseHttpsRedirection();
             Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
         }
     }
-if (app.Environment.IsDevelopment())
-{
+
 }
 
 
 app.Use(async (context, next) =>
 {
+    await next(context);
+    return;
+
     string? apiKey = context.Request.Headers.Authorization;
 
     //string? userId = context.Request.Headers["ID"];

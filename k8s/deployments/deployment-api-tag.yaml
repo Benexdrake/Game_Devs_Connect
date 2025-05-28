@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-tag
+  namespace: gamedevsconnect
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-tag
+  template:
+    metadata:
+      labels:
+        app: api-tag
+    spec:
+      containers:
+        - name: api-tag
+          image: benexdrake012/gamedevsconnect_backend_api_tag
+          ports:
+            - containerPort: 8080

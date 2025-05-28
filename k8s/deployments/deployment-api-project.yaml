@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-project
+  namespace: gamedevsconnect
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-project
+  template:
+    metadata:
+      labels:
+        app: api-project
+    spec:
+      containers:
+        - name: api-project
+          image: benexdrake012/gamedevsconnect_backend_api_project
+          ports:
+            - containerPort: 8080

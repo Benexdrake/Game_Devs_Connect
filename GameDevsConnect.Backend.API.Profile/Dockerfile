@@ -13,6 +13,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GameDevsConnect.Backend.API.Profile/GameDevsConnect.Backend.API.Profile.csproj", "GameDevsConnect.Backend.API.Profile/"]
+COPY ["GameDevsConnect.Backend.ServiceDefaults/GameDevsConnect.Backend.ServiceDefaults.csproj", "GameDevsConnect.Backend.ServiceDefaults/"]
+COPY ["GameDevsConnect.Backend.Shared/GameDevsConnect.Backend.Shared.csproj", "GameDevsConnect.Backend.Shared/"]
 RUN dotnet restore "./GameDevsConnect.Backend.API.Profile/GameDevsConnect.Backend.API.Profile.csproj"
 COPY . .
 WORKDIR "/src/GameDevsConnect.Backend.API.Profile"
