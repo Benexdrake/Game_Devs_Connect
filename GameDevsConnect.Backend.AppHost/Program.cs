@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-string sqlPW = builder.Configuration["SQL"] ;
+string sqlPW = builder.Configuration["SQL"];
 
 int replicas = 3;
 
@@ -61,7 +61,7 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("gamedevsconnect-
        .WaitFor(gateway);
 #endregion
 
-builder.AddDockerComposePublisher();
+//builder.AddDockerComposePublisher();
 
 var build = builder.Build();
 
