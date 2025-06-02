@@ -2,9 +2,9 @@
 
 public interface IUserRepository
 {
-    Task<APIResponse> GetIdsAsync();
-    Task<APIResponse> GetAsync(string id);
-    Task<APIResponse> AddAsync(UserModel user);
-    Task<APIResponse> UpdateAsync(UserModel user);
-    Task<APIResponse> DeleteAsync(string id);
+    Task<string[]> GetIdsAsync();
+    Task<UserModel> GetAsync(string id);
+    Task<bool> AddAsync(UserModel user);
+    Task<bool> UpdateAsync(UserModel user);
+    Task<bool> DeleteAsync(string id);
 }

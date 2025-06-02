@@ -1,92 +1,105 @@
-﻿using GameDevsConnect.Backend.Shared.Data;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace GameDevsConnect.Backend.API.User.Repository;
 
 public class UserRepository(GDCDbContext context) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<APIResponse> AddAsync(UserModel user)
+    public async Task<bool> AddAsync(UserModel user)
     {
         try
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
 
-            if (dbUser is not null) return new APIResponse("User exists in DB", false, new { });
+            if (dbUser is not null)
+            {
+                Log.Information($"User with ID: {dbUser.Id} exists already");
+                return false;
+            }
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("User was saved in DB", true, new { });
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new APIResponse(ex.Message, false, new { });
+            return false;
         }
     }
 
-    public async Task<APIResponse> DeleteAsync(string id)
+    public async Task<bool> DeleteAsync(string id)
     {
         try
         {
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (dbUser is null) return new APIResponse("User dont exist", false, new { });
+            if (dbUser is null)
+            {
+                Log.Information($"User with ID: {id} dont exist");
+                return false;
+            }
 
             _context.Users.Remove(dbUser);
 
             await _context.SaveChangesAsync();
             
-            return new APIResponse("User got deleted", true, new { });
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new APIResponse(ex.Message, false, new { });
+            return false;
         }
     }
 
-    public async Task<APIResponse> GetAsync(string id)
+    public async Task<UserModel> GetAsync(string id)
     {
         try
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (user is null) return new APIResponse("User dont exist", false, new { });
+            if (user is null)
+                Log.Information($"User with ID: {id} dont exist");
 
-            return new APIResponse("", true, user);
+            return user!;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new APIResponse(ex.Message, false, new { });
+            return null!;
         }
     }
 
-    public async Task<APIResponse> GetIdsAsync()
+    public async Task<string[]> GetIdsAsync()
     {
-        var userIds = await _context.Users.Select(x => x.Id).ToListAsync();
+        var userIds = await _context.Users.Select(x => x.Id).ToArrayAsync();
 
-        return new APIResponse("",true, userIds);
+        return userIds;
     }
 
-    public async Task<APIResponse> UpdateAsync(UserModel user)
+    public async Task<bool> UpdateAsync(UserModel user)
     {
         try
         {
             var dbUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
 
-            if (dbUser is null) return new APIResponse("", false, new { });
+            if (dbUser is null)
+            {
+                Log.Information($"User with ID: {user.Id} dont exist");
+                return false;
+            }
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return new APIResponse("User got updated", true, new { });
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new APIResponse(ex.Message, false, new { });
+            return false;
         }
     }
 }
