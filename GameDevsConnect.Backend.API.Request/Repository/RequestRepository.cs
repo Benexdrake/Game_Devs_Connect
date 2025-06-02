@@ -6,7 +6,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<APIResponse> AddAsync(RequestModel request)
+    public async Task<APIResponse> AddAsync(RequestModel request, TagModel[] tags)
     {
         try
         {
@@ -89,6 +89,47 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             await _context.SaveChangesAsync();
 
             return new APIResponse("Request got updated", true, new { });
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return new APIResponse(ex.Message, false, new { });
+        }
+    }
+
+    public async Task<APIResponse> GetFullByIdAsync(string id)
+    {
+        try
+        {
+            var request = await _context.Requests.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            if (request is null) return new APIResponse("Request dont exist", false, new { });
+            
+            // get Tag IDs from RequestTags
+            var requestTags = await _context.RequestTags.Where(rt => rt.RequestId!.Equals(id)).ToListAsync();
+
+            // get Tags from TagIDS Array
+            var tags = new List<TagModel>();
+
+            foreach (var rt in requestTags)
+            {
+                var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == rt.TagId);
+                if(tag is null) continue;
+                    tags.Add(tag);
+            }
+
+            // Project
+            var projectTitle = await _context.Projects.Where(x => x.Id.Equals(request.ProjectId)).Select(x => x.Title).FirstAsync();
+
+            // Owner
+            var owner = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(request.OwnerId));
+
+            // File
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(request.FileId));
+
+            // Send an Object with Request, Tags, User
+            var response = new {request, tags, projectTitle, owner, file };
+
+            return new APIResponse("", true, response);
         }
         catch (Exception ex)
         {

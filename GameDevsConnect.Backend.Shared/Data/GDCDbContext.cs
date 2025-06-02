@@ -13,9 +13,16 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     public virtual DbSet<NotificationModel> Notifications { get; set; }
     public virtual DbSet<FileModel> Files { get; set; }
     public virtual DbSet<CommentModel> Comments { get; set; }
+    public virtual DbSet<RequestTag> RequestTags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RequestTag>(entity =>
+        {
+            entity.Property(e => e.RequestId).HasColumnName("request_id");
+            entity.Property(e => e.TagId).HasColumnName("tag_id");
+        });
+
         modelBuilder.Entity<CommentModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Comments__3213E83F66D90817");

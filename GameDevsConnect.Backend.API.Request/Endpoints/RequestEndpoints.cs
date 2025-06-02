@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Request.Endpoints
+﻿using GameDevsConnect.Backend.Shared.DTO;
+
+namespace GameDevsConnect.Backend.API.Request.Endpoints
 {
     public static class RequestEndpoints
     {
@@ -6,7 +8,6 @@
         {
             var group = app.MapGroup("api/request");
 
-            // Get all Tags
             group.MapGet("", async (IRequestRepository rep) =>
             {
                 return await rep.GetIdsAsync();
@@ -17,6 +18,11 @@
             {
                 return await rep.GetByIdAsync(id);
             });
+            // Get Tags by Request Id
+            group.MapGet("full/{id}", async (IRequestRepository rep, string id) =>
+            {
+                return await rep.GetFullByIdAsync(id);
+            });
 
             // Get Tags by Request Id
             group.MapGet("user/{id}", async (IRequestRepository rep, string id) =>
@@ -24,10 +30,9 @@
                 return await rep.GetByUserIdAsync(id);
             });
 
-            // Add a Tag
-            group.MapPost("add", async (IRequestRepository rep, RequestModel request) =>
+            group.MapPost("add", async(IRequestRepository rep, AddRequestTagsDTO dto) =>
             {
-                return await rep.AddAsync(request);
+                return await rep.AddAsync(dto.Request, dto.Tags);
             });
 
             // Update a Tag
