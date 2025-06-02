@@ -1,5 +1,3 @@
-using GameDevsConnect.Backend.API.User.Services.V1;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();

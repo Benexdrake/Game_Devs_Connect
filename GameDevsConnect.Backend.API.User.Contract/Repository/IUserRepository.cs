@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.API.User.Repository;
+﻿namespace GameDevsConnect.Backend.API.User.Contract.Repository;
 
 public interface IUserRepository
 {

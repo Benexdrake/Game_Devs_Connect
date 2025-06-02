@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace GameDevsConnect.Backend.API.User.Repository;
+﻿namespace GameDevsConnect.Backend.API.User.Contract.Repository;
 
 public class UserRepository(GDCDbContext context) : IUserRepository
 {

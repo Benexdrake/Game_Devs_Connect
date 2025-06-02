@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.User.Services.V1;
-
-namespace GameDevsConnect.Backend.API.User.Endpoints.V1;
+﻿namespace GameDevsConnect.Backend.API.User.Endpoints.V1;
 
 public static class UserEndpoints
 {
