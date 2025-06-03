@@ -18,12 +18,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

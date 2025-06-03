@@ -1,8 +1,7 @@
 ﻿namespace GameDevsConnect.Backend.Shared.Models;
 
-public partial class RequestTag
+public partial class RequestTag(string? requestId, int? tagId)
 {
-    public string? RequestId { get; set; }
-
-    public int? TagId { get; set; }
+    public string? RequestId { get; set; } = requestId;
+    public int? TagId { get; set; } = tagId;
 }
