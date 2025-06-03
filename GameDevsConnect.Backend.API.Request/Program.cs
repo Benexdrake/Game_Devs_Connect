@@ -1,6 +1,3 @@
-using GameDevsConnect.Backend.Shared.Data;
-using Microsoft.Net.Http.Headers;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -35,11 +32,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapEndpointsRAW();
 }
 
 app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.MapEndpointsV1();
 
 app.UseResponseCaching();
 

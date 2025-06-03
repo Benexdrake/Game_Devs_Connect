@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.User.Endpoints.RAW;
+﻿using GameDevsConnect.Backend.API.User.Application.Repository;
+
+namespace GameDevsConnect.Backend.API.User.Endpoints.RAW;
 
 public static class UserEndpointsRAW
 {
