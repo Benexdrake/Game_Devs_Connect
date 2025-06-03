@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.API.User.Contract.Services.V1;
+﻿namespace GameDevsConnect.Backend.API.User.Application.Services.V1;
 
 public interface IUserService
 {
