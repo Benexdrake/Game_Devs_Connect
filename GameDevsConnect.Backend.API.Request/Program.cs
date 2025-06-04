@@ -8,10 +8,7 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GDCDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
-});
+builder.Services.AddDbContext<GDCDbContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("GDC")); });
 
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
@@ -27,12 +24,10 @@ app.MapDefaultEndpoints();
 
 app.MapHealthChecks("_health");
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapEndpointsRAW();
 }
 
 app.UseHttpsRedirection();

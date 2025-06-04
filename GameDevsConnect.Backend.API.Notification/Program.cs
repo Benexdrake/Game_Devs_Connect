@@ -1,3 +1,5 @@
+using GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
+using GameDevsConnect.Backend.API.Notification.Endpoints.V1;
 using GameDevsConnect.Backend.Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.MapEndpointsV1();
 
 app.Run();

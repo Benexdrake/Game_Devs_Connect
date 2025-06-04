@@ -6,43 +6,43 @@ public static class RequestEndpoints
     {
         var group = app.MapGroup("api/v1/request");
 
-        group.MapGet("", async ([FromServices] IRequestService service) =>
+        group.MapGet("", async ([FromServices] IRequestRepository repo) =>
         {
-            return await service.GetIdsAsync();
+            return await repo.GetIdsAsync();
         });
 
         // Get Tags by Request Id
-        group.MapGet("{id}", async ([FromServices] IRequestService service, [FromRoute] string id) =>
+        group.MapGet("{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
-            return await service.GetByIdAsync(id);
+            return await repo.GetByIdAsync(id);
         });
         // Get Tags by Request Id
-        group.MapGet("full/{id}", async ([FromServices] IRequestService service, [FromRoute] string id) =>
+        group.MapGet("full/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
-            return await service.GetFullByIdAsync(id);
+            return await repo.GetFullByIdAsync(id);
         });
 
         // Get Tags by Request Id
-        group.MapGet("user/{id}", async ([FromServices] IRequestService service, [FromRoute] string id) =>
+        group.MapGet("user/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
-            return await service.GetByUserIdAsync(id);
+            return await repo.GetByUserIdAsync(id);
         });
 
-        group.MapPost("add", async([FromServices]IRequestService service, [FromBody] AddRequest add) =>
+        group.MapPost("add", async([FromServices]IRequestRepository repo, [FromBody] AddRequest add) =>
         {
-            return await service.AddAsync(add);
+            return await repo.AddAsync(add);
         });
 
         // Update a Tag
-        group.MapPut("update", async ([FromServices] IRequestService service, [FromBody] RequestModel request) =>
+        group.MapPut("update", async ([FromServices] IRequestRepository repo, [FromBody] RequestModel request) =>
         {
-            return await service.UpdateAsync(request);
+            return await repo.UpdateAsync(request);
         });
 
         // Delete a Tag
-        group.MapDelete("delete/{id}", async ([FromServices] IRequestService service, [FromRoute] string id) =>
+        group.MapDelete("delete/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
-            return await service.DeleteAsync(id);
+            return await repo.DeleteAsync(id);
         });
     }
 }

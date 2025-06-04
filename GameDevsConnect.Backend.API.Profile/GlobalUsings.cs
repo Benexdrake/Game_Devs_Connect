@@ -1,9 +1,10 @@
-﻿global using Microsoft.EntityFrameworkCore;
-global using Microsoft.AspNetCore.Mvc;
-
+﻿global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Net.Http.Headers;
 global using Serilog;
 
-global using GameDevsConnect.Backend.Shared.Models;
-global using GameDevsConnect.Backend.API.Profile.Endpoints;
-global using GameDevsConnect.Backend.API.Profile.Repository;
+global using GameDevsConnect.Backend.API.Profile.Endpoints.V1;
+global using GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
 global using GameDevsConnect.Backend.Shared;
+global using GameDevsConnect.Backend.Shared.Data;
+global using GameDevsConnect.Backend.Shared.Models;

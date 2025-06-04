@@ -4,30 +4,30 @@ public static class TagEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("api/tag");
+        var group = app.MapGroup("api/v1/tag");
 
         // Get all Tags
-        group.MapGet("", async ([FromServices] ITagService service) =>
+        group.MapGet("", async ([FromServices] ITagRepository repo) =>
         {
-            return await service.GetAsync();
+            return await repo.GetAsync();
         });
 
         // Add a Tag
-        group.MapPost("add", async ([FromServices] ITagService service, [FromBody] TagModel tag) =>
+        group.MapPost("add", async ([FromServices] ITagRepository repo, [FromBody] TagModel tag) =>
         {
-            return await service.AddAsync(tag);
+            return await repo.AddAsync(tag);
         });
 
         // Update a Tag
-        group.MapPut("update", async ([FromServices] ITagService service, [FromBody] TagModel tag) =>
+        group.MapPut("update", async ([FromServices] ITagRepository repo, [FromBody] TagModel tag) =>
         {
-            return await service.UpdateAsync(tag);
+            return await repo.UpdateAsync(tag);
         });
 
         // Delete a Tag
-        group.MapDelete("delete/{id}", async ([FromServices] ITagService service, [FromRoute] int id) =>
+        group.MapDelete("delete/{id}", async ([FromServices] ITagRepository repo, [FromRoute] int id) =>
         {
-            return await service.DeleteAsync(id);
+            return await repo.DeleteAsync(id);
         });
     }
 }

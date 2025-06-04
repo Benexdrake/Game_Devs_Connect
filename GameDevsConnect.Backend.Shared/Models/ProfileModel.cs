@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared.Models;
-using System;
-using System.Collections.Generic;
-namespace GameDevsConnect.Backend.Shared.Models;
+﻿namespace GameDevsConnect.Backend.Shared.Models;
 
 public partial class ProfileModel
 {

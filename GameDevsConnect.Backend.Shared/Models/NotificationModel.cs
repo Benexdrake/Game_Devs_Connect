@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace GameDevsConnect.Backend.Shared.Models;
+﻿namespace GameDevsConnect.Backend.Shared.Models;
 public partial class NotificationModel
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     public string? RequestId { get; set; }
 

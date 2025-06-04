@@ -1,3 +1,5 @@
+using GameDevsConnect.Backend.API.Tag.Application.Repository.V1;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -22,7 +24,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapEndpointsRAW();
 }
 
 app.UseHttpsRedirection();

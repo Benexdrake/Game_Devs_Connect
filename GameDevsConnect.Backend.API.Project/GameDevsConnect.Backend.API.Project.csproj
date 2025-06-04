@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>016bddad-26c0-4f1a-acc7-4f9a4eb232b3</UserSecretsId>
@@ -29,8 +29,9 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Project.Application\GameDevsConnect.Backend.API.Project.Application.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Project.Contract\GameDevsConnect.Backend.API.Project.Contract.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.ServiceDefaults\GameDevsConnect.Backend.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\GameDevsConnect.Backend.Shared\GameDevsConnect.Backend.Shared.csproj" />
   </ItemGroup>
 
 </Project>

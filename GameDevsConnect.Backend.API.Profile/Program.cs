@@ -1,5 +1,3 @@
-using GameDevsConnect.Backend.Shared.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -10,20 +8,18 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GDCDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
-});
+builder.Services.AddDbContext<GDCDbContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("GDC")); });
 
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -32,6 +28,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.MapEndpointsV1();
+
+app.Use(async (context, next) =>
+{
+    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+    {
+        Public = true,
+        MaxAge = TimeSpan.FromSeconds(30)
+    };
+
+    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+    await next();
+});
 
 app.Run();

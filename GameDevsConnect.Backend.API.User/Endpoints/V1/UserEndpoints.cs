@@ -7,35 +7,33 @@ public static class UserEndpoints
         var group = app.MapGroup("api/v1/user");
 
         // Get all User IDs
-        group.MapGet("", async ([FromServices] IUserService service) =>
+        group.MapGet("", async ([FromServices] IUserRepository repo) =>
         {
-            return await service.GetIdsAsync();
-        })
-        .WithName("UserV1")
-        .Produces<APIResponse>(StatusCodes.Status200OK);
+            return await repo.GetIdsAsync();
+        });
 
         // Get a User by ID
-        group.MapGet("{id}", async ([FromServices] IUserService service, [FromRoute] string id) =>
+        group.MapGet("{id}", async ([FromServices] IUserRepository repo, [FromRoute] string id) =>
         {
-            return await service.GetAsync(id);
+            return await repo.GetAsync(id);
         });
 
         // Add a User
-        group.MapPost("add", async ([FromServices] IUserService service, [FromBody] UserModel user) =>
+        group.MapPost("add", async ([FromServices] IUserRepository repo, [FromBody] UserModel user) =>
         {
-            return await service.AddAsync(user);
+            return await repo.AddAsync(user);
         });
 
         // Update a User
-        group.MapPut("update", async ([FromServices] IUserService service, [FromBody] UserModel user) =>
+        group.MapPut("update", async ([FromServices] IUserRepository repo, [FromBody] UserModel user) =>
         {
-            return await service.UpdateAsync(user);
+            return await repo.UpdateAsync(user);
         });
 
         // Delete a User
-        group.MapDelete("delete/{id}", async ([FromServices] IUserService service, [FromRoute] string id) =>
+        group.MapDelete("delete/{id}", async ([FromServices] IUserRepository repo, [FromRoute] string id) =>
         {
-            return await service.DeleteAsync(id);
+            return await repo.DeleteAsync(id);
         });
     }
 }

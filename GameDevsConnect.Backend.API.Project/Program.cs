@@ -1,4 +1,4 @@
-using GameDevsConnect.Backend.Shared.Data;
+using GameDevsConnect.Backend.API.Project.Application.Repository.V1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +32,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.MapEndpointsV1();
 
 app.Run();
