@@ -1,5 +1,3 @@
-using GameDevsConnect.Backend.Shared.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -10,30 +8,45 @@ builder.Configuration.AddConfiguration(sharedConfiguration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GDCDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
-});
+builder.Services.AddDbContext<GDCDbContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("GDC")); });
 
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddHealthChecks();
+
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-// Configure the HTTP request pipeline.
+app.MapHealthChecks("_health");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-//app.UseMiddleware<AuthMiddleware>();
-
 app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.MapEndpointsV1();
+
+app.UseResponseCaching();
+
+app.Use(async (context, next) =>
+{
+    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+    {
+        Public = true,
+        MaxAge = TimeSpan.FromSeconds(30)
+    };
+
+    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+    await next();
+});
 
 app.Run();

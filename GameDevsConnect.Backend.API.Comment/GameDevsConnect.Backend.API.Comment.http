@@ -1,6 +1,0 @@
-@GameDevsConnect.Backend.API.Comment_HostAddress = http://localhost:5070
-
-GET {{GameDevsConnect.Backend.API.Comment_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

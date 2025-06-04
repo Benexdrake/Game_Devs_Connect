@@ -14,9 +14,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddHealthChecks();
+
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
+
+app.MapHealthChecks("_health");
 
 if (app.Environment.IsDevelopment())
 {
@@ -27,5 +33,20 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapEndpointsV1();
+
+app.UseResponseCaching();
+
+app.Use(async (context, next) =>
+{
+    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+    {
+        Public = true,
+        MaxAge = TimeSpan.FromSeconds(30)
+    };
+
+    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+    await next();
+});
 
 app.Run();

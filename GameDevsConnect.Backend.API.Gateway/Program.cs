@@ -1,19 +1,8 @@
-﻿using GameDevsConnect.Backend.API.Auth.Repository;
-using GameDevsConnect.Backend.API.Gateway.Repository;
-using GameDevsConnect.Backend.Shared;
-using GameDevsConnect.Backend.Shared.Data;
-using GameDevsConnect.Backend.Shared.Models;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get appsettings.json from Shared
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
 builder.Configuration.AddConfiguration(sharedConfiguration);
 
@@ -27,6 +16,8 @@ builder.Services.AddDbContext<GDCDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
 });
 
+builder.Services.AddHealthChecks();
+
 builder.AddServiceDefaults();
 
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("YARP"));
@@ -39,6 +30,8 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("_health");
 
 if (app.Environment.IsDevelopment())
 {
@@ -70,20 +63,21 @@ if (app.Environment.IsDevelopment())
             Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
         }
     }
-
 }
-
 
 app.Use(async (context, next) =>
 {
-    await next(context);
-    return;
+    if(app.Environment.IsDevelopment())
+    {
+        await next(context);
+        return;
+    }
 
-    string? apiKey = context.Request.Headers.Authorization;
+    string apiKey = context.Request.Headers.Authorization! + "";
 
-    //string? userId = context.Request.Headers["ID"];
-    string? expectedApiKey = app.Configuration["LoginApiKey"];
-    var endpoint = context.Request.Path.Value.ToLower();
+    string expectedApiKey = app.Configuration["LoginApiKey"]! + "";
+
+    var endpoint = context.Request.Path.Value!.ToLower() + "";
 
     if (string.IsNullOrEmpty(apiKey))
     {
@@ -91,116 +85,52 @@ app.Use(async (context, next) =>
         await context.Response.WriteAsync("Access Denied");
     }
 
-    if (!string.IsNullOrEmpty(endpoint) && (endpoint.Equals("/login") || endpoint.Equals("/logout")))
+    if (endpoint.Equals("/login"))
     {
-        if (!string.IsNullOrEmpty(expectedApiKey) && apiKey.Equals(expectedApiKey))
+        if (apiKey.Equals(expectedApiKey))
         {
             await next(context);
             return;
         }
+        else
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync("Access Denied");
+        }
     }
-
-    var repo = context.RequestServices.GetService<IAuthRepository>();
-    if (repo is null)
-        return;
-
-    var auth = await repo.AuthenticateAsync2(apiKey);
-
-    if (auth)
+    else if(endpoint.Equals("/logout"))
     {
         await next(context);
         return;
     }
 
-    //try
-    //{
-    //    var endpoint = context.Request.Path.Value.ToLower();
-    //    if (!string.IsNullOrEmpty(endpoint) && (endpoint.Equals("/login") || endpoint.Equals("/logout")))
-    //    {
-    //        string? apiKey = context.Request.Headers.Authorization;
-    //        string? expectedApiKey = app.Configuration["LoginApiKey"];
-    //        if (!string.IsNullOrEmpty(apiKey) && (!string.IsNullOrEmpty(expectedApiKey) && apiKey.Contains(expectedApiKey)))
-    //        {
-    //            await next(context);
-    //            return;
-    //        }
-    //    }
+    var repo = context.RequestServices.GetService<IAuthRepository>();
 
-    //    var repo = context.RequestServices.GetService<IAuthRepository>();
-    //    if (repo is null)
-    //        return;
+    if (repo is null)
+    {
+        Log.Error("Cant load AuthRepository Service");
+        return;
+    }
 
-    //    string? jwtTokenString = context.Request.Query["authModel"].FirstOrDefault();
+    var auth = await repo.AuthenticateAsync(apiKey);
 
-    //    if (string.IsNullOrEmpty(jwtTokenString))
-    //    {
-    //        context.Response.StatusCode = 400;
-    //        await context.Response.WriteAsync("Access Denied");
-    //        return;
-    //    }
+    if (auth.Success)
+    {
+        await next(context);
+        return;
+    }
 
-    //    var tokenHandler = new JwtSecurityTokenHandler();
-    //    SecurityToken? validatedToken = null;
-    //    ClaimsPrincipal? principal = null;
-
-    //    var tokenValidationParameters = new TokenValidationParameters
-    //    {
-    //        ValidateIssuerSigningKey = false,
-    //        ValidateIssuer = false,
-    //        ValidateAudience = false,
-    //        ClockSkew = TimeSpan.Zero
-    //    };
-
-    //    principal = tokenHandler.ValidateToken(jwtTokenString, tokenValidationParameters, out validatedToken);
-
-    //    if (validatedToken is JwtSecurityToken jwtToken)
-    //    {
-    //        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userid")?.Value;
-    //        var tokenClaim = jwtToken.RawData;
-    //        var expiresClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
-
-    //        if (userIdClaim == null || tokenClaim == null || expiresClaim == null)
-    //        {
-    //            context.Response.StatusCode = 400;
-    //            await context.Response.WriteAsync("Access Denied");
-    //            return;
-    //        }
-
-    //        if (long.TryParse(expiresClaim, out long expiresUnix))
-    //        {
-    //            var authModel = new AuthModel
-    //            {
-    //                UserId = userIdClaim,
-    //                Token = tokenClaim,
-    //                Expires = expiresUnix
-    //            };
-
-    //            var response = await repo.AuthenticateAsync(authModel);
-    //            if (response)
-    //            {
-    //                await next(context);
-    //                return;
-    //            }
-    //        }
-
-    //    }
-    //}
-    //catch (Exception ex)
-    //{
-    //    Log.Error(ex.Message.ToString());
-    //}
-
-    //context.Response.StatusCode = 400;
-    //await context.Response.WriteAsync("Access Denied");
+    context.Response.StatusCode = 400;
+    await context.Response.WriteAsync("Access Denied");
 });
 
-app.MapPost("/login", async (IAuthRepository repo, AuthModel auth) =>
+app.MapPost("/login/{token}", async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.UpsertAsync(auth);
     return "";
 });
 
-app.MapPost("/logout", async (IAuthRepository repo, AuthModel auth) =>
+app.MapPost("/logout", async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.DeleteAsync(auth);
     return "";
