@@ -1,14 +1,19 @@
 ﻿namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
 
-public class UserRepository(GDCDbContext context) : IUserRepository
+public class UserRepository(GDCDbContext context, IValidator<UserModel> userValidator ) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<AddUpdateDeleteUserResponse> AddAsync(UserModel user)
+    private readonly IValidator<UserModel> _userValidator = userValidator;
+
+    public async Task<AddUpdateDeleteUserResponse> AddAsync(UserModel user, CancellationToken token = default)
     {
         try
         {
             Message.Id = user.Id;
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+
+            await _userValidator.ValidateAsync(user, cancellation:token);
+
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id, token);
 
             if (dbUser is not null)
             {
@@ -16,8 +21,8 @@ public class UserRepository(GDCDbContext context) : IUserRepository
                 return new AddUpdateDeleteUserResponse(Message.NOTFOUND, false);
             }
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(user, token);
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE);
             return new AddUpdateDeleteUserResponse(Message.ADD, true);
@@ -29,12 +34,12 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<AddUpdateDeleteUserResponse> DeleteAsync(string id)
+    public async Task<AddUpdateDeleteUserResponse> DeleteAsync(string id, CancellationToken token = default)
     {
         try
         {
             Message.Id = id;
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
 
             if (dbUser is null)
             {
@@ -44,7 +49,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 
             _context.Users.Remove(dbUser);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.DELETE);
             return new AddUpdateDeleteUserResponse(Message.DELETE, true);
@@ -56,12 +61,12 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<GetUserByIdResponse> GetAsync(string id)
+    public async Task<GetUserByIdResponse> GetAsync(string id, CancellationToken token = default)
     {
         try
         {
             Message.Id = id;
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
 
             if (user is null)
             {
@@ -78,11 +83,11 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<GetUserIdsResponse> GetIdsAsync()
+    public async Task<GetUserIdsResponse> GetIdsAsync(CancellationToken token = default)
     {
         try
         {
-            var userIds = await _context.Users.Select(x => x.Id).ToArrayAsync();
+            var userIds = await _context.Users.Select(x => x.Id).ToArrayAsync(token);
 
             return new GetUserIdsResponse(null!, true, userIds);
         }
@@ -93,12 +98,12 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<AddUpdateDeleteUserResponse> UpdateAsync(UserModel user)
+    public async Task<AddUpdateDeleteUserResponse> UpdateAsync(UserModel user, CancellationToken token = default)
     {
         try
         {
             Message.Id = user.Id;
-            var dbUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
+            var dbUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id, token);
 
             if (dbUser is null)
             {
@@ -107,7 +112,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             }
 
             _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE);
             return new AddUpdateDeleteUserResponse(Message.UPDATE, true);

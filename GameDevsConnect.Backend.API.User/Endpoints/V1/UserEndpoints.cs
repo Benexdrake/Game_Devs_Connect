@@ -4,36 +4,41 @@ public static class UserEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("api/v1/user");
+        var group = app.MapGroup(ApiEndpoints.User.Group);
 
-        // Get all User IDs
-        group.MapGet("", async ([FromServices] IUserRepository repo) =>
+        group.MapGet(ApiEndpoints.User.GetIds, async ([FromServices] IUserRepository repo, CancellationToken token) =>
         {
-            return await repo.GetIdsAsync();
-        });
+            return await repo.GetIdsAsync(token);
+        })
+        .WithName(ApiEndpoints.User.MetaData.GetIds)
+        .Produces(StatusCodes.Status200OK);
 
-        // Get a User by ID
-        group.MapGet("{id}", async ([FromServices] IUserRepository repo, [FromRoute] string id) =>
+        group.MapGet(ApiEndpoints.User.Get, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
-            return await repo.GetAsync(id);
-        });
+            return await repo.GetAsync(id, token);
+        })
+        .WithName(ApiEndpoints.User.MetaData.Get)
+        .Produces(StatusCodes.Status200OK);
 
-        // Add a User
-        group.MapPost("add", async ([FromServices] IUserRepository repo, [FromBody] UserModel user) =>
+        group.MapPost(ApiEndpoints.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
         {
-            return await repo.AddAsync(user);
-        });
+            return await repo.AddAsync(user, token);
+        })
+        .WithName(ApiEndpoints.User.MetaData.Create)
+        .Produces(StatusCodes.Status200OK);
 
-        // Update a User
-        group.MapPut("update", async ([FromServices] IUserRepository repo, [FromBody] UserModel user) =>
+        group.MapPut(ApiEndpoints.User.Update, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
         {
-            return await repo.UpdateAsync(user);
-        });
+            return await repo.UpdateAsync(user, token);
+        })
+        .WithName(ApiEndpoints.User.MetaData.Update)
+        .Produces(StatusCodes.Status200OK);
 
-        // Delete a User
-        group.MapDelete("delete/{id}", async ([FromServices] IUserRepository repo, [FromRoute] string id) =>
+        group.MapDelete(ApiEndpoints.User.Delete, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
-            return await repo.DeleteAsync(id);
-        });
+            return await repo.DeleteAsync(id, token);
+        })
+        .WithName(ApiEndpoints.User.MetaData.Delete)
+        .Produces(StatusCodes.Status200OK);
     }
 }

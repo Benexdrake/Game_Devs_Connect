@@ -4,45 +4,55 @@ public static class RequestEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("api/v1/request");
+        var group = app.MapGroup(ApiEndpoints.Request.Group);
 
-        group.MapGet("", async ([FromServices] IRequestRepository repo) =>
+        group.MapGet(ApiEndpoints.Request.Get, async ([FromServices] IRequestRepository repo) =>
         {
             return await repo.GetIdsAsync();
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.Get)
+            .Produces(StatusCodes.Status200OK);
 
-        // Get Tags by Request Id
-        group.MapGet("{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
+        group.MapGet(ApiEndpoints.Request.GetByRequestId, async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
             return await repo.GetByIdAsync(id);
-        });
-        // Get Tags by Request Id
-        group.MapGet("full/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
+        })
+            .WithName(ApiEndpoints.Request.MetaData.GetByRequestId)
+            .Produces(StatusCodes.Status200OK);
+        
+        group.MapGet(ApiEndpoints.Request.GetFull, async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
             return await repo.GetFullByIdAsync(id);
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.GetFull)
+            .Produces(StatusCodes.Status200OK);
 
-        // Get Tags by Request Id
-        group.MapGet("user/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
+        group.MapGet(ApiEndpoints.Request.GetByUserId, async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
             return await repo.GetByUserIdAsync(id);
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.GetByUserId)
+            .Produces(StatusCodes.Status200OK);
 
-        group.MapPost("add", async([FromServices]IRequestRepository repo, [FromBody] AddRequest add) =>
+        group.MapPost(ApiEndpoints.Request.Create, async([FromServices]IRequestRepository repo, [FromBody] AddRequest add) =>
         {
             return await repo.AddAsync(add);
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.Create)
+            .Produces(StatusCodes.Status200OK);
 
-        // Update a Tag
-        group.MapPut("update", async ([FromServices] IRequestRepository repo, [FromBody] RequestModel request) =>
+        group.MapPut(ApiEndpoints.Request.Update, async ([FromServices] IRequestRepository repo, [FromBody] RequestModel request) =>
         {
             return await repo.UpdateAsync(request);
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.Update)
+            .Produces(StatusCodes.Status200OK);
 
-        // Delete a Tag
-        group.MapDelete("delete/{id}", async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
+        group.MapDelete(ApiEndpoints.Request.Delete, async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
             return await repo.DeleteAsync(id);
-        });
+        })
+            .WithName(ApiEndpoints.Request.MetaData.Delete)
+            .Produces(StatusCodes.Status200OK);
     }
 }

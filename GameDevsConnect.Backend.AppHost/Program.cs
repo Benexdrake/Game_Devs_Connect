@@ -1,8 +1,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-string sqlPW = builder.Configuration["SQL"];
+string sqlPW = builder.Configuration["SQL"]!;
 
-int replicas = 3;
+int replicas = 1;
 
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 

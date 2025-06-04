@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -124,17 +125,21 @@ app.Use(async (context, next) =>
     await context.Response.WriteAsync("Access Denied");
 });
 
-app.MapPost("/login/{token}", async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+app.MapPost(ApiEndpoints.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.UpsertAsync(auth);
-    return "";
-});
+    return;
+})
+.WithName(ApiEndpoints.Gateway.MetaData.Login)
+.Produces(StatusCodes.Status200OK);
 
-app.MapPost("/logout", async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+app.MapPost(ApiEndpoints.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.DeleteAsync(auth);
-    return "";
-});
+    return;
+})
+.WithName(ApiEndpoints.Gateway.MetaData.Logout)
+.Produces(StatusCodes.Status200OK);
 
 app.MapReverseProxy();
 

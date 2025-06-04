@@ -1,42 +1,43 @@
-﻿using GameDevsConnect.Backend.API.Project.Contract.Requests;
-
-namespace GameDevsConnect.Backend.API.Project.Endpoints.V1
+﻿namespace GameDevsConnect.Backend.API.Project.Endpoints.V1;
+public static class ProjectEndpoints
 {
-    public static class ProjectEndpoints
+    public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        public static void MapEndpointsV1(this IEndpointRouteBuilder app)
+        var group = app.MapGroup(ApiEndpoints.Project.Group);
+
+        group.MapGet(ApiEndpoints.Project.Get, async ([FromServices] IProjectRepository repo) =>
         {
-            var group = app.MapGroup("api/v1/project");
+            return await repo.GetIdsAsync();
+        })
+        .WithName(ApiEndpoints.Project.MetaData.Get)
+        .Produces(StatusCodes.Status200OK);
 
-            // Get Projects by Request Id
-            group.MapGet("", async ([FromServices] IProjectRepository repo) =>
-            {
-                return await repo.GetIdsAsync();
-            });
+        group.MapGet(ApiEndpoints.Project.GetByRequestId, async ([FromServices] IProjectRepository repo, [FromRoute] string id) =>
+        {
+            return await repo.GetByIdAsync(id);
+        })
+        .WithName(ApiEndpoints.Project.MetaData.GetByRequestId)
+        .Produces(StatusCodes.Status200OK);
 
-            // Get Projects by Request Id
-            group.MapGet("{id}", async ([FromServices] IProjectRepository repo, [FromRoute] string id) =>
-            {
-                return await repo.GetByIdAsync(id);
-            });
+        group.MapPost(ApiEndpoints.Project.Create, async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest addRequest) =>
+        {
+            return await repo.AddAsync(addRequest);
+        })
+        .WithName(ApiEndpoints.Project.MetaData.Create)
+        .Produces(StatusCodes.Status200OK);
 
-            // Add a Project
-            group.MapPost("add", async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest addRequest) =>
-            {
-                return await repo.AddAsync(addRequest);
-            });
+        group.MapPut(ApiEndpoints.Project.Update, async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest updateRequest) =>
+        {
+            return await repo.UpdateAsync(updateRequest);
+        })
+        .WithName(ApiEndpoints.Project.MetaData.Update)
+        .Produces(StatusCodes.Status200OK);
 
-            // Update a Project
-            group.MapPut("update", async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest updateRequest) =>
-            {
-                return await repo.UpdateAsync(updateRequest);
-            });
-
-            // Delete a Project
-            group.MapDelete("delete/{id}", async ([FromServices] IProjectRepository repo, [FromRoute] string id) =>
-            {
-                return await repo.DeleteAsync(id);
-            });
-        }
+        group.MapDelete(ApiEndpoints.Project.Delete, async ([FromServices] IProjectRepository repo, [FromRoute] string id) =>
+        {
+            return await repo.DeleteAsync(id);
+        })
+        .WithName(ApiEndpoints.Project.MetaData.Delete)
+        .Produces(StatusCodes.Status200OK);
     }
 }

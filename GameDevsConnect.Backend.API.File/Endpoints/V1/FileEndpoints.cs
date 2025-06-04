@@ -6,43 +6,49 @@ namespace GameDevsConnect.Backend.API.File.Endpoints.V1
     {
         public static void MapEndpointsV1(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("api/v1/file");
+            var group = app.MapGroup(ApiEndpoints.File.Group);
 
-            // Get all Files
-            group.MapGet("owner/{id}", async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.File.GetByOwnerId, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetIdsByOwnerIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.GetByOwnerId)
+            .Produces(StatusCodes.Status200OK);
 
-            // Get File by Id
-            group.MapGet("{id}", async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.File.Get, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetByIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.Get)
+            .Produces(StatusCodes.Status200OK);
 
-            // Get Files by Request Id
-            group.MapGet("request/{id}", async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.File.GetByRequestId, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetByRequestIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.GetByRequestId)
+            .Produces(StatusCodes.Status200OK);
 
-            // Add a File
-            group.MapPost("add", async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
+            group.MapPost(ApiEndpoints.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
             {
                 return await rep.AddAsync(File);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.Create)
+            .Produces(StatusCodes.Status200OK);
 
-            // Update a File
-            group.MapPut("update", async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
+            group.MapPut(ApiEndpoints.File.Update, async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
             {
                 return await rep.UpdateAsync(File);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.Update)
+            .Produces(StatusCodes.Status200OK);
 
-            // Delete a File
-            group.MapDelete("delete/{id}", async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
+            group.MapDelete(ApiEndpoints.File.Delete, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
             {
                 return await rep.DeleteAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.File.MetaData.Delete)
+            .Produces(StatusCodes.Status200OK);
         }
     }
 }

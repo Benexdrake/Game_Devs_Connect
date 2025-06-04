@@ -4,43 +4,49 @@
     {
         public static void MapEndpointsV1(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("api/v1/comment");
+            var group = app.MapGroup(ApiEndpoints.Comment.Group);
 
-            // Get all Comments
-            group.MapGet("count/{id}", async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.Comment.Count, async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetCountByRequestIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.MetaData.Count)
+            .Produces(StatusCodes.Status200OK);
 
-            // Get Comments by Request Id
-            group.MapGet("{id}", async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.Comment.Get, async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetByIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.MetaData.Get)
+            .Produces(StatusCodes.Status200OK);
 
-            // Get Comments by Request Id
-            group.MapGet("request/{id}", async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
+            group.MapGet(ApiEndpoints.Comment.GetByRequestId, async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
             {
                 return await rep.GetIdsByRequestIdAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.MetaData.GetByRequestId)
+            .Produces(StatusCodes.Status200OK);
 
-            // Add a Comment
-            group.MapPost("add", async ([FromServices] ICommentRepository rep, [FromBody] CommentModel comment) =>
+            group.MapPost(ApiEndpoints.Comment.Create, async ([FromServices] ICommentRepository rep, [FromBody] CommentModel comment) =>
             {
                 return await rep.AddAsync(comment);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.Create)
+            .Produces(StatusCodes.Status200OK);
 
-            // Update a Comment
-            group.MapPut("update", async ([FromServices] ICommentRepository rep, [FromBody] CommentModel comment) =>
+            group.MapPut(ApiEndpoints.Comment.Update, async ([FromServices] ICommentRepository rep, [FromBody] CommentModel comment) =>
             {
                 return await rep.UpdateAsync(comment);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.MetaData.Update)
+            .Produces(StatusCodes.Status200OK);
 
-            // Delete a Comment
-            group.MapDelete("delete/{id}", async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
+            group.MapDelete(ApiEndpoints.Comment.Delete, async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>
             {
                 return await rep.DeleteAsync(id);
-            });
+            })
+            .WithName(ApiEndpoints.Comment.MetaData.Delete)
+            .Produces(StatusCodes.Status200OK);
         }
     }
 }
