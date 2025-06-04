@@ -5,7 +5,9 @@ public class UserValidator : AbstractValidator<UserModel>
     public UserValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty();
+            .NotEmpty()
+            .WithMessage("ID cant be empty")
+            .MinimumLength(8).WithMessage("Should be minimum 8 chars");
 
         RuleFor(x => x.Username)
             .NotEmpty();

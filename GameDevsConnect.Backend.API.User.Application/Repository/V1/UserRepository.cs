@@ -11,7 +11,17 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
         {
             Message.Id = user.Id;
 
-            await _userValidator.ValidateAsync(user, cancellation:token);
+            var valid = _userValidator.Validate(user);
+
+            if(!valid.IsValid)
+            {
+                var errors = new List<string>();
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+                var message = string.Join("\n", errors);
+                Log.Error(message);
+                return new AddUpdateDeleteUserResponse(message, false);
+            }
 
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id, token);
 

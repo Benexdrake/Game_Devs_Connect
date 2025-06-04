@@ -23,7 +23,8 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddResponseCaching();
 
-builder.Services.AddValidatorsFromAssemblyContaining<IApplicationMarker>(ServiceLifetime.Singleton);
+//builder.Services.AddValidatorsFromAssemblyContaining<IApplicationMarker>(ServiceLifetime.Singleton);
+builder.Services.AddValidatorsFromAssembly(typeof(UserValidator).Assembly, includeInternalTypes: true);
 
 var app = builder.Build();
 
