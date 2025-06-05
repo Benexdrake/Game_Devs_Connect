@@ -3,7 +3,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<AddUpdateDeleteResponse> AddAsync(NotificationModel notification)
+    public async Task<ApiResponse> AddAsync(NotificationModel notification)
     {
         try
         {
@@ -14,23 +14,23 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
             if (notifivationDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteResponse(Message.EXIST, false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteResponse(Message.ADD, true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> DeleteAsync(string notificationId)
+    public async Task<ApiResponse> DeleteAsync(string notificationId)
     {
         try
         {
@@ -41,19 +41,19 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
             if (notifivationDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Notifications.Remove(notifivationDb);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -109,7 +109,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
 
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateAsync(string notificationId)
+    public async Task<ApiResponse> UpdateAsync(string notificationId)
     {
         try
         {
@@ -120,7 +120,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
             if (notificationDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             if (notificationDb.Seen == false)
@@ -131,12 +131,12 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
             }
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

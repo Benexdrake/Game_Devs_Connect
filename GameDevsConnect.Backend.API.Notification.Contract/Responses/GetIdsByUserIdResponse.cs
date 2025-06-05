@@ -1,8 +1,8 @@
-﻿namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
+﻿using GameDevsConnect.Backend.Shared.Responses;
 
-public class GetIdsByUserIdResponse(string message, bool status, string[] ids)
+namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
+
+public class GetIdsByUserIdResponse(string message, bool status, string[] ids) : ApiResponse(message, status)
 {
-    public string Message { get; set; } = message;
-    public bool Status { get; set; } = status;
     public string[] Ids { get; set; } = ids;
 }

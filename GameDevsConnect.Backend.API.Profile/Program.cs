@@ -22,7 +22,7 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.MapHealthChecks("_health");
+app.MapHealthChecks(ApiEndpoints.Health);
 
 if (app.Environment.IsDevelopment())
 {

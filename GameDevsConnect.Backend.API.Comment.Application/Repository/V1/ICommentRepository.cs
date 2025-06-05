@@ -2,21 +2,15 @@
 
 public interface ICommentRepository
 {
-    // Get Count from Comments by Parent ID
     Task<GetCountByRequestId> GetCountByRequestIdAsync(string requestId);
 
-    // Get Comment Ids by Request ID
     Task<GetIdsByRequestId> GetIdsByRequestIdAsync(string requestId);
 
-    // Get Comment by ID
     Task<GetById> GetByIdAsync(string commentId);
 
-    // Add Comment
-    Task<AddUpdateDeleteResponse> AddAsync(CommentModel comment);
+    Task<ApiResponse> AddAsync(CommentModel comment);
 
-    // Update Comment
-    Task<AddUpdateDeleteResponse> UpdateAsync(CommentModel comment);
+    Task<ApiResponse> UpdateAsync(CommentModel comment);
 
-    // Delete Comment
-    Task<AddUpdateDeleteResponse> DeleteAsync(string commentId);
+    Task<ApiResponse> DeleteAsync(string commentId);
 }

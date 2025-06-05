@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GameDevsConnect.Backend.API.Azure.Endpoints.V1;
 public static class BlobEndpoints

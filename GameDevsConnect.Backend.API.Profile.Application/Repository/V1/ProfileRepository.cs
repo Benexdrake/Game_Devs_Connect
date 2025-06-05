@@ -6,7 +6,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<AddUpdateDeleteResponse> AddAsync(ProfileModel profile)
+    public async Task<ApiResponse> AddAsync(ProfileModel profile)
     {
         try
         {
@@ -16,20 +16,20 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             if (dbProfile is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteResponse(Message.EXIST, false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteResponse(Message.ADD, true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> DeleteAsync(string id)
+    public async Task<ApiResponse> DeleteAsync(string id)
     {
         try
         {
@@ -38,19 +38,19 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             if (dbProfile is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Profiles.Remove(dbProfile);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -107,7 +107,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateAsync(ProfileModel profile)
+    public async Task<ApiResponse> UpdateAsync(ProfileModel profile)
     {
         try
         {
@@ -117,19 +117,19 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             if (dbProfile is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Profiles.Update(profile);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

@@ -4,7 +4,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<AddUpdateDeleteRequestResponse> AddAsync(AddRequest addRequest)
+    public async Task<ApiResponse> AddAsync(AddRequest addRequest)
     {
         try
         {
@@ -14,7 +14,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (requestDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteRequestResponse(Message.EXIST,false);
+                return new ApiResponse(Message.EXIST,false);
             }
 
             await _context.Requests.AddAsync(addRequest.Request!);
@@ -27,16 +27,16 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteRequestResponse(Message.ADD, true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteRequestResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteRequestResponse> DeleteAsync(string id)
+    public async Task<ApiResponse> DeleteAsync(string id)
     {
         try
         {
@@ -46,19 +46,19 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (request is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteRequestResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Requests.Remove(request);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteRequestResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteRequestResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -111,7 +111,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
         }
     }
 
-    public async Task<AddUpdateDeleteRequestResponse> UpdateAsync(RequestModel request)
+    public async Task<ApiResponse> UpdateAsync(RequestModel request)
     {
         try
         {
@@ -120,19 +120,19 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (Dbrequest is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteRequestResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Requests.Update(request);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteRequestResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteRequestResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 

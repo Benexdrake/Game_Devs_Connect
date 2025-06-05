@@ -3,7 +3,7 @@
 public interface ITagRepository
 {
     Task<GetTagsResponse> GetAsync();
-    Task<AddUpdateDeleteTagResponse> AddAsync(TagModel tag);
-    Task<AddUpdateDeleteTagResponse> UpdateAsync(TagModel tag);
-    Task<AddUpdateDeleteTagResponse> DeleteAsync(int id);
+    Task<ApiResponse> AddAsync(TagModel tag);
+    Task<ApiResponse> UpdateAsync(TagModel tag);
+    Task<ApiResponse> DeleteAsync(int id);
 }

@@ -3,7 +3,7 @@
 public class ProjectRepository(GDCDbContext context) : IProjectRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<AddUpdateDeleteResponse> AddAsync(UpsertRequest addRequest)
+    public async Task<ApiResponse> AddAsync(UpsertRequest addRequest)
     {
         try
         {
@@ -12,23 +12,23 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             if(dbProject is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteResponse(Message.EXIST, false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             await _context.Projects.AddAsync(addRequest.Project);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch(Exception ex) 
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> DeleteAsync(string id)
+    public async Task<ApiResponse> DeleteAsync(string id)
     {
         try
         {
@@ -38,19 +38,19 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             if (project is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Projects.Remove(project!);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -90,7 +90,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateAsync(UpsertRequest updateRequest)
+    public async Task<ApiResponse> UpdateAsync(UpsertRequest updateRequest)
     {
         try
         {
@@ -99,19 +99,19 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             if (DbProject is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Projects.Update(updateRequest.Project);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch(Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

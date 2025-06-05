@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Azure.Contract.Responses;
-using GameDevsConnect.Backend.API.Azure.Services;
-
-namespace GameDevsConnect.Backend.API.Azure.Repository;
+﻿namespace GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
 public class BlobRepository(IBlobStorageService service) : IBlobRepository
 {
     private readonly IBlobStorageService _service = service;
@@ -27,7 +24,7 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UploadBlob(IFormFile formFile, string containerName, string fileName)
+    public async Task<ApiResponse> UploadBlob(IFormFile formFile, string containerName, string fileName)
     {
         try
         {
@@ -36,19 +33,19 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
             if(!status)
             {
                 Log.Error(result);
-                return new AddUpdateDeleteResponse(result, false);
+                return new ApiResponse(result, false);
             }
 
-            return new AddUpdateDeleteResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> RemoveBlob(string fileName, string containerName)
+    public async Task<ApiResponse> RemoveBlob(string fileName, string containerName)
     {
         try
         {
@@ -57,19 +54,19 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
             if (!status)
             {
                 Log.Error(result);
-                return new AddUpdateDeleteResponse(result, false);
+                return new ApiResponse(result, false);
             }
 
-            return new AddUpdateDeleteResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateBlob(IFormFile formFile, string containerName, string fileName)
+    public async Task<ApiResponse> UpdateBlob(IFormFile formFile, string containerName, string fileName)
     {
         try
         {
@@ -78,15 +75,15 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
             if (!status)
             {
                 Log.Error(result);
-                return new AddUpdateDeleteResponse(result, false);
+                return new ApiResponse(result, false);
             }
 
-            return new AddUpdateDeleteResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

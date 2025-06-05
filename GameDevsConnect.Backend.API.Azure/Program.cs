@@ -1,3 +1,5 @@
+using GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -21,7 +23,7 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.MapHealthChecks("_health");
+app.MapHealthChecks(ApiEndpoints.Health);
 
 if (app.Environment.IsDevelopment())
 {

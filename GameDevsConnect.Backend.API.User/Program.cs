@@ -1,8 +1,3 @@
-using FluentValidation;
-using GameDevsConnect.Backend.API.User.Application;
-using GameDevsConnect.Backend.API.User.Application.Validators;
-using Microsoft.Extensions.DependencyInjection;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -23,14 +18,13 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddResponseCaching();
 
-//builder.Services.AddValidatorsFromAssemblyContaining<IApplicationMarker>(ServiceLifetime.Singleton);
 builder.Services.AddValidatorsFromAssembly(typeof(UserValidator).Assembly, includeInternalTypes: true);
 
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.MapHealthChecks("_health");
+app.MapHealthChecks(ApiEndpoints.Health);
 
 if (app.Environment.IsDevelopment())
 {
@@ -43,8 +37,6 @@ app.UseHttpsRedirection();
 app.MapEndpointsV1();
 
 app.UseResponseCaching();
-
-app.UseMiddleware<ValidationMappingMiddleware>();
 
 app.Use(async (context, next) =>
 {

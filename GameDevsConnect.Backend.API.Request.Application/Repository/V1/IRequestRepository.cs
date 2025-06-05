@@ -6,7 +6,7 @@ public interface IRequestRepository
     Task<GetByIdResponse> GetByIdAsync(string id);
     Task<GetFullResponse> GetFullByIdAsync(string id);
     Task<GetIdsResponse> GetByUserIdAsync(string userId);
-    Task<AddUpdateDeleteRequestResponse> AddAsync(AddRequest addRequest);
-    Task<AddUpdateDeleteRequestResponse> UpdateAsync(RequestModel request);
-    Task<AddUpdateDeleteRequestResponse> DeleteAsync(string id);
+    Task<ApiResponse> AddAsync(AddRequest addRequest);
+    Task<ApiResponse> UpdateAsync(RequestModel request);
+    Task<ApiResponse> DeleteAsync(string id);
 }

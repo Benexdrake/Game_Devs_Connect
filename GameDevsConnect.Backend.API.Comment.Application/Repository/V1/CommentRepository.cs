@@ -4,7 +4,7 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<AddUpdateDeleteResponse> AddAsync(CommentModel comment)
+    public async Task<ApiResponse> AddAsync(CommentModel comment)
     {
         try
         {
@@ -14,23 +14,23 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
             if (commentDb != null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteResponse(Message.EXIST, false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteResponse(Message.ADD, true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> DeleteAsync(string commentId)
+    public async Task<ApiResponse> DeleteAsync(string commentId)
     {
         try
         {
@@ -41,19 +41,19 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
             if (commentDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Comments.Remove(commentDb);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message,false);
+            return new ApiResponse(ex.Message,false);
         }
 
     }
@@ -110,7 +110,7 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateAsync(CommentModel comment)
+    public async Task<ApiResponse> UpdateAsync(CommentModel comment)
     {
         try
         {
@@ -121,20 +121,20 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
             if (commentDB is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Comments.Update(comment);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
 
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

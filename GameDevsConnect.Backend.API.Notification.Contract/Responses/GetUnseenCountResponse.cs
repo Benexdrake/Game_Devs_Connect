@@ -1,8 +1,8 @@
-﻿namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
+﻿using GameDevsConnect.Backend.Shared.Responses;
 
-public class GetUnseenCountResponse(string message, bool status, int count)
+namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
+
+public class GetUnseenCountResponse(string message, bool status, int count) : ApiResponse(message, status)
 {
-    public string Message { get; set; } = message;
-    public bool Status { get; set; } = status;
     public int Count { get; set; } = count;
 }

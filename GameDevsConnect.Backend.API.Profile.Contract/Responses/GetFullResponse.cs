@@ -1,11 +1,10 @@
 ﻿using GameDevsConnect.Backend.Shared.Models;
+using GameDevsConnect.Backend.Shared.Responses;
 
 namespace GameDevsConnect.Backend.API.Profile.Contract.Responses;
 
-public class GetFullResponse(string message, bool status, UserModel user, ProfileModel profile)
+public class GetFullResponse(string message, bool status, UserModel user, ProfileModel profile) : ApiResponse(message, status)
 {
-    public string Message { get; set; } = message;
-    public bool Status { get; set; } = status;
     public UserModel User { get; set; } = user;
     public ProfileModel Profile { get; set; } = profile;
 }

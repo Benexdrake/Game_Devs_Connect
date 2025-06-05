@@ -3,6 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Net.Http.Headers;
 global using Serilog;
 
+global using GameDevsConnect.Backend.API.File.Application.Repository.V1;
 global using GameDevsConnect.Backend.API.File.Endpoints.V1;
 global using GameDevsConnect.Backend.Shared;
 global using GameDevsConnect.Backend.Shared.Data;

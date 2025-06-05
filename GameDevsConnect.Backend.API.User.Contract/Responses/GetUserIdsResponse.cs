@@ -1,8 +1,8 @@
-﻿namespace GameDevsConnect.Backend.API.User.Contract.Responses;
+﻿using GameDevsConnect.Backend.Shared.Responses;
 
-public class GetUserIdsResponse(string message, bool status, string[] userIds)
+namespace GameDevsConnect.Backend.API.User.Contract.Responses;
+
+public class GetUserIdsResponse(string message, bool status, string[] userIds) : ApiResponse(message, status)
 {
-    public string Message { get; set; } = message;
-    public bool Status { get; set; } = status;
     public string[] UserIds { get; set; } = userIds;
 }

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Serilog;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
 builder.Configuration.AddConfiguration(sharedConfiguration);
@@ -32,7 +28,7 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 
-app.MapHealthChecks("_health");
+app.MapHealthChecks(ApiEndpoints.Health);
 
 if (app.Environment.IsDevelopment())
 {

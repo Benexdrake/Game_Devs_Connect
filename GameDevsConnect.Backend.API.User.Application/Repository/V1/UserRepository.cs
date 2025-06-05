@@ -5,7 +5,7 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
     private readonly GDCDbContext _context = context;
     private readonly IValidator<UserModel> _userValidator = userValidator;
 
-    public async Task<AddUpdateDeleteUserResponse> AddAsync(UserModel user, CancellationToken token = default)
+    public async Task<ApiResponse> AddAsync(UserModel user, CancellationToken token = default)
     {
         try
         {
@@ -20,7 +20,7 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
                     errors.Add(error.ErrorMessage);
                 var message = string.Join("\n", errors);
                 Log.Error(message);
-                return new AddUpdateDeleteUserResponse(message, false);
+                return new ApiResponse(message, false);
             }
 
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id, token);
@@ -28,23 +28,23 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
             if (dbUser is not null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteUserResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             await _context.Users.AddAsync(user, token);
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteUserResponse(Message.ADD, true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteUserResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteUserResponse> DeleteAsync(string id, CancellationToken token = default)
+    public async Task<ApiResponse> DeleteAsync(string id, CancellationToken token = default)
     {
         try
         {
@@ -54,7 +54,7 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
             if (dbUser is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteUserResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Users.Remove(dbUser);
@@ -62,12 +62,12 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteUserResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteUserResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -108,7 +108,7 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
         }
     }
 
-    public async Task<AddUpdateDeleteUserResponse> UpdateAsync(UserModel user, CancellationToken token = default)
+    public async Task<ApiResponse> UpdateAsync(UserModel user, CancellationToken token = default)
     {
         try
         {
@@ -118,19 +118,19 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
             if (dbUser is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteUserResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteUserResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteUserResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

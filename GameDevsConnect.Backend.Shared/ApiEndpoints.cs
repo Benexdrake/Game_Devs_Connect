@@ -6,6 +6,8 @@
         private const string Version = "v1";
         private const string Base = $"{ApiBase}/{Version}";
 
+        public const string Health = "_health";
+
         public static class Azure
         {
             public const string GroupBlob = $"{Base}/{nameof(Azure)}/blob";

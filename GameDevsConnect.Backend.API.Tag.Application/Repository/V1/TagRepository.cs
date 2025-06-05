@@ -2,7 +2,7 @@
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<AddUpdateDeleteTagResponse> AddAsync(TagModel tag)
+    public async Task<ApiResponse> AddAsync(TagModel tag)
     {
         try
         {
@@ -13,23 +13,23 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteTagResponse(Message.EXIST,false);
+                return new ApiResponse(Message.EXIST,false);
             }
 
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteTagResponse(Message.ADD,true);
+            return new ApiResponse(Message.ADD,true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteTagResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteTagResponse> DeleteAsync(int id)
+    public async Task<ApiResponse> DeleteAsync(int id)
     {
         try
         {
@@ -39,19 +39,19 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteTagResponse(Message.NOTFOUND,false);
+                return new ApiResponse(Message.NOTFOUND,false);
             }
 
             _context.Tags.Remove(tagsDb);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteTagResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteTagResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -70,7 +70,7 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<AddUpdateDeleteTagResponse> UpdateAsync(TagModel tag)
+    public async Task<ApiResponse> UpdateAsync(TagModel tag)
     {
         try
         {
@@ -79,19 +79,19 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteTagResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             tagsDb.Tag = tag.Tag;
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteTagResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteTagResponse(ex.Message,false);
+            return new ApiResponse(ex.Message,false);
         }
     }
 }

@@ -1,16 +1,8 @@
 ﻿using GameDevsConnect.Backend.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameDevsConnect.Backend.Shared.Responses;
 
-namespace GameDevsConnect.Backend.API.File.Contract.Responses
+namespace GameDevsConnect.Backend.API.File.Contract.Responses;
+public class GetByIdResponse(string message, bool status, FileModel file) : ApiResponse(message, status)
 {
-    public class GetByIdResponse(string message, bool status, FileModel file)
-    {
-        public string Message { get; set; } = message;
-        public bool Status { get; set; } = status;
-        public FileModel File { get; set; } = file;
-    }
+    public FileModel File { get; set; } = file;
 }

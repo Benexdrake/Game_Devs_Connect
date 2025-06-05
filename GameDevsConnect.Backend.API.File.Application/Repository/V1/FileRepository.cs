@@ -4,7 +4,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<AddUpdateDeleteResponse> AddAsync(FileModel file)
+    public async Task<ApiResponse> AddAsync(FileModel file)
     {
         try
         {
@@ -15,23 +15,23 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             if (fileDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new AddUpdateDeleteResponse(Message.EXIST, false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             await _context.Files.AddAsync(file);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new AddUpdateDeleteResponse(null!, true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> DeleteAsync(string fileId)
+    public async Task<ApiResponse> DeleteAsync(string fileId)
     {
         try
         {
@@ -42,19 +42,19 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             if (fileDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Files.Remove(fileDb);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE);
-            return new AddUpdateDeleteResponse(Message.DELETE, true);
+            return new ApiResponse(Message.DELETE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -109,7 +109,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<AddUpdateDeleteResponse> UpdateAsync(FileModel file)
+    public async Task<ApiResponse> UpdateAsync(FileModel file)
     {
         try
         {
@@ -120,19 +120,19 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             if(fileDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new AddUpdateDeleteResponse(Message.NOTFOUND, false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Files.Update(file);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE);
-            return new AddUpdateDeleteResponse(Message.UPDATE, true);
+            return new ApiResponse(Message.UPDATE, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new AddUpdateDeleteResponse(ex.Message, false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }
