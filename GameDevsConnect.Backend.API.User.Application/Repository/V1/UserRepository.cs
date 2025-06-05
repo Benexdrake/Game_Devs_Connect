@@ -1,41 +1,36 @@
-﻿namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
+﻿using static GameDevsConnect.Backend.Shared.ApiEndpoints;
 
-public class UserRepository(GDCDbContext context, IValidator<UserModel> userValidator ) : IUserRepository
+namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
+
+public class UserRepository(GDCDbContext context) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
-    private readonly IValidator<UserModel> _userValidator = userValidator;
+    
 
     public async Task<ApiResponse> AddAsync(UserModel user, CancellationToken token = default)
     {
         try
         {
-            Message.Id = user.Id;
+            var userValidator = new UserValidator(_context, ValidationMode.Add);
 
-            var valid = _userValidator.Validate(user);
+            var valid = await userValidator.ValidateAsync(user, token);
 
             if(!valid.IsValid)
             {
                 var errors = new List<string>();
+                
                 foreach (var error in valid.Errors)
                     errors.Add(error.ErrorMessage);
-                var message = string.Join("\n", errors);
-                Log.Error(message);
-                return new ApiResponse(message, false);
-            }
 
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id, token);
-
-            if (dbUser is not null)
-            {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.VALIDATIONERROR(user.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(user.Id), false, [.. errors]);
             }
 
             await _context.Users.AddAsync(user, token);
             await _context.SaveChangesAsync(token);
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.ADD, true);
+            Log.Information(Message.ADD(user.Id));
+            return new ApiResponse(Message.ADD(user.Id), true);
         }
         catch (Exception ex)
         {
@@ -48,21 +43,20 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
     {
         try
         {
-            Message.Id = id;
             var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
 
             if (dbUser is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(id));
+                return new ApiResponse(Message.NOTFOUND(id), false);
             }
 
             _context.Users.Remove(dbUser);
 
             await _context.SaveChangesAsync(token);
 
-            Log.Information(Message.DELETE);
-            return new ApiResponse(Message.DELETE, true);
+            Log.Information(Message.DELETE(id));
+            return new ApiResponse(Message.DELETE(id), true);
         }
         catch (Exception ex)
         {
@@ -75,13 +69,12 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
     {
         try
         {
-            Message.Id = id;
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
 
             if (user is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new GetUserByIdResponse(Message.NOTFOUND, false, null!);
+                Log.Error(Message.NOTFOUND(id));
+                return new GetUserByIdResponse(Message.NOTFOUND(id), false, null!);
             }
 
             return new GetUserByIdResponse(null!, true, user!);
@@ -112,20 +105,26 @@ public class UserRepository(GDCDbContext context, IValidator<UserModel> userVali
     {
         try
         {
-            Message.Id = user.Id;
-            var dbUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id, token);
+            var userValidator = new UserValidator(_context, ValidationMode.Update);
 
-            if (dbUser is null)
+            var valid = await userValidator.ValidateAsync(user, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(user.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(user.Id), false, [.. errors]);
             }
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync(token);
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.UPDATE, true);
+            Log.Information(Message.UPDATE(user.Id));
+            return new ApiResponse(Message.UPDATE(user.Id), true);
         }
         catch (Exception ex)
         {

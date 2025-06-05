@@ -18,7 +18,7 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddResponseCaching();
 
-builder.Services.AddValidatorsFromAssembly(typeof(UserValidator).Assembly, includeInternalTypes: true);
+//builder.Services.AddValidatorsFromAssembly(typeof(UserValidator).Assembly, includeInternalTypes: true);
 
 var app = builder.Build();
 

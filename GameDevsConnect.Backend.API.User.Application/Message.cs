@@ -2,11 +2,10 @@
 
 internal static class Message
 {
-    internal static string Id { get; set; } = String.Empty;
-
-    internal static string NOTFOUND = $"User: {Id} not found";
-    internal static string EXIST = $"User: {Id} already exist";
-    internal static string ADD = $"User: {Id} Added";
-    internal static string UPDATE = $"User: {Id} Updated";
-    internal static string DELETE = $"User: {Id} Deleted";
+    internal static string NOTFOUND(string id) => $"User: '{id}' not found";
+    internal static string EXIST(string id) => $"User: '{id}' already exist";
+    internal static string ADD(string id) => $"User: '{id}' Added";
+    internal static string UPDATE(string id) => $"User: '{id}' Updated";
+    internal static string DELETE(string id) => $"User: '{id}' Deleted";
+    internal static string VALIDATIONERROR(string id) => $"User: '{id}' ValidationError";
 }
