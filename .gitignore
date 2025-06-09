@@ -10,3 +10,10 @@ packages
 Backend/Sql/gdc.db
 Backend/auth.db
 /GameDevsConnect.Backend.Shared/appsettings.json
+
+secrets.tfvars
+*terraform*
+!.terraform
+!terraform.tfvars
+.ssh
+errored.tfstate

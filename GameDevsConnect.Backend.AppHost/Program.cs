@@ -9,7 +9,6 @@ var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value:
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400,  password: sqlServerPassword)
                  .WithVolume("sqlserver-data", "/var/opt/mssql");
 
-#region Add Projects
 var gateway = builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnect-backend-api-gateway")
                      .WithHttpsEndpoint(port: 7000, name: "gateway")
                      .WithReplicas(replicas)
@@ -59,7 +58,6 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("gamedevsconnect-
        .WithHttpEndpoint(port: 7001, name: "azure")
        .WithReplicas(replicas)
        .WaitFor(gateway);
-#endregion
 
 //builder.AddDockerComposePublisher();
 
