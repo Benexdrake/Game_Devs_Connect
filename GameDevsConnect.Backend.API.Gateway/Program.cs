@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using GameDevsConnect.Backend.API.Gateway;
+using Yarp.ReverseProxy.Configuration;
+
+var builder = WebApplication.CreateBuilder(args);
 
 var sharedConfiguration = ConfigurationHelper.GetConfiguration();
 builder.Configuration.AddConfiguration(sharedConfiguration);
@@ -17,7 +20,19 @@ builder.Services.AddHealthChecks();
 
 builder.AddServiceDefaults();
 
-builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("YARP"));
+var azureUrl = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
+var commentUrl = Environment.GetEnvironmentVariable("COMMENT_URL") ?? "http://localhost:7002";
+var fileUrl = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7003";
+var notificationUrl = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7004";
+var projectUrl = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
+var profileUrl = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
+var requestUrl = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://localhost:7007";
+var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
+var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
+
+var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, builder.Configuration["X-Access-Key"]!);
+
+builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarpConfiguration.Clusters);
 
 builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 * 1024 * 1024; });
 
@@ -30,45 +45,56 @@ app.UseHttpsRedirection();
 
 app.MapHealthChecks(ApiEndpoints.Health);
 
-if (app.Environment.IsDevelopment())
+app.MapGet("/", () =>
 {
-    using (var scope = app.Services.CreateScope())
+    return new
     {
-        var serviceProvider = scope.ServiceProvider;
-        try
+        routes = yarpConfiguration.Routes,
+        clusters = yarpConfiguration.Clusters
+    };
+});
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    try
+    {
+        var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
+        var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
+
+        var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
+        var authCreated = await authDbContext.Database.EnsureCreatedAsync();
+
+        if (!gdcCreated)
         {
-            var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
-            var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
+            await gdcDbContext.Database.MigrateAsync();
+            var tags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
 
-            var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
-            var authCreated = await authDbContext.Database.EnsureCreatedAsync();
-
-            if (!gdcCreated)
-                gdcDbContext.Database.Migrate();
-            
-            if(!authCreated)
-                authDbContext.Database.Migrate();
-
-            var tags = new List<string>() {"2D","3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
-
-            tags.ForEach(t => gdcDbContext.Tags.Add(new TagModel() { Id=0, Tag=t }));
+            tags.ForEach(t => gdcDbContext.Tags.Add(new TagModel() { Id = 0, Tag = t }));
 
             await gdcDbContext.SaveChangesAsync();
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
-        }
+        
+        if(!authCreated)
+            await authDbContext.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
     }
 }
+//if (app.Environment.IsDevelopment())
+//{
+//}
 
 app.Use(async (context, next) =>
 {
-    if(app.Environment.IsDevelopment())
-    {
-        await next(context);
-        return;
-    }
+    await next(context);
+    return;
+    //if(app.Environment.IsDevelopment())
+    //{
+    //}
 
     string apiKey = context.Request.Headers.Authorization! + "";
 
@@ -120,6 +146,8 @@ app.Use(async (context, next) =>
     context.Response.StatusCode = 400;
     await context.Response.WriteAsync("Access Denied");
 });
+
+//app.MapGet("", () => "HELLO WORLD");
 
 app.MapPost(ApiEndpoints.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {

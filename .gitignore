@@ -11,9 +11,13 @@ Backend/Sql/gdc.db
 Backend/auth.db
 /GameDevsConnect.Backend.Shared/appsettings.json
 
-secrets.tfvars
 *terraform*
-!.terraform
-!terraform.tfvars
-.ssh
+secrets.tfvars
 errored.tfstate
+!terraform.tfvars
+!.terraform
+.terraform/*/.terraform
+.ssh
+acr_token
+acr.sh
+backend_config.tfvars

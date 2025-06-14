@@ -13,7 +13,7 @@ export default function Home()
         return <button onClick={() => signIn()}>Login</button>
 }
 
-export async function getServerSideProps(context:GetServerSidePropsContext)
-{
-  const tags = await axios.get('')
-}
+// export async function getServerSideProps(context:GetServerSidePropsContext)
+// {
+//   const tags = await axios.get('')
+// }

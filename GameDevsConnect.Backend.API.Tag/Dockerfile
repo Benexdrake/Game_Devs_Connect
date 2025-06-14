@@ -14,6 +14,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GameDevsConnect.Backend.API.Tag/GameDevsConnect.Backend.API.Tag.csproj", "GameDevsConnect.Backend.API.Tag/"]
 COPY ["GameDevsConnect.Backend.API.Tag.Application/GameDevsConnect.Backend.API.Tag.Application.csproj", "GameDevsConnect.Backend.API.Tag.Application/"]
+COPY ["GameDevsConnect.Backend.API.Tag.Contract/GameDevsConnect.Backend.API.Tag.Contract.csproj", "GameDevsConnect.Backend.API.Tag.Contract/"]
 COPY ["GameDevsConnect.Backend.Shared/GameDevsConnect.Backend.Shared.csproj", "GameDevsConnect.Backend.Shared/"]
 COPY ["GameDevsConnect.Backend.ServiceDefaults/GameDevsConnect.Backend.ServiceDefaults.csproj", "GameDevsConnect.Backend.ServiceDefaults/"]
 RUN dotnet restore "./GameDevsConnect.Backend.API.Tag/GameDevsConnect.Backend.API.Tag.csproj"

@@ -38,15 +38,32 @@ app.UseResponseCaching();
 
 app.Use(async (context, next) =>
 {
-    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+    if (app.Environment.IsDevelopment())
     {
-        Public = true,
-        MaxAge = TimeSpan.FromSeconds(30)
-    };
+        await next();
+        return;
+    }
 
-    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+    if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value == app.Configuration["X-Access-Key"])
+    {
+        context.Request.Headers["X-Access-Key"] = "-";
+        context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+        {
+            Public = true,
+            MaxAge = TimeSpan.FromSeconds(30)
+        };
 
-    await next();
+        context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+        await next();
+        return;
+    }
+
+    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+    await context.Response.WriteAsync("Access denied.");
+    return;
 });
+
+app.MapGet("", () => "Hello from Tag");
 
 app.Run();
