@@ -13,10 +13,11 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GameDevsConnect.Backend.API.Notification/GameDevsConnect.Backend.API.Notification.csproj", "GameDevsConnect.Backend.API.Notification/"]
+COPY ["GameDevsConnect.Backend.API.Configuration/GameDevsConnect.Backend.API.Configuration.csproj", "GameDevsConnect.Backend.API.Configuration/"]
+COPY ["GameDevsConnect.Backend.ServiceDefaults/GameDevsConnect.Backend.ServiceDefaults.csproj", "GameDevsConnect.Backend.ServiceDefaults/"]
+COPY ["GameDevsConnect.Backend.Shared/GameDevsConnect.Backend.Shared.csproj", "GameDevsConnect.Backend.Shared/"]
 COPY ["GameDevsConnect.Backend.API.Notification.Application/GameDevsConnect.Backend.API.Notification.Application.csproj", "GameDevsConnect.Backend.API.Notification.Application/"]
 COPY ["GameDevsConnect.Backend.API.Notification.Contract/GameDevsConnect.Backend.API.Notification.Contract.csproj", "GameDevsConnect.Backend.API.Notification.Contract/"]
-COPY ["GameDevsConnect.Backend.Shared/GameDevsConnect.Backend.Shared.csproj", "GameDevsConnect.Backend.Shared/"]
-COPY ["GameDevsConnect.Backend.ServiceDefaults/GameDevsConnect.Backend.ServiceDefaults.csproj", "GameDevsConnect.Backend.ServiceDefaults/"]
 RUN dotnet restore "./GameDevsConnect.Backend.API.Notification/GameDevsConnect.Backend.API.Notification.csproj"
 COPY . .
 WORKDIR "/src/GameDevsConnect.Backend.API.Notification"

@@ -51,6 +51,10 @@ app.MapGet("/", () =>
 {
     return new
     {
+        sqlUrl,
+        sqlAdminUsername,
+        sqlAdminPassword,
+        accessKey,
         routes = yarpConfiguration.Routes,
         clusters = yarpConfiguration.Clusters
     };

@@ -68,6 +68,22 @@ resource "azurerm_container_app" "gateway" {
        name = "USER_URL" 
        value = "https://${azurerm_container_app.user.latest_revision_fqdn}"
       }
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags

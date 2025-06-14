@@ -1,3 +1,49 @@
+# resource "azurerm_container_app" "vms" {
+#   for_each = local.containers
+#   name                         = "api-${each.value.name}-container"
+#   resource_group_name          = data.azurerm_resource_group.main.name
+#   container_app_environment_id = each.value.container_app_environment_id
+#   revision_mode = "Single"
+
+#   ingress {
+#     external_enabled = true
+#     target_port      = each.value.target_port
+#     transport        = "auto"
+#     traffic_weight {
+#       percentage = 100
+#       revision_suffix = "initial"
+#     }
+#   }
+
+#   template {
+#     container {
+#       name   = each.value.template.name
+#       image  = each.value.template.image
+#       cpu    = each.value.template.cpu
+#       memory = each.value.template.memory
+
+#       env {
+#         name = "X-Access-Key"
+#         value = local.access_key
+#       }
+#       env {
+#         name = "SQL_URL"
+#         value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+#       }
+#       env {
+#         name = "SQL_ADMIN_USERNAME"
+#         value = data.azurerm_mssql_server.main.administrator_login
+#       }
+#       env {
+#         name = "SQL_ADMIN_PASSWORD"
+#         value = "P@ssword1"
+#       }
+#     }
+#   }
+#   tags = var.tags
+# }
+
+
 // Azure
 resource "azurerm_container_app" "azure" {
   name                         = "api-${local.containers["azure"].name}-container"
@@ -21,6 +67,23 @@ resource "azurerm_container_app" "azure" {
       image  = local.containers["azure"].template.image
       cpu    = local.containers["azure"].template.cpu
       memory = local.containers["azure"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -50,8 +113,27 @@ resource "azurerm_container_app" "comment" {
       image  = local.containers["comment"].template.image
       cpu    = local.containers["comment"].template.cpu
       memory = local.containers["comment"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
+  
+
   tags = var.tags
 }
 // File
@@ -77,6 +159,23 @@ resource "azurerm_container_app" "file" {
       image  = local.containers["file"].template.image
       cpu    = local.containers["file"].template.cpu
       memory = local.containers["file"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -105,8 +204,26 @@ resource "azurerm_container_app" "notification" {
       image  = local.containers["notification"].template.image
       cpu    = local.containers["notification"].template.cpu
       memory = local.containers["notification"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
+
   tags = var.tags
 }
 
@@ -133,6 +250,23 @@ resource "azurerm_container_app" "profile" {
       image  = local.containers["profile"].template.image
       cpu    = local.containers["profile"].template.cpu
       memory = local.containers["profile"].template.memory
+    
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -161,6 +295,23 @@ resource "azurerm_container_app" "project" {
       image  = local.containers["project"].template.image
       cpu    = local.containers["project"].template.cpu
       memory = local.containers["project"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -189,6 +340,23 @@ resource "azurerm_container_app" "request" {
       image  = local.containers["request"].template.image
       cpu    = local.containers["request"].template.cpu
       memory = local.containers["request"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -217,6 +385,23 @@ resource "azurerm_container_app" "tag" {
       image  = local.containers["tag"].template.image
       cpu    = local.containers["tag"].template.cpu
       memory = local.containers["tag"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
@@ -245,6 +430,23 @@ resource "azurerm_container_app" "user" {
       image  = local.containers["user"].template.image
       cpu    = local.containers["user"].template.cpu
       memory = local.containers["user"].template.memory
+
+      env {
+        name = "X-Access-Key"
+        value = local.access_key
+      }
+      env {
+        name = "SQL_URL"
+        value = data.azurerm_mssql_server.main.fully_qualified_domain_name
+      }
+      env {
+        name = "SQL_ADMIN_USERNAME"
+        value = data.azurerm_mssql_server.main.administrator_login
+      }
+      env {
+        name = "SQL_ADMIN_PASSWORD"
+        value = "P@ssword1"
+      }
     }
   }
   tags = var.tags
