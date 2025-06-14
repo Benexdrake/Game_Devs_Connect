@@ -17,3 +17,7 @@ echo ">>>>> Creating Container and Deploy..."
 cd ../Admin_Dashboard
 echo ">>>>> Creating Dashboard and Deploy..."
 ./tf.sh apply -auto-approve
+
+cd ../../5.\ Output/
+echo ">>>>> Creating Dashboard and Deploy..."
+./tf.sh apply -auto-approve
