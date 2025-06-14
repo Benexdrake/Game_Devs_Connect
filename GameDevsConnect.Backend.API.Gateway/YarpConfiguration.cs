@@ -25,7 +25,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 new Dictionary<string, string>
                 {
                     { "RequestHeader", "X-Access-Key" },
-                    { "Set", access_Key }
+                    { "Set", access_Key ?? "" }
             }};
 
             return

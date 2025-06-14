@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Gateway.Contract", "GameDevsConnect.Backend.API.Gateway.Contract\GameDevsConnect.Backend.API.Gateway.Contract.csproj", "{A76E7494-20AB-4F5B-A22E-2FE796C2EDDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Configuration", "GameDevsConnect.Backend.API.Configuration\GameDevsConnect.Backend.API.Configuration.csproj", "{AFE0A3B5-53EA-43E4-B105-069570665237}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -375,6 +377,14 @@ Global
 		{A76E7494-20AB-4F5B-A22E-2FE796C2EDDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A76E7494-20AB-4F5B-A22E-2FE796C2EDDE}.Release|x64.ActiveCfg = Release|Any CPU
 		{A76E7494-20AB-4F5B-A22E-2FE796C2EDDE}.Release|x64.Build.0 = Release|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Debug|x64.Build.0 = Debug|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Release|x64.ActiveCfg = Release|Any CPU
+		{AFE0A3B5-53EA-43E4-B105-069570665237}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

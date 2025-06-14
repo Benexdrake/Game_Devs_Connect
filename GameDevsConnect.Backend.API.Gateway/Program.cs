@@ -1,36 +1,38 @@
 ﻿using GameDevsConnect.Backend.API.Gateway;
-using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var sharedConfiguration = ConfigurationHelper.GetConfiguration();
-builder.Configuration.AddConfiguration(sharedConfiguration);
+var sqlUrl              = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
+var sqlAdminUsername    = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
+var sqlAdminPassword    = Environment.GetEnvironmentVariable("SQL_ADMIN_PASSWORD") ?? "P@ssword1";
+var accessKey           = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
+var azureUrl            = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
+var commentUrl          = Environment.GetEnvironmentVariable("COMMENT_URL") ?? "http://localhost:7002";
+var fileUrl             = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7003";
+var notificationUrl     = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7004";
+var projectUrl          = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
+var profileUrl          = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
+var requestUrl          = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://localhost:7007";
+var tagUrl              = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
+var userUrl             = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Auth"));
+    options.UseSqlServer($"Server={sqlUrl};Database=Auth;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
 });
 
 builder.Services.AddDbContext<GDCDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GDC"));
+    options.UseSqlServer($"Server={sqlUrl};Database=GDC;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
 });
 
 builder.Services.AddHealthChecks();
 
 builder.AddServiceDefaults();
 
-var azureUrl = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
-var commentUrl = Environment.GetEnvironmentVariable("COMMENT_URL") ?? "http://localhost:7002";
-var fileUrl = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7003";
-var notificationUrl = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7004";
-var projectUrl = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
-var profileUrl = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
-var requestUrl = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://localhost:7007";
-var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
-var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
 
-var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, builder.Configuration["X-Access-Key"]!);
+
+var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, accessKey);
 
 builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarpConfiguration.Clusters);
 

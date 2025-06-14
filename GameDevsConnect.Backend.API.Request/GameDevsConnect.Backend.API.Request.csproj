@@ -29,8 +29,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameDevsConnect.Backend.API.Request.Application\GameDevsConnect.Backend.API.Request.Application.csproj" />
-    <ProjectReference Include="..\GameDevsConnect.Backend.API.Request.Contract\GameDevsConnect.Backend.API.Request.Contract.csproj" />
+	  <ProjectReference Include="..\GameDevsConnect.Backend.API.Configuration\GameDevsConnect.Backend.API.Configuration.csproj" />
+	  <ProjectReference Include="..\GameDevsConnect.Backend.API.Request.Application\GameDevsConnect.Backend.API.Request.Application.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.ServiceDefaults\GameDevsConnect.Backend.ServiceDefaults.csproj" />
   </ItemGroup>
 
