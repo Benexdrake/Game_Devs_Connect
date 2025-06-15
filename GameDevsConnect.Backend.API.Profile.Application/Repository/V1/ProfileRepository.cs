@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
 
 public class ProfileRepository(GDCDbContext context) : IProfileRepository
 {
@@ -90,7 +88,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             }
 
             var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(dbProfile.UserId));
-            
+
             if (dbUser is null)
             {
                 Message.Id = dbProfile.UserId!;

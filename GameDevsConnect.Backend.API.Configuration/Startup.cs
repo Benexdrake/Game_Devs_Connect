@@ -1,4 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared;
+﻿using Asp.Versioning;
 using GameDevsConnect.Backend.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
@@ -18,16 +18,27 @@ public class Startup
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        var sqlUrl           = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
+        var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
         var sqlAdminUsername = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
         var sqlAdminPassword = Environment.GetEnvironmentVariable("SQL_ADMIN_PASSWORD") ?? "P@ssword1";
-        AccessKey            = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
+        AccessKey = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
 
         builder.Services.AddDbContext<GDCDbContext>(options => { options.UseSqlServer($"Server={sqlUrl};Database=GDC;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True"); });
         builder.Services.AddHealthChecks();
         builder.Services.AddResponseCaching();
 
         builder.Host.UseSerilog((context, configuration) => configuration.MinimumLevel.Information().WriteTo.Console());
+
+        builder.Services.AddApiVersioning(o =>
+        {
+            o.DefaultApiVersion = new ApiVersion(1);
+            o.ApiVersionReader = new UrlSegmentApiVersionReader();
+        })
+        .AddApiExplorer(o =>
+        {
+            o.GroupNameFormat = "'v'V";
+            o.SubstituteApiVersionInUrl = true;
+        });
 
         return builder;
     }

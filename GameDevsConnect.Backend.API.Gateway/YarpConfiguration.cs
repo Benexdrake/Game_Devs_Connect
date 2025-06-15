@@ -16,7 +16,7 @@ namespace GameDevsConnect.Backend.API.Gateway
         private readonly string access_Key = access_key;
 
         public RouteConfig[] Routes => GetRoutes();
-        public  ClusterConfig[] Clusters => GetClusters();
+        public ClusterConfig[] Clusters => GetClusters();
 
         public RouteConfig[] GetRoutes()
         {

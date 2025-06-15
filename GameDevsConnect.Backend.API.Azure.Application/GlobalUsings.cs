@@ -1,11 +1,9 @@
-﻿global using Microsoft.AspNetCore.Http;
-global using Microsoft.Extensions.Configuration;
-global using Serilog;
-
-global using Azure.Storage.Blobs;
+﻿global using Azure.Storage.Blobs;
 global using Azure.Storage.Blobs.Models;
 global using Azure.Storage.Sas;
-
 global using GameDevsConnect.Backend.API.Azure.Contract.Responses;
 global using GameDevsConnect.Backend.API.Azure.Services;
 global using GameDevsConnect.Backend.Shared.Responses;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.Configuration;
+global using Serilog;

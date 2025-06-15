@@ -53,7 +53,7 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message,false);
+            return new ApiResponse(ex.Message, false);
         }
 
     }
@@ -117,7 +117,7 @@ public class CommentRepository(GDCDbContext context) : ICommentRepository
             Message.Id = comment.Id;
 
             var commentDB = _context.Comments.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(comment.Id));
-            
+
             if (commentDB is null)
             {
                 Log.Error(Message.NOTFOUND);

@@ -1,4 +1,4 @@
-﻿using GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
 
 namespace GameDevsConnect.Backend.API.File.Endpoints.V1
 {

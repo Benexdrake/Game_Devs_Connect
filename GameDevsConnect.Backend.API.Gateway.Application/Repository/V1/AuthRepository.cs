@@ -36,7 +36,7 @@ public class AuthRepository(AuthDbContext context) : IAuthRepository
             Message.Id = auth.UserId;
             var authDb = await _context.Auth.AsNoTracking().FirstOrDefaultAsync(x => x.UserId.Equals(auth.UserId));
 
-            if(authDb is null)
+            if (authDb is null)
             {
                 Log.Error(Message.NOTFOUND);
                 return;
@@ -67,7 +67,7 @@ public class AuthRepository(AuthDbContext context) : IAuthRepository
 
             var expirationTime = DateTimeOffset.FromUnixTimeSeconds(authDb.Expires).UtcDateTime;
 
-            if(expirationTime < DateTime.UtcNow)
+            if (expirationTime < DateTime.UtcNow)
             {
                 Message.Id = authDb.UserId;
                 Log.Error(Message.EXPIRES);

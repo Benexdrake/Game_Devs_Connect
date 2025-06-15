@@ -1,4 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
 
 namespace GameDevsConnect.Backend.API.Notification.Endpoints.V1
 {

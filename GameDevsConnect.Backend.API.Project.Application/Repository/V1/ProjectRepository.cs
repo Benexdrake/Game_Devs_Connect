@@ -9,7 +9,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         {
             Message.Id = addRequest.Project!.Id;
             var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(addRequest.Project!.Id));
-            if(dbProject is not null)
+            if (dbProject is not null)
             {
                 Log.Error(Message.EXIST);
                 return new ApiResponse(Message.EXIST, false);
@@ -21,7 +21,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             Log.Information(Message.ADD);
             return new ApiResponse(null!, true);
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             Log.Error(ex.Message);
             return new ApiResponse(ex.Message, false);
@@ -61,7 +61,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             var projectIds = await _context.Projects.Select(x => x.Id).ToArrayAsync();
             return new GetIdsResponse(null!, true, projectIds);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Log.Error(ex.Message);
             return new GetIdsResponse(ex.Message, false, null!);
@@ -81,9 +81,9 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
                 return new GetResponse(Message.NOTFOUND, false, null!);
             }
 
-            return new GetResponse(null!, true, project);   
+            return new GetResponse(null!, true, project);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Log.Error(ex.Message);
             return new GetResponse(ex.Message, false, null!);
@@ -108,7 +108,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
             Log.Information(Message.UPDATE);
             return new ApiResponse(Message.UPDATE, true);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Log.Error(ex.Message);
             return new ApiResponse(ex.Message, false);

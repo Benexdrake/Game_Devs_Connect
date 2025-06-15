@@ -6,15 +6,15 @@ int replicas = 1;
 
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
-var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400,  password: sqlServerPassword)
+var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
                  .WithVolume("sqlserver-data", "/var/opt/mssql");
 
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")
        .WithHttpEndpoint(port: 7009, name: "user")
        .WithReplicas(replicas)
-       .WithEnvironment("SQL_URL","127.0.0.1, 1400")
-       .WithEnvironment("SQL_ADMIN_USERNAME","sa")
-       .WithEnvironment("SQL_ADMIN_PASSWORD",sqlPW)
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
        .WaitFor(sql);
 
 var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevsconnect-backend-api-tag")

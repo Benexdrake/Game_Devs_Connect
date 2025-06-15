@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Request.Endpoints.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
+
+namespace GameDevsConnect.Backend.API.Request.Endpoints.V1;
 
 public static class RequestEndpoints
 {
@@ -19,7 +21,7 @@ public static class RequestEndpoints
         })
             .WithName(ApiEndpoints.Request.MetaData.GetByRequestId)
             .Produces(StatusCodes.Status200OK);
-        
+
         group.MapGet(ApiEndpoints.Request.GetFull, async ([FromServices] IRequestRepository repo, [FromRoute] string id) =>
         {
             return await repo.GetFullByIdAsync(id);
@@ -34,7 +36,7 @@ public static class RequestEndpoints
             .WithName(ApiEndpoints.Request.MetaData.GetByUserId)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpoints.Request.Create, async([FromServices]IRequestRepository repo, [FromBody] AddRequest add) =>
+        group.MapPost(ApiEndpoints.Request.Create, async ([FromServices] IRequestRepository repo, [FromBody] AddRequest add) =>
         {
             return await repo.AddAsync(add);
         })

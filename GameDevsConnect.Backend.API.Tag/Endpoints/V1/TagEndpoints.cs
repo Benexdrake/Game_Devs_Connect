@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Tag.Endpoints.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
+
+namespace GameDevsConnect.Backend.API.Tag.Endpoints.V1;
 
 public static class TagEndpoints
 {

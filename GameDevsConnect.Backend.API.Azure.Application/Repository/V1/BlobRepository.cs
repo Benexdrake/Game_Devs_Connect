@@ -9,7 +9,7 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
         {
             var (url, status) = await _service.GetBlobUrl(fileName, containerName);
 
-            if(!status)
+            if (!status)
             {
                 Log.Error(url);
                 return new GetResponse(url, false, null!);
@@ -30,7 +30,7 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
         {
             var (result, status) = await _service.UploadBlob(formFile, containerName, fileName);
 
-            if(!status)
+            if (!status)
             {
                 Log.Error(result);
                 return new ApiResponse(result, false);

@@ -38,7 +38,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             Message.Id = fileId;
 
             var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId));
-            
+
             if (fileDb is null)
             {
                 Log.Error(Message.NOTFOUND);
@@ -65,7 +65,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             Message.Id = fileId;
 
             var file = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId));
-            
+
             if (file is null)
             {
                 Log.Error(Message.NOTFOUND);
@@ -86,7 +86,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         try
         {
             var ids = await _context.Files.Where(x => x.OwnerId.Equals(ownerID)).Select(x => x.Id).ToArrayAsync();
-            return new GetIdsbyId("",true,ids);
+            return new GetIdsbyId("", true, ids);
         }
         catch (Exception ex)
         {
@@ -116,8 +116,8 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             Message.Id = file.Id;
 
             var fileDb = await _context.Files.AsNoTracking().FirstOrDefaultAsync(x => x.Id == file.Id);
-            
-            if(fileDb is null)
+
+            if (fileDb is null)
             {
                 Log.Error(Message.NOTFOUND);
                 return new ApiResponse(Message.NOTFOUND, false);

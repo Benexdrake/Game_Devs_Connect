@@ -13,14 +13,14 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST,false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
-            return new ApiResponse(Message.ADD,true);
+            return new ApiResponse(Message.ADD, true);
         }
         catch (Exception ex)
         {
@@ -39,7 +39,7 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is null)
             {
                 Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND,false);
+                return new ApiResponse(Message.NOTFOUND, false);
             }
 
             _context.Tags.Remove(tagsDb);
@@ -91,7 +91,7 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message,false);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }

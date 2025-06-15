@@ -1,4 +1,4 @@
-﻿namespace Backend.Models;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Models;
 
 public partial class RequestLike
 {

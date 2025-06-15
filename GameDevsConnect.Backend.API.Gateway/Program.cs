@@ -1,20 +1,22 @@
-﻿using GameDevsConnect.Backend.API.Gateway;
+﻿using GameDevsConnect.Backend.API.Configuration;
+using GameDevsConnect.Backend.API.Configuration.Models;
+using GameDevsConnect.Backend.API.Gateway;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var sqlUrl              = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
-var sqlAdminUsername    = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
-var sqlAdminPassword    = Environment.GetEnvironmentVariable("SQL_ADMIN_PASSWORD") ?? "P@ssword1";
-var accessKey           = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
-var azureUrl            = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
-var commentUrl          = Environment.GetEnvironmentVariable("COMMENT_URL") ?? "http://localhost:7002";
-var fileUrl             = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7003";
-var notificationUrl     = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7004";
-var projectUrl          = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
-var profileUrl          = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
-var requestUrl          = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://localhost:7007";
-var tagUrl              = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
-var userUrl             = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
+var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
+var sqlAdminUsername = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
+var sqlAdminPassword = Environment.GetEnvironmentVariable("SQL_ADMIN_PASSWORD") ?? "P@ssword1";
+var accessKey = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
+var azureUrl = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
+var commentUrl = Environment.GetEnvironmentVariable("COMMENT_URL") ?? "http://localhost:7002";
+var fileUrl = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7003";
+var notificationUrl = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7004";
+var projectUrl = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
+var profileUrl = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
+var requestUrl = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://localhost:7007";
+var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
+var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
@@ -81,8 +83,8 @@ using (var scope = app.Services.CreateScope())
 
             await gdcDbContext.SaveChangesAsync();
         }
-        
-        if(!authCreated)
+
+        if (!authCreated)
             await authDbContext.Database.MigrateAsync();
     }
     catch (Exception ex)
@@ -127,7 +129,7 @@ app.Use(async (context, next) =>
             await context.Response.WriteAsync("Access Denied");
         }
     }
-    else if(endpoint.Equals("/logout"))
+    else if (endpoint.Equals("/logout"))
     {
         await next(context);
         return;

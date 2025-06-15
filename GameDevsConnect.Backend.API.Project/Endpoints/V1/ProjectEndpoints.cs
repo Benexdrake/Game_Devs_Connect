@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Project.Endpoints.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
+
+namespace GameDevsConnect.Backend.API.Project.Endpoints.V1;
 public static class ProjectEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)

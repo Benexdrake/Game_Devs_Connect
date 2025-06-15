@@ -14,12 +14,12 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             if (requestDb is not null)
             {
                 Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST,false);
+                return new ApiResponse(Message.EXIST, false);
             }
 
             await _context.Requests.AddAsync(addRequest.Request!);
 
-            foreach(var tag in addRequest.Tags!)
+            foreach (var tag in addRequest.Tags!)
             {
                 _context.RequestTags.Add(new RequestTag(addRequest.Request!.Id, tag.Id));
             }
@@ -146,7 +146,7 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
                 Log.Error(Message.NOTFOUND);
                 return new GetFullResponse(Message.NOTFOUND, false, null!, null!, null!, null!, null!);
             }
-            
+
             // get Tag IDs from RequestTags
             var requestTags = await _context.RequestTags.Where(rt => rt.RequestId!.Equals(id)).ToArrayAsync();
 
@@ -156,8 +156,8 @@ public class RequestRepository(GDCDbContext context) : IRequestRepository
             foreach (var rt in requestTags)
             {
                 var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == rt.TagId);
-                if(tag is null) continue;
-                    tags.Add(tag);
+                if (tag is null) continue;
+                tags.Add(tag);
             }
 
             // Project

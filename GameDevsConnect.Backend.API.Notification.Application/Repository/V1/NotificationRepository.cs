@@ -8,7 +8,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
         try
         {
             Message.Id = notification.Id;
-            
+
             var notifivationDb = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(notification.Id));
 
             if (notifivationDb is not null)

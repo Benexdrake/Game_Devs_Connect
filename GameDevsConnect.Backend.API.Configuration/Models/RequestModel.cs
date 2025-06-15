@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.Shared.Models;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Models;
 
 public partial class RequestModel
 {

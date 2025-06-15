@@ -26,7 +26,7 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
             var blobName = $"{fileName}{Path.GetExtension(formFile.FileName)}";
             var container = await GetBlobContainerClient(containerName);
 
-            if (container is null) 
+            if (container is null)
                 return ("Container is null", false);
 
             using var memoryStream = new MemoryStream();

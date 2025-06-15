@@ -1,4 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameDevsConnect.Backend.API.Azure.Endpoints.V1;
