@@ -4,7 +4,10 @@ public static class UserEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup(ApiEndpoints.User.Group);
+        var apiVersionSet = ApiEndpoints.GetVersionSet(app);
+
+        var group = app.MapGroup("api/v{apiVersion:apiVersion}/user")
+                       .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpoints.User.GetIds, async ([FromServices] IUserRepository repo, CancellationToken token) =>
         {

@@ -1,11 +1,9 @@
-﻿using static GameDevsConnect.Backend.Shared.ApiEndpoints;
-
-namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
 
 public class UserRepository(GDCDbContext context) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
-    
+
 
     public async Task<ApiResponse> AddAsync(UserModel user, CancellationToken token = default)
     {
@@ -15,10 +13,10 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 
             var valid = await userValidator.ValidateAsync(user, token);
 
-            if(!valid.IsValid)
+            if (!valid.IsValid)
             {
                 var errors = new List<string>();
-                
+
                 foreach (var error in valid.Errors)
                     errors.Add(error.ErrorMessage);
 

@@ -1,4 +1,3 @@
-using GameDevsConnect.Backend.API.Configuration;
 var start = new Startup();
 var builder = start.Build(args);
 

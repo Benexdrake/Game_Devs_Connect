@@ -22,7 +22,7 @@ public class UserValidator : AbstractValidator<UserModel>
                 .MustAsync(ValidateUserExist)
                 .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
         }
-        else if(mode == ValidationMode.Update)
+        else if (mode == ValidationMode.Update)
         {
             RuleFor(x => x.Id)
                 .MustAsync(ValidateUserDontExist)
