@@ -82,7 +82,7 @@ resource "azurerm_container_app" "gateway" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }

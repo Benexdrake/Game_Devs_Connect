@@ -36,7 +36,7 @@ resource "azurerm_container_app" "azure" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -82,7 +82,7 @@ resource "azurerm_container_app" "comment" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -128,7 +128,7 @@ resource "azurerm_container_app" "file" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -173,7 +173,7 @@ resource "azurerm_container_app" "notification" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -219,7 +219,7 @@ resource "azurerm_container_app" "profile" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -264,7 +264,7 @@ resource "azurerm_container_app" "project" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -309,7 +309,7 @@ resource "azurerm_container_app" "request" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -354,7 +354,7 @@ resource "azurerm_container_app" "tag" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }
@@ -399,7 +399,7 @@ resource "azurerm_container_app" "user" {
       }
       env {
         name = "SQL_ADMIN_PASSWORD"
-        value = "P@ssword1"
+        value = local.administrator_login_password
       }
     }
   }

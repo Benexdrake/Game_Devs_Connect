@@ -6,7 +6,7 @@ cd ../2.\ Network/
 echo ">>>>> Creating Network..."
 ./tf.sh apply -auto-approve
 
-cd ../3.\ SQL_Server_Public/
+cd ../3.\ SQL_Server/
 echo ">>>>> Creating SQL Server..."
 ./tf.sh apply -auto-approve
 
@@ -19,5 +19,5 @@ echo ">>>>> Creating Dashboard and Deploy..."
 ./tf.sh apply -auto-approve
 
 cd ../../5.\ Output/
-echo ">>>>> Creating Dashboard and Deploy..."
+echo ">>>>> Creating Output..."
 ./tf.sh apply -auto-approve

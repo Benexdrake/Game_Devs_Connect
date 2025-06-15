@@ -1,11 +1,3 @@
-private_key_path    = "../../.ssh/vm"
-
-subnets = {
-    "public"="snet-public",
-    "private"="snet-private",
-    "sql"="snet-sql-private"
-}
-
 dashboard = {
     name      = "admindashboard",
     interface = "public_dashboard",

@@ -26,10 +26,6 @@ variable "base_address_space" {
   type = string
 }
 
-variable "private_key_path" {
-  type = string
-}
-
 variable "tags" {
   type = map(string)
   default = {

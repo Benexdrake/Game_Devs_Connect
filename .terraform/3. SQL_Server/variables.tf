@@ -28,6 +28,7 @@ variable "administrator_login" {
 
 variable "administrator_login_password" {
   type = string
+  default = ""
 }
 
 variable "tags" {

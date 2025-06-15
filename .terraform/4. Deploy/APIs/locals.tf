@@ -100,5 +100,6 @@ locals {
         }
     }
   }
-    access_key = "uuid"
+    access_key = random_password.access_key.result
+    administrator_login_password = data.terraform_remote_state.db.outputs.mssql_admin_password
 }
