@@ -44,7 +44,7 @@ jobs:
           - path: Backend.API.User
             tag: backend_api_user
 
-          - path: Frontend
+          - path: Frontend/GameDevsConnect.Frontend.Web
             tag: frontend
 
     steps:
