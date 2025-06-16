@@ -56,7 +56,7 @@ jobs:
 
           - path: Frontend/GameDevsConnect.Frontend.Web
             tag: frontend
-            context: Frontend/GameDevsConnect.Frontend.Web
+            context: ./GameDevsConnect.Frontend/GameDevsConnect.Frontend.Web
 
     steps:
       - name: Checkout Code
