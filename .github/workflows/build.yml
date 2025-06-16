@@ -43,7 +43,7 @@ jobs:
 
           - path: Backend.API.User
             tag: backend_api_user
-            
+
           - path: Frontend
             tag: frontend
 
@@ -66,4 +66,4 @@ jobs:
           context: ./
           file: ./${{env.APP_NAME}}.${{matrix.service.path}}/Dockerfile
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.service.lower}}:latest
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.service.tag}}:latest
