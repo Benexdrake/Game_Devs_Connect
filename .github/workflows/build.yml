@@ -15,32 +15,37 @@ jobs:
       matrix:
         service:
           - path: Backend.API.Azure
-            lower: backend_api_azure
-        # path:
-        #   - Backend.API.Azure
-        #   - Backend.API.Comment
-        #   - Backend.API.File
-        #   - Backend.API.Gateway
-        #   - Backend.API.Notification
-        #   - Backend.API.Profile
-        #   - Backend.API.Project
-        #   - Backend.API.Request
-        #   - Backend.API.Tag
-        #   - Backend.API.User
-        #   - Frontend
+            tag: backend_api_azure
 
-        # path_lower:
-        #   - backend_api_azure
-        #   - backend_api_comment
-        #   - backend_api_file
-        #   - backend_api_gateway
-        #   - backend_api_notification
-        #   - backend_api_profile
-        #   - backend_api_project
-        #   - backend_api_request
-        #   - backend_api_tag
-        #   - backend_api_user
-        #   - frontend
+          - path: Backend.API.Comment
+            tag: backend_api_comment
+
+          - path: Backend.API.File
+            tag: backend_api_file
+
+          - path: Backend.API.Gateway
+            tag: backend_api_gateway
+
+          - path: Backend.API.Notification
+            tag: backend_api_notification
+
+          - path: Backend.API.Profile
+            tag: backend_api_profile
+
+          - path: Backend.API.Project
+            tag: backend_api_project
+
+          - path: Backend.API.Request
+            tag: backend_api_request
+
+          - path: Backend.API.Tag
+            tag: backend_api_tag
+
+          - path: Backend.API.User
+            tag: backend_api_user
+            
+          - path: Frontend
+            tag: frontend
 
     steps:
       - name: Checkout Code
