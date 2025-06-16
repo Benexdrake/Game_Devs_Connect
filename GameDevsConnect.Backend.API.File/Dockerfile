@@ -15,7 +15,6 @@ WORKDIR /src
 COPY ["GameDevsConnect.Backend.API.File/GameDevsConnect.Backend.API.File.csproj", "GameDevsConnect.Backend.API.File/"]
 COPY ["GameDevsConnect.Backend.API.Configuration/GameDevsConnect.Backend.API.Configuration.csproj", "GameDevsConnect.Backend.API.Configuration/"]
 COPY ["GameDevsConnect.Backend.ServiceDefaults/GameDevsConnect.Backend.ServiceDefaults.csproj", "GameDevsConnect.Backend.ServiceDefaults/"]
-COPY ["GameDevsConnect.Backend.Shared/GameDevsConnect.Backend.Shared.csproj", "GameDevsConnect.Backend.Shared/"]
 COPY ["GameDevsConnect.Backend.API.File.Application/GameDevsConnect.Backend.API.File.Application.csproj", "GameDevsConnect.Backend.API.File.Application/"]
 COPY ["GameDevsConnect.Backend.API.File.Contract/GameDevsConnect.Backend.API.File.Contract.csproj", "GameDevsConnect.Backend.API.File.Contract/"]
 RUN dotnet restore "./GameDevsConnect.Backend.API.File/GameDevsConnect.Backend.API.File.csproj"
