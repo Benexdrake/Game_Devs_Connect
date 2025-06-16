@@ -82,8 +82,6 @@ public class Startup
             return;
         });
 
-        app.MapGet("", () => "Hello from Tag");
-
         return app;
     }
 }

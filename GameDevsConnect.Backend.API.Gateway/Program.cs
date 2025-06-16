@@ -1,8 +1,5 @@
-﻿using GameDevsConnect.Backend.API.Configuration;
-using GameDevsConnect.Backend.API.Configuration.Models;
-using GameDevsConnect.Backend.API.Gateway;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var start = new Startup();
+var builder = start.Build(args);
 
 var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
 var sqlAdminUsername = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
@@ -23,17 +20,6 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer($"Server={sqlUrl};Database=Auth;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
 });
 
-builder.Services.AddDbContext<GDCDbContext>(options =>
-{
-    options.UseSqlServer($"Server={sqlUrl};Database=GDC;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
-});
-
-builder.Services.AddHealthChecks();
-
-builder.AddServiceDefaults();
-
-
-
 var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, accessKey);
 
 builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarpConfiguration.Clusters);
@@ -42,12 +28,7 @@ builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-var app = builder.Build();
-
-app.MapDefaultEndpoints();
-app.UseHttpsRedirection();
-
-app.MapHealthChecks(ApiEndpointsV1.Health);
+var app = start.Create(builder);
 
 app.MapGet("/", () =>
 {
@@ -61,7 +42,6 @@ app.MapGet("/", () =>
         clusters = yarpConfiguration.Clusters
     };
 });
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -92,70 +72,67 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
     }
 }
-//if (app.Environment.IsDevelopment())
+
+// Endpoints
+
+//app.Use(async (context, next) =>
 //{
-//}
+//    await next(context);
+//    return;
+//    //if(app.Environment.IsDevelopment())
+//    //{
+//    //}
 
-app.Use(async (context, next) =>
-{
-    await next(context);
-    return;
-    //if(app.Environment.IsDevelopment())
-    //{
-    //}
+//    string apiKey = context.Request.Headers.Authorization! + "";
 
-    string apiKey = context.Request.Headers.Authorization! + "";
+//    string expectedApiKey = app.Configuration["LoginApiKey"]! + "";
 
-    string expectedApiKey = app.Configuration["LoginApiKey"]! + "";
+//    var endpoint = context.Request.Path.Value!.ToLower() + "";
 
-    var endpoint = context.Request.Path.Value!.ToLower() + "";
+//    if (string.IsNullOrEmpty(apiKey))
+//    {
+//        context.Response.StatusCode = 400;
+//        await context.Response.WriteAsync("Access Denied");
+//    }
 
-    if (string.IsNullOrEmpty(apiKey))
-    {
-        context.Response.StatusCode = 400;
-        await context.Response.WriteAsync("Access Denied");
-    }
+//    if (endpoint.Equals("/login"))
+//    {
+//        if (apiKey.Equals(expectedApiKey))
+//        {
+//            await next(context);
+//            return;
+//        }
+//        else
+//        {
+//            context.Response.StatusCode = 400;
+//            await context.Response.WriteAsync("Access Denied");
+//        }
+//    }
+//    else if (endpoint.Equals("/logout"))
+//    {
+//        await next(context);
+//        return;
+//    }
 
-    if (endpoint.Equals("/login"))
-    {
-        if (apiKey.Equals(expectedApiKey))
-        {
-            await next(context);
-            return;
-        }
-        else
-        {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("Access Denied");
-        }
-    }
-    else if (endpoint.Equals("/logout"))
-    {
-        await next(context);
-        return;
-    }
+//    var repo = context.RequestServices.GetService<IAuthRepository>();
 
-    var repo = context.RequestServices.GetService<IAuthRepository>();
+//    if (repo is null)
+//    {
+//        Log.Error("Cant load AuthRepository Service");
+//        return;
+//    }
 
-    if (repo is null)
-    {
-        Log.Error("Cant load AuthRepository Service");
-        return;
-    }
+//    var auth = await repo.AuthenticateAsync(apiKey);
 
-    var auth = await repo.AuthenticateAsync(apiKey);
+//    if (auth.Success)
+//    {
+//        await next(context);
+//        return;
+//    }
 
-    if (auth.Success)
-    {
-        await next(context);
-        return;
-    }
-
-    context.Response.StatusCode = 400;
-    await context.Response.WriteAsync("Access Denied");
-});
-
-//app.MapGet("", () => "HELLO WORLD");
+//    context.Response.StatusCode = 400;
+//    await context.Response.WriteAsync("Access Denied");
+//});
 
 app.MapPost(ApiEndpointsV1.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
