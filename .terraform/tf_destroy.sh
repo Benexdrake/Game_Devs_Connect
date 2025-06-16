@@ -1,6 +1,6 @@
-cd ./4.\ Deploy/Admin_Dashboard
-echo ">>>>> Destroy Dashboard..."
-./tf.sh destroy -auto-approve
+# cd ./4.\ Deploy/Admin_Dashboard
+# echo ">>>>> Destroy Dashboard..."
+# ./tf.sh destroy -auto-approve
 
 cd ./4.\ Deploy/APIs
 echo ">>>>> Destroy APIs..."

@@ -117,6 +117,10 @@ resource "azurerm_container_app" "frontend" {
        name = "API_URL" 
        value = "https://${azurerm_container_app.gateway.latest_revision_fqdn}"
       }
+      env {  
+        name = "X-Access-Key"
+        value = local.access_key
+      }
     }
   }
   tags = var.tags
