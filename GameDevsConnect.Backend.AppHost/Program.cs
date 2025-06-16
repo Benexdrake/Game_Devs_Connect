@@ -1,8 +1,12 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 string sqlPW = builder.Configuration["SQL"]!;
 
 int replicas = 1;
+
+var accessKey = Guid.NewGuid().ToString();
 
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
@@ -15,6 +19,7 @@ var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamede
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevsconnect-backend-api-tag")
@@ -23,6 +28,7 @@ var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevs
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var request = builder.AddProject<Projects.GameDevsConnect_Backend_API_Request>("gamedevsconnect-backend-api-request")
@@ -31,6 +37,7 @@ var request = builder.AddProject<Projects.GameDevsConnect_Backend_API_Request>("
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("gamedevsconnect-backend-api-project")
@@ -39,6 +46,7 @@ var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var profile = builder.AddProject<Projects.GameDevsConnect_Backend_API_Profile>("gamedevsconnect-backend-api-profile")
@@ -47,6 +55,7 @@ var profile = builder.AddProject<Projects.GameDevsConnect_Backend_API_Profile>("
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var notification = builder.AddProject<Projects.GameDevsConnect_Backend_API_Notification>("gamedevsconnect-backend-api-notification")
@@ -55,6 +64,7 @@ var notification = builder.AddProject<Projects.GameDevsConnect_Backend_API_Notif
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var file = builder.AddProject<Projects.GameDevsConnect_Backend_API_File>("gamedevsconnect-backend-api-file")
@@ -63,6 +73,7 @@ var file = builder.AddProject<Projects.GameDevsConnect_Backend_API_File>("gamede
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var comment = builder.AddProject<Projects.GameDevsConnect_Backend_API_Comment>("gamedevsconnect-backend-api-comment")
@@ -71,6 +82,7 @@ var comment = builder.AddProject<Projects.GameDevsConnect_Backend_API_Comment>("
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 var azure = builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("gamedevsconnect-backend-api-azure")
@@ -79,6 +91,7 @@ var azure = builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("game
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
 builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnect-backend-api-gateway")
@@ -87,7 +100,7 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-       .WithEnvironment("X-Access-Key", builder.Configuration["Access_Key"])
+       .WithEnvironment("X-Access-Key", accessKey)
        .WithEnvironment("AZURE_URL", "http://localhost:7001")
        .WithEnvironment("COMMENT_URL", "http://localhost:7002")
        .WithEnvironment("FILE_URL", "http://localhost:7003")

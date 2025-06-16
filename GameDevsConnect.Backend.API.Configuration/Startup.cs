@@ -2,7 +2,7 @@
 
 public class Startup
 {
-    public string AccessKey { get; set; } = string.Empty;
+    private string accessKey = string.Empty;
 
     public WebApplicationBuilder Build(string[] args)
     {
@@ -15,7 +15,7 @@ public class Startup
         var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
         var sqlAdminUsername = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
         var sqlAdminPassword = Environment.GetEnvironmentVariable("SQL_ADMIN_PASSWORD") ?? "P@ssword1";
-        AccessKey = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
+        accessKey = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
 
         builder.Services.AddDbContext<GDCDbContext>(options => { options.UseSqlServer($"Server={sqlUrl};Database=GDC;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True"); });
         builder.Services.AddHealthChecks();
@@ -62,7 +62,7 @@ public class Startup
                 return;
             }
 
-            if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(AccessKey))
+            if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(accessKey))
             {
                 context.Request.Headers["X-Access-Key"] = "-";
                 context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
