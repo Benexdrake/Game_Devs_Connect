@@ -1,7 +1,5 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Models;
-using Microsoft.EntityFrameworkCore;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Data;
 
-namespace GameDevsConnect.Backend.API.Configuration.Data;
 public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbContext(options)
 {
     public virtual DbSet<UserModel> Users { get; set; }

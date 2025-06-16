@@ -107,9 +107,6 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WaitFor(tag)
        .WaitFor(user);
 
-
-//builder.AddDockerComposePublisher();
-
 var build = builder.Build();
 
 await build.RunAsync();

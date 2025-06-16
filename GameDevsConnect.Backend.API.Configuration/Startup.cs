@@ -1,10 +1,4 @@
-﻿using Asp.Versioning;
-using GameDevsConnect.Backend.API.Configuration.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
-using Serilog;
-
-namespace GameDevsConnect.Backend.API.Configuration;
+﻿namespace GameDevsConnect.Backend.API.Configuration;
 
 public class Startup
 {

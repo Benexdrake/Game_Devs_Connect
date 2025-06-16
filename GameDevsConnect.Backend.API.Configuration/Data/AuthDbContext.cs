@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace GameDevsConnect.Backend.API.Configuration.Data;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Data;
 public partial class AuthDbContext(DbContextOptions<AuthDbContext> options) : DbContext(options)
 {
     public virtual DbSet<AuthModel> Auth { get; set; }

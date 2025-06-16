@@ -1,7 +1,0 @@
-services:
-  gamedevsconnect-backend-sql:
-    volumes:
-      - sqlvolume:/var/opt/mssql
-
-volumes:
-  sqlvolume:

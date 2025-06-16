@@ -1,13 +1,9 @@
-﻿using Asp.Versioning;
-using Asp.Versioning.Builder;
-
-namespace GameDevsConnect.Backend.API.Configuration;
+﻿namespace GameDevsConnect.Backend.API.Configuration;
 
 public static class ApiEndpointsV1
 {
-    private const string ApiBase = "api";
     public const string Version = "1";
-    private const string Base = $"{ApiBase}/v{Version}";
+    private const string Base = $"api/v{{apiVersion:apiVersion}}";
     public const string Health = "_health";
 
     public static ApiVersionSet GetVersionSet(IEndpointRouteBuilder app)
