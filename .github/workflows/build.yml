@@ -2,6 +2,10 @@ name: Build_and_Push
 
 on:
   workflow_dispatch:
+
+env:
+  APP_NAME: 'GameDevsConnect'
+  APP_NAME_LOWER: 'gamedevsconnect'
     
 jobs:
   build-stage:
@@ -9,10 +13,31 @@ jobs:
 
     strategy:
       matrix:
-        name:
-          - Azure
-        name_lower:
-          - azure
+        path:
+          - Backend.API.Azure
+          - Backend.API.Comment
+          - Backend.API.File
+          - Backend.API.Gateway
+          - Backend.API.Notification
+          - Backend.API.Profile
+          - Backend.API.Project
+          - Backend.API.Request
+          - Backend.API.Tag
+          - Backend.API.User
+          - Frontend
+          
+        path_lower:
+          - backend_api_azure
+          - backend_api_comment
+          - backend_api_file
+          - backend_api_gateway
+          - backend_api_notification
+          - backend_api_profile
+          - backend_api_project
+          - backend_api_request
+          - backend_api_tag
+          - backend_api_user
+          - frontend
 
     steps:
       - name: Checkout Code
@@ -31,6 +56,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./
-          file: ./GameDevsConnect.Backend.API.${{matrix.name}}/Dockerfile
+          file: ./${{env.APP_NAME}}.${{matrix.path}}/Dockerfile
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/gamedevsconnect_backend_api_${{matrix.name_lower}}:latest
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.path_lower}}:latest
