@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        service:
+        include:
           - path: Backend.API.Azure
             tag: backend_api_azure
 
@@ -64,6 +64,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./
-          file: ./${{env.APP_NAME}}.${{matrix.service.path}}/Dockerfile
+          file: ./${{env.APP_NAME}}.${{matrix.path}}/Dockerfile
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.service.tag}}:latest
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.tag}}:latest
