@@ -15,10 +15,10 @@ var requestUrl = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://lo
 var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
 var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
 
-builder.Services.AddDbContext<AuthDbContext>(options =>
-{
-    options.UseSqlServer($"Server={sqlUrl};Database=Auth;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
-});
+//builder.Services.AddDbContext<AuthDbContext>(options =>
+//{
+//    options.UseSqlServer($"Server={sqlUrl};Database=Auth;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
+//});
 
 var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, accessKey);
 
@@ -26,7 +26,7 @@ builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarp
 
 builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 * 1024 * 1024; });
 
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+//builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 var app = start.Create(builder);
 
@@ -49,10 +49,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
-        var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
+        //var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
 
         var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
-        var authCreated = await authDbContext.Database.EnsureCreatedAsync();
+        //var authCreated = await authDbContext.Database.EnsureCreatedAsync();
 
         if (!gdcCreated)
         {
@@ -64,8 +64,8 @@ using (var scope = app.Services.CreateScope())
             await gdcDbContext.SaveChangesAsync();
         }
 
-        if (!authCreated)
-            await authDbContext.Database.MigrateAsync();
+        //if (!authCreated)
+        //    await authDbContext.Database.MigrateAsync();
     }
     catch (Exception ex)
     {
