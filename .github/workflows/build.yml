@@ -16,36 +16,47 @@ jobs:
         include:
           - path: Backend.API.Azure
             tag: backend_api_azure
+            context: ./
 
           - path: Backend.API.Comment
             tag: backend_api_comment
+            context: ./
 
           - path: Backend.API.File
             tag: backend_api_file
+            context: ./
 
           - path: Backend.API.Gateway
             tag: backend_api_gateway
+            context: ./
 
           - path: Backend.API.Notification
             tag: backend_api_notification
+            context: ./
 
           - path: Backend.API.Profile
             tag: backend_api_profile
+            context: ./
 
           - path: Backend.API.Project
             tag: backend_api_project
+            context: ./
 
           - path: Backend.API.Request
             tag: backend_api_request
+            context: ./
 
           - path: Backend.API.Tag
             tag: backend_api_tag
+            context: ./
 
           - path: Backend.API.User
             tag: backend_api_user
+            context: ./
 
           - path: Frontend/GameDevsConnect.Frontend.Web
             tag: frontend
+            context: Frontend/GameDevsConnect.Frontend.Web
 
     steps:
       - name: Checkout Code
@@ -63,7 +74,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          context: ./
+          context: ${{matrix.context}}
           file: ./${{env.APP_NAME}}.${{matrix.path}}/Dockerfile
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.tag}}:latest
