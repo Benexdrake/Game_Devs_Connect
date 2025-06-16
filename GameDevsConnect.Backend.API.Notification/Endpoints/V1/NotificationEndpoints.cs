@@ -1,60 +1,60 @@
-﻿using GameDevsConnect.Backend.API.Configuration;
+﻿namespace GameDevsConnect.Backend.API.Notification.Endpoints.V1;
 
-namespace GameDevsConnect.Backend.API.Notification.Endpoints.V1
+public static class NotificationEndpoints
 {
-    public static class NotificationEndpoints
+    public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        public static void MapEndpointsV1(this IEndpointRouteBuilder app)
+        var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
+
+        var group = app.MapGroup(ApiEndpointsV1.User.Group)
+                       .WithApiVersionSet(apiVersionSet);
+
+        // Get all Notifications
+        group.MapGet(ApiEndpointsV1.Notification.GetCount, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
         {
-            var group = app.MapGroup(ApiEndpoints.Notification.Group);
+            return await rep.GetUnseenCountAsync(id);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.GetCount)
+        .Produces(StatusCodes.Status200OK);
 
-            // Get all Notifications
-            group.MapGet(ApiEndpoints.Notification.GetCount, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
-            {
-                return await rep.GetUnseenCountAsync(id);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.GetCount)
-            .Produces(StatusCodes.Status200OK);
+        // Get Notifications by Request Id
+        group.MapGet(ApiEndpointsV1.Notification.Get, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        {
+            return await rep.GetByIdAsync(id);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.Get)
+        .Produces(StatusCodes.Status200OK);
 
-            // Get Notifications by Request Id
-            group.MapGet(ApiEndpoints.Notification.Get, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
-            {
-                return await rep.GetByIdAsync(id);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.Get)
-            .Produces(StatusCodes.Status200OK);
+        // Get Notifications by Request Id
+        group.MapGet(ApiEndpointsV1.Notification.GetByUserId, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        {
+            return await rep.GetIdsByUserIdAsync(id);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.GetByUserId)
+        .Produces(StatusCodes.Status200OK);
 
-            // Get Notifications by Request Id
-            group.MapGet(ApiEndpoints.Notification.GetByUserId, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
-            {
-                return await rep.GetIdsByUserIdAsync(id);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.GetByUserId)
-            .Produces(StatusCodes.Status200OK);
+        // Add a Notification
+        group.MapPost(ApiEndpointsV1.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationModel notification) =>
+        {
+            return await rep.AddAsync(notification);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.Create)
+        .Produces(StatusCodes.Status200OK);
 
-            // Add a Notification
-            group.MapPost(ApiEndpoints.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationModel notification) =>
-            {
-                return await rep.AddAsync(notification);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.Create)
-            .Produces(StatusCodes.Status200OK);
+        // Update a Notification
+        group.MapPut(ApiEndpointsV1.Notification.Update, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        {
+            return await rep.UpdateAsync(id);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.Update)
+        .Produces(StatusCodes.Status200OK);
 
-            // Update a Notification
-            group.MapPut(ApiEndpoints.Notification.Update, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
-            {
-                return await rep.UpdateAsync(id);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.Update)
-            .Produces(StatusCodes.Status200OK);
-
-            // Delete a Notification
-            group.MapDelete(ApiEndpoints.Notification.Delete, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
-            {
-                return await rep.DeleteAsync(id);
-            })
-            .WithName(ApiEndpoints.Notification.MetaData.Delete)
-            .Produces(StatusCodes.Status200OK);
-        }
+        // Delete a Notification
+        group.MapDelete(ApiEndpointsV1.Notification.Delete, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        {
+            return await rep.DeleteAsync(id);
+        })
+        .WithName(ApiEndpointsV1.Notification.MetaData.Delete)
+        .Produces(StatusCodes.Status200OK);
     }
 }

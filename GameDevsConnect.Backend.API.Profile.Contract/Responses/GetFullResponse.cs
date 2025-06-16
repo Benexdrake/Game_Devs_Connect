@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared.Models;
-using GameDevsConnect.Backend.Shared.Responses;
-
-namespace GameDevsConnect.Backend.API.Profile.Contract.Responses;
+﻿namespace GameDevsConnect.Backend.API.Profile.Contract.Responses;
 
 public class GetFullResponse(string message, bool status, UserModel user, ProfileModel profile) : ApiResponse(message, status)
 {

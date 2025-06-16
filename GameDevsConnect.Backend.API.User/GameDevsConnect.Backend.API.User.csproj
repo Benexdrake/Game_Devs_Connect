@@ -33,7 +33,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameDevsConnect.Backend.API.Configuration\GameDevsConnect.Backend.API.Configuration.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.User.Application\GameDevsConnect.Backend.API.User.Application.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.ServiceDefaults\GameDevsConnect.Backend.ServiceDefaults.csproj" />
   </ItemGroup>

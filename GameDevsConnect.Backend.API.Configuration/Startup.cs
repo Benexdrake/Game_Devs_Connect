@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-using GameDevsConnect.Backend.Shared.Data;
+using GameDevsConnect.Backend.API.Configuration.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Serilog;
@@ -48,7 +48,7 @@ public class Startup
         var app = build.Build();
         app.MapDefaultEndpoints();
 
-        app.MapHealthChecks(ApiEndpoints.Health);
+        app.MapHealthChecks(ApiEndpointsV1.Health);
 
         if (app.Environment.IsDevelopment())
         {

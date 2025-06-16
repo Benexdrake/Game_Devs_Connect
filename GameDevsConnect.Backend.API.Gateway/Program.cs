@@ -47,7 +47,7 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 app.UseHttpsRedirection();
 
-app.MapHealthChecks(ApiEndpoints.Health);
+app.MapHealthChecks(ApiEndpointsV1.Health);
 
 app.MapGet("/", () =>
 {
@@ -157,20 +157,20 @@ app.Use(async (context, next) =>
 
 //app.MapGet("", () => "HELLO WORLD");
 
-app.MapPost(ApiEndpoints.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+app.MapPost(ApiEndpointsV1.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.UpsertAsync(auth);
     return;
 })
-.WithName(ApiEndpoints.Gateway.MetaData.Login)
+.WithName(ApiEndpointsV1.Gateway.MetaData.Login)
 .Produces(StatusCodes.Status200OK);
 
-app.MapPost(ApiEndpoints.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+app.MapPost(ApiEndpointsV1.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
 {
     await repo.DeleteAsync(auth);
     return;
 })
-.WithName(ApiEndpoints.Gateway.MetaData.Logout)
+.WithName(ApiEndpointsV1.Gateway.MetaData.Logout)
 .Produces(StatusCodes.Status200OK);
 
 app.MapReverseProxy();

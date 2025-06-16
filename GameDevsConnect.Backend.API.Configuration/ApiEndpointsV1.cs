@@ -1,24 +1,26 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.Builder;
-using Google.Protobuf.WellKnownTypes;
 
 namespace GameDevsConnect.Backend.API.Configuration;
 
-public static class ApiEndpoints
+public static class ApiEndpointsV1
 {
-    public static int Version = 1;
+    private const string ApiBase = "api";
+    public const string Version = "1";
+    private const string Base = $"{ApiBase}/v{Version}";
     public const string Health = "_health";
 
     public static ApiVersionSet GetVersionSet(IEndpointRouteBuilder app)
     {
         return app.NewApiVersionSet()
-            .HasApiVersion(new ApiVersion(1))
+            .HasApiVersion(new ApiVersion(int.Parse(Version)))
             .ReportApiVersions()
             .Build();
     }
 
     public static class Azure
     {
+        public const string GroupBlob = $"{Base}/{nameof(Azure)}/blob";
         public const string Get = $"{{fileName}}/{{containerName}}";
         public const string Upload = $"upload/{{fileName}}/{{containerName}}";
         public const string Delete = $"delete/{{fileName}}/{{containerName}}";
@@ -33,6 +35,7 @@ public static class ApiEndpoints
 
     public static class Comment
     {
+        public const string Group = $"{Base}/{nameof(Comment)}";
         public const string Count = $"count/{{id}}";
         public const string Get = $"{{id}}";
         public const string GetByRequestId = $"request/{{id}}";
@@ -52,6 +55,7 @@ public static class ApiEndpoints
 
     public static class File
     {
+        public const string Group = $"{Base}/{nameof(File)}";
         public const string Get = $"{{id}}";
         public const string GetByOwnerId = $"owner/{{id}}";
         public const string GetByRequestId = $"request/{{id}}";
@@ -84,6 +88,7 @@ public static class ApiEndpoints
 
     public static class Notification
     {
+        public const string Group = $"{Base}/{nameof(Notification)}";
         public const string GetCount = $"count/{{id}}";
         public const string Get = $"{{id}}";
         public const string GetByUserId = $"user/{{id}}";
@@ -104,6 +109,7 @@ public static class ApiEndpoints
 
     public static class Profile
     {
+        public const string Group = $"{Base}/{nameof(Profile)}";
         public const string Get = $"{{id}}";
         public const string GetFull = $"full/{{id}}";
         public const string Create = $"add";
@@ -122,6 +128,7 @@ public static class ApiEndpoints
 
     public static class Project
     {
+        public const string Group = $"{Base}/{nameof(Project)}";
         public const string Get = $"/";
         public const string GetByRequestId = $"{{id}}";
         public const string Create = $"add";
@@ -140,6 +147,7 @@ public static class ApiEndpoints
 
     public static class Request
     {
+        public const string Group = $"{Base}/{nameof(Request)}";
         public const string Get = "/";
         public const string GetByRequestId = $"{{id}}";
         public const string GetFull = $"full/{{id}}";
@@ -162,6 +170,8 @@ public static class ApiEndpoints
 
     public static class Tag
     {
+
+        public const string Group = $"{Base}/{nameof(Tag)}";
         public const string GetAll = "/";
         public const string Create = "/add";
         public const string Update = "/update";
@@ -178,6 +188,7 @@ public static class ApiEndpoints
 
     public static class User
     {
+        public const string Group = $"{Base}/{nameof(User)}";
         public const string GetIds = $"";
         public const string Get = $"{{id}}";
         public const string Create = $"add";

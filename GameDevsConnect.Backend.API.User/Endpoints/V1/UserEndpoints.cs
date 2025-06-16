@@ -4,44 +4,44 @@ public static class UserEndpoints
 {
     public static void MapEndpointsV1(this IEndpointRouteBuilder app)
     {
-        var apiVersionSet = ApiEndpoints.GetVersionSet(app);
+        var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup("api/v{apiVersion:apiVersion}/user")
+        var group = app.MapGroup(ApiEndpointsV1.User.Group)
                        .WithApiVersionSet(apiVersionSet);
 
-        group.MapGet(ApiEndpoints.User.GetIds, async ([FromServices] IUserRepository repo, CancellationToken token) =>
+        group.MapGet(ApiEndpointsV1.User.GetIds, async ([FromServices] IUserRepository repo, CancellationToken token) =>
         {
             return await repo.GetIdsAsync(token);
         })
-        .WithName(ApiEndpoints.User.MetaData.GetIds)
+        .WithName(ApiEndpointsV1.User.MetaData.GetIds)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapGet(ApiEndpoints.User.Get, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        group.MapGet(ApiEndpointsV1.User.Get, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.GetAsync(id, token);
         })
-        .WithName(ApiEndpoints.User.MetaData.Get)
+        .WithName(ApiEndpointsV1.User.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpoints.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
+        group.MapPost(ApiEndpointsV1.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
         {
             return await repo.AddAsync(user, token);
         })
-        .WithName(ApiEndpoints.User.MetaData.Create)
+        .WithName(ApiEndpointsV1.User.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpoints.User.Update, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
+        group.MapPut(ApiEndpointsV1.User.Update, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
         {
             return await repo.UpdateAsync(user, token);
         })
-        .WithName(ApiEndpoints.User.MetaData.Update)
+        .WithName(ApiEndpointsV1.User.MetaData.Update)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapDelete(ApiEndpoints.User.Delete, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        group.MapDelete(ApiEndpointsV1.User.Delete, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.DeleteAsync(id, token);
         })
-        .WithName(ApiEndpoints.User.MetaData.Delete)
+        .WithName(ApiEndpointsV1.User.MetaData.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

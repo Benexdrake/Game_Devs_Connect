@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared.Responses;
-
-namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
+﻿namespace GameDevsConnect.Backend.API.Notification.Contract.Responses;
 
 public class GetUnseenCountResponse(string message, bool status, int count) : ApiResponse(message, status)
 {

@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared.Models;
-
-namespace GameDevsConnect.Backend.API.Project.Contract.Requests;
+﻿namespace GameDevsConnect.Backend.API.Project.Contract.Requests;
 
 public class UpsertRequest
 {

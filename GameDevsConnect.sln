@@ -5,8 +5,6 @@ VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.User", "GameDevsConnect.Backend.API.User\GameDevsConnect.Backend.API.User.csproj", "{0A1366A5-8DF5-4983-9794-D686A91E5C24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.Shared", "GameDevsConnect.Backend.Shared\GameDevsConnect.Backend.Shared.csproj", "{C8DB0AD0-92CB-4237-B419-258A2B19DD73}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Tag", "GameDevsConnect.Backend.API.Tag\GameDevsConnect.Backend.API.Tag.csproj", "{ECDFA482-DEF8-4EAC-9435-F7C3C8D30F57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Request", "GameDevsConnect.Backend.API.Request\GameDevsConnect.Backend.API.Request.csproj", "{C60890DB-5C17-453F-9342-152221A76587}"
@@ -113,14 +111,6 @@ Global
 		{0A1366A5-8DF5-4983-9794-D686A91E5C24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A1366A5-8DF5-4983-9794-D686A91E5C24}.Release|x64.ActiveCfg = Release|Any CPU
 		{0A1366A5-8DF5-4983-9794-D686A91E5C24}.Release|x64.Build.0 = Release|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Debug|x64.Build.0 = Debug|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Release|x64.ActiveCfg = Release|Any CPU
-		{C8DB0AD0-92CB-4237-B419-258A2B19DD73}.Release|x64.Build.0 = Release|Any CPU
 		{ECDFA482-DEF8-4EAC-9435-F7C3C8D30F57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECDFA482-DEF8-4EAC-9435-F7C3C8D30F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDFA482-DEF8-4EAC-9435-F7C3C8D30F57}.Debug|x64.ActiveCfg = Debug|Any CPU

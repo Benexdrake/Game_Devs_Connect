@@ -14,6 +14,5 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\GameDevsConnect.Backend.API.Azure.Contract\GameDevsConnect.Backend.API.Azure.Contract.csproj" />
-		<ProjectReference Include="..\GameDevsConnect.Backend.Shared\GameDevsConnect.Backend.Shared.csproj" />
 	</ItemGroup>
 </Project>

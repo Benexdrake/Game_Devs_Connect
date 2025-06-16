@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.Shared.Models;
-
-namespace GameDevsConnect.Backend.API.Request.Contract.Request;
+﻿namespace GameDevsConnect.Backend.API.Request.Contract.Request;
 
 public class AddRequest(RequestModel? request, TagModel[]? tags)
 {
