@@ -2,6 +2,10 @@ name: Build_and_Push
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - .github/**
 
 env:
   APP_NAME: 'GameDevsConnect'
