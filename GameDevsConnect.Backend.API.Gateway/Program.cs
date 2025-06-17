@@ -30,7 +30,7 @@ builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 
 
 var app = start.Create(builder);
 
-app.MapGet("/", () =>
+app.MapGet("/info", () =>
 {
     return new
     {
@@ -134,21 +134,21 @@ using (var scope = app.Services.CreateScope())
 //    await context.Response.WriteAsync("Access Denied");
 //});
 
-app.MapPost(ApiEndpointsV1.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
-{
-    await repo.UpsertAsync(auth);
-    return;
-})
-.WithName(ApiEndpointsV1.Gateway.MetaData.Login)
-.Produces(StatusCodes.Status200OK);
+// app.MapPost(ApiEndpointsV1.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+// {
+//     await repo.UpsertAsync(auth);
+//     return;
+// })
+// .WithName(ApiEndpointsV1.Gateway.MetaData.Login)
+// .Produces(StatusCodes.Status200OK);
 
-app.MapPost(ApiEndpointsV1.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
-{
-    await repo.DeleteAsync(auth);
-    return;
-})
-.WithName(ApiEndpointsV1.Gateway.MetaData.Logout)
-.Produces(StatusCodes.Status200OK);
+// app.MapPost(ApiEndpointsV1.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
+// {
+//     await repo.DeleteAsync(auth);
+//     return;
+// })
+// .WithName(ApiEndpointsV1.Gateway.MetaData.Logout)
+// .Produces(StatusCodes.Status200OK);
 
 app.MapReverseProxy();
 

@@ -14,6 +14,7 @@ public static class UserEndpoints
             return await repo.GetIdsAsync(token);
         })
         .WithName(ApiEndpointsV1.User.MetaData.GetIds)
+        .WithDescription("HELLO")
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.User.Get, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
@@ -21,6 +22,13 @@ public static class UserEndpoints
             return await repo.GetAsync(id, token);
         })
         .WithName(ApiEndpointsV1.User.MetaData.Get)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapGet(ApiEndpointsV1.User.Exist, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetExistAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.Exist)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>

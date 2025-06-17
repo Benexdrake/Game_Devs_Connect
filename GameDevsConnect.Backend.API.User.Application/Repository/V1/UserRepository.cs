@@ -84,6 +84,24 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
+    public async Task<GetUserByIdResponse> GetExistAsync(string id, CancellationToken token = default)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
+
+            if (user is null)
+                return new GetUserByIdResponse(null!, false, null!);
+
+            return new GetUserByIdResponse(null!, true, null!);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return new GetUserByIdResponse(ex.Message, false, null!);
+        }
+    }
+
     public async Task<GetUserIdsResponse> GetIdsAsync(CancellationToken token = default)
     {
         try

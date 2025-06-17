@@ -42,8 +42,6 @@ public class Startup
         var app = build.Build();
         app.MapDefaultEndpoints();
 
-        app.MapHealthChecks(ApiEndpointsV1.Health);
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -80,6 +78,24 @@ public class Startup
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             await context.Response.WriteAsync("Access denied.");
             return;
+        });
+
+        app.MapGet("", () =>
+        {
+            var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
+            var endPoints = new List<string>();
+
+            foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
+            {
+                var methodMetadata = endpoint.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
+                var methods = methodMetadata?.HttpMethods;
+
+                if (string.IsNullOrEmpty(endpoint.RoutePattern.RawText))
+                    continue;
+
+                endPoints.Add(endpoint.DisplayName!);
+            }
+            return endPoints;
         });
 
         return app;

@@ -187,6 +187,7 @@ public static class ApiEndpointsV1
         public const string Group = $"{Base}/{nameof(User)}";
         public const string GetIds = $"";
         public const string Get = $"{{id}}";
+        public const string Exist = $"exist/{{id}}";
         public const string Create = $"add";
         public const string Update = $"update";
         public const string Delete = $"delete/{{id}}";
@@ -195,6 +196,7 @@ public static class ApiEndpointsV1
         {
             public const string GetIds = $"GetAllUserIds";
             public const string Get = $"GetUserById";
+            public const string Exist = $"GetExistingUserById";
             public const string Create = $"CreateUser";
             public const string Update = $"UpdateUser";
             public const string Delete = $"DeleteUser";
