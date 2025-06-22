@@ -1,7 +1,8 @@
 ﻿namespace GameDevsConnect.Backend.API.Configuration;
 
-public class Startup
+public class Startup(bool gateway = false)
 {
+    private readonly bool gateway = gateway;
     private string accessKey = string.Empty;
 
     public WebApplicationBuilder Build(string[] args)
@@ -52,33 +53,35 @@ public class Startup
 
         app.UseResponseCaching();
 
-        app.Use(async (context, next) =>
-        {
-            if (app.Environment.IsDevelopment())
+        if(gateway)
+            app.Use(async (context, next) =>
             {
-                await next();
-                return;
-            }
-
-            if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(accessKey))
-            {
-                context.Request.Headers["X-Access-Key"] = "-";
-                context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+                if (app.Environment.IsDevelopment())
                 {
-                    Public = true,
-                    MaxAge = TimeSpan.FromSeconds(30)
-                };
+                    await next();
+                    return;
+                }
 
-                context.Response.Headers[HeaderNames.Vary] = "User-Agent";
 
-                await next();
+                if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(accessKey))
+                {
+                    context.Request.Headers["X-Access-Key"] = "-";
+                    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(30)
+                    };
+
+                    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+                    await next();
+                    return;
+                }
+
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsync("Access denied.");
                 return;
-            }
-
-            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            await context.Response.WriteAsync("Access denied.");
-            return;
-        });
+            });
 
         app.MapGet("", () =>
         {

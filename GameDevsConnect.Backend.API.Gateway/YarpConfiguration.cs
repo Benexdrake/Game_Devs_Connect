@@ -22,8 +22,7 @@ namespace GameDevsConnect.Backend.API.Gateway
         {
             var transforms = new List<Dictionary<string, string>>
             {
-                new Dictionary<string, string>
-                {
+                new() {
                     { "RequestHeader", "X-Access-Key" },
                     { "Set", access_Key ?? "" }
             }};
@@ -34,6 +33,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-azure",
                     ClusterId = "api-azure-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/azure/{**catch-all}",
@@ -44,6 +44,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-comment",
                     ClusterId = "api-comment-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/comment/{**catch-all}"
@@ -54,6 +55,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-file",
                     ClusterId = "api-file-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/file/{**catch-all}"
@@ -64,6 +66,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-notification",
                     ClusterId = "api-notification-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/notification/{**catch-all}"
@@ -74,6 +77,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-project",
                     ClusterId = "api-project-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/project/{**catch-all}"
@@ -84,6 +88,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-profile",
                     ClusterId = "api-profile-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/profile/{**catch-all}"
@@ -94,6 +99,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-request",
                     ClusterId = "api-request-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/request/{**catch-all}"
@@ -104,6 +110,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-tag",
                     ClusterId = "api-tag-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/tag/{**catch-all}"
@@ -114,6 +121,7 @@ namespace GameDevsConnect.Backend.API.Gateway
                 {
                     RouteId = "api-user",
                     ClusterId = "api-user-cluster",
+                    AuthorizationPolicy = "default",
                     Match = new RouteMatch
                     {
                         Path = "api/v1/user/{**catch-all}"

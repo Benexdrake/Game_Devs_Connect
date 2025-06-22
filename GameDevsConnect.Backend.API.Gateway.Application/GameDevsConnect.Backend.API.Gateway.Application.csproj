@@ -13,4 +13,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\GameDevsConnect.Backend.API.Gateway.Contract\GameDevsConnect.Backend.API.Gateway.Contract.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Repository\" />
+	</ItemGroup>
 </Project>

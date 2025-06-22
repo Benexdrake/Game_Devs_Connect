@@ -1,4 +1,7 @@
-﻿var start = new Startup();
+﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using System.Security.Claims;
+
+var start = new Startup();
 var builder = start.Build(args);
 
 var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
@@ -15,20 +18,53 @@ var requestUrl = Environment.GetEnvironmentVariable("REQUEST_URL") ?? "http://lo
 var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008";
 var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009";
 
-//builder.Services.AddDbContext<AuthDbContext>(options =>
-//{
-//    options.UseSqlServer($"Server={sqlUrl};Database=Auth;User ID={sqlAdminUsername};Password={sqlAdminPassword};TrustServerCertificate=True");
-//});
-
 var yarpConfiguration = new YarpConfiguration(azureUrl, commentUrl, fileUrl, notificationUrl, projectUrl, profileUrl, requestUrl, tagUrl, userUrl, accessKey);
 
 builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarpConfiguration.Clusters);
 
 builder.Services.Configure<FormOptions>(o => { o.MultipartBodyLengthLimit = 200 * 1024 * 1024; });
 
-//builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddAuthentication(BearerTokenDefaults.AuthenticationScheme).AddBearerToken();
 
 var app = start.Create(builder);
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    try
+    {
+        var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
+
+        var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
+
+        if (!gdcCreated)
+        {
+            await gdcDbContext.Database.MigrateAsync();
+            var tags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
+
+            tags.ForEach(t => gdcDbContext.Tags.Add(new TagModel() { Id = 0, Tag = t }));
+
+            await gdcDbContext.SaveChangesAsync();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
+    }
+}
+
+app.MapGet(ApiEndpointsV1.Gateway.Login, () =>
+    Results.SignIn(
+        new ClaimsPrincipal(
+            new ClaimsIdentity(
+                [ new Claim("sub", Guid.NewGuid().ToString()) ],
+                BearerTokenDefaults.AuthenticationScheme
+            )
+        ),
+        authenticationScheme: BearerTokenDefaults.AuthenticationScheme
+))
+.WithName(ApiEndpointsV1.Gateway.MetaData.Login)
+.Produces(StatusCodes.Status200OK);
 
 app.MapGet("/info", () =>
 {
@@ -43,112 +79,8 @@ app.MapGet("/info", () =>
     };
 });
 
-using (var scope = app.Services.CreateScope())
-{
-    var serviceProvider = scope.ServiceProvider;
-    try
-    {
-        var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
-        //var authDbContext = serviceProvider.GetRequiredService<AuthDbContext>();
-
-        var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
-        //var authCreated = await authDbContext.Database.EnsureCreatedAsync();
-
-        if (!gdcCreated)
-        {
-            await gdcDbContext.Database.MigrateAsync();
-            var tags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
-
-            tags.ForEach(t => gdcDbContext.Tags.Add(new TagModel() { Id = 0, Tag = t }));
-
-            await gdcDbContext.SaveChangesAsync();
-        }
-
-        //if (!authCreated)
-        //    await authDbContext.Database.MigrateAsync();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
-    }
-}
-
-// Endpoints
-
-//app.Use(async (context, next) =>
-//{
-//    await next(context);
-//    return;
-//    //if(app.Environment.IsDevelopment())
-//    //{
-//    //}
-
-//    string apiKey = context.Request.Headers.Authorization! + "";
-
-//    string expectedApiKey = app.Configuration["LoginApiKey"]! + "";
-
-//    var endpoint = context.Request.Path.Value!.ToLower() + "";
-
-//    if (string.IsNullOrEmpty(apiKey))
-//    {
-//        context.Response.StatusCode = 400;
-//        await context.Response.WriteAsync("Access Denied");
-//    }
-
-//    if (endpoint.Equals("/login"))
-//    {
-//        if (apiKey.Equals(expectedApiKey))
-//        {
-//            await next(context);
-//            return;
-//        }
-//        else
-//        {
-//            context.Response.StatusCode = 400;
-//            await context.Response.WriteAsync("Access Denied");
-//        }
-//    }
-//    else if (endpoint.Equals("/logout"))
-//    {
-//        await next(context);
-//        return;
-//    }
-
-//    var repo = context.RequestServices.GetService<IAuthRepository>();
-
-//    if (repo is null)
-//    {
-//        Log.Error("Cant load AuthRepository Service");
-//        return;
-//    }
-
-//    var auth = await repo.AuthenticateAsync(apiKey);
-
-//    if (auth.Success)
-//    {
-//        await next(context);
-//        return;
-//    }
-
-//    context.Response.StatusCode = 400;
-//    await context.Response.WriteAsync("Access Denied");
-//});
-
-// app.MapPost(ApiEndpointsV1.Gateway.Login, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
-// {
-//     await repo.UpsertAsync(auth);
-//     return;
-// })
-// .WithName(ApiEndpointsV1.Gateway.MetaData.Login)
-// .Produces(StatusCodes.Status200OK);
-
-// app.MapPost(ApiEndpointsV1.Gateway.Logout, async ([FromServices] IAuthRepository repo, [FromBody] AuthModel auth) =>
-// {
-//     await repo.DeleteAsync(auth);
-//     return;
-// })
-// .WithName(ApiEndpointsV1.Gateway.MetaData.Logout)
-// .Produces(StatusCodes.Status200OK);
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapReverseProxy();
 

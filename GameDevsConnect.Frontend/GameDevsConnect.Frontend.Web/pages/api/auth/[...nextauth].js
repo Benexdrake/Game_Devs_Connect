@@ -30,7 +30,7 @@ export const authOptions =
         // accessToken: 'mvrzosjK6037Boac0oSwTVLalGlLEb',
         // refreshToken: 'PxXHzwpT5WfpodGYYCT4SV5zjIxqZH',
         // expiresAt: 1748272013000
-        console.log('JWT', token);
+        console.log('>>>>>>>>>>>> JWT');
 
         // Senden des token Objects an das Gateway zum speichern des Users, aber auch speichern des accessToken
         // Somit kann jede weitere API mit dem AccessToken angesteuert werden.
@@ -43,7 +43,8 @@ export const authOptions =
       try 
       {
 
-        console.log('SESSION', token.name);
+        console.log('>>>>>>>>>>>>>>> SESSION', token.name);
+        // Hier /login Route des Gateways abrufen und bearer Token holen, diesen vllt in session.accessToken speichern?
         
         // const user = await getUser(token)
         // session.user = user;
