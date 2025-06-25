@@ -1,7 +1,7 @@
 ﻿global using Microsoft.AspNetCore.Http.Features;
-global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
-global using Serilog;
+global using Microsoft.AspNetCore.Authentication.BearerToken;
+global using System.Security.Claims;
 
 global using GameDevsConnect.Backend.API.Gateway;
 global using GameDevsConnect.Backend.API.Configuration;

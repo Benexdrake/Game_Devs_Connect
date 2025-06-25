@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.BearerToken;
-using System.Security.Claims;
-
-var start = new Startup();
+﻿var start = new Startup("Gateway");
 var builder = start.Build(args);
 
 var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";

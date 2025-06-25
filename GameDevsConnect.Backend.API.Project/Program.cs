@@ -1,5 +1,4 @@
-using GameDevsConnect.Backend.API.Configuration;
-var start = new Startup();
+var start = new Startup("Project");
 var builder = start.Build(args);
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();

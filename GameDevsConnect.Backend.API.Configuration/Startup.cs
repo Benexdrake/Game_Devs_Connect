@@ -1,9 +1,16 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration;
+﻿using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
-public class Startup(bool gateway = false)
+namespace GameDevsConnect.Backend.API.Configuration;
+
+public class Startup(string name, bool gateway = false)
 {
+    private readonly string _name = name;
     private readonly bool gateway = gateway;
     private string accessKey = string.Empty;
+
+    
 
     public WebApplicationBuilder Build(string[] args)
     {
@@ -12,6 +19,18 @@ public class Startup(bool gateway = false)
         builder.AddServiceDefaults();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService($"API.Service.{_name}"))
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation();
+            });
+
 
         var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
         var sqlAdminUsername = Environment.GetEnvironmentVariable("SQL_ADMIN_USERNAME") ?? "sa";
@@ -22,7 +41,13 @@ public class Startup(bool gateway = false)
         builder.Services.AddHealthChecks();
         builder.Services.AddResponseCaching();
 
-        builder.Host.UseSerilog((context, configuration) => configuration.MinimumLevel.Information().WriteTo.Console());
+        builder.Host.UseSerilog((context, configuration) => 
+            configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .Enrich.FromLogContext()
+                .Enrich.WithProperty("Backend", $"API.Service.{_name}")
+                .MinimumLevel.Information()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"));
 
         builder.Services.AddApiVersioning(o =>
         {

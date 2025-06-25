@@ -1,5 +1,7 @@
-using GameDevsConnect.Backend.API.Configuration;
-var start = new Startup();
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+var start = new Startup("Azure");
 var builder = start.Build(args);
 
 builder.Services.AddScoped<IBlobRepository, BlobRepository>();

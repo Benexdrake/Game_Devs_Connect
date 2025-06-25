@@ -1,4 +1,4 @@
-var start = new Startup();
+var start = new Startup("User");
 var builder = start.Build(args);
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
