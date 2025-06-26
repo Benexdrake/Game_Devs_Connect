@@ -5,7 +5,7 @@ public static class ProfileEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Profile.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.Profile.Get, async ([FromServices] IProfileRepository rep, [FromRoute] string id) =>

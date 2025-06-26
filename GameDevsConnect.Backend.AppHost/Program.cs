@@ -99,6 +99,7 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
        .WithEnvironment("X-Access-Key", accessKey)
+       .WithEnvironment("DEVMODUS", "true")
        .WithEnvironment("AZURE_URL", "http://localhost:7001")
        .WithEnvironment("COMMENT_URL", "http://localhost:7002")
        .WithEnvironment("FILE_URL", "http://localhost:7003")

@@ -9,8 +9,7 @@ public class Startup(string name, bool gateway = false)
     private readonly string _name = name;
     private readonly bool gateway = gateway;
     private string accessKey = string.Empty;
-
-    
+    public int APIVersion { get; } = 1;
 
     public WebApplicationBuilder Build(string[] args)
     {
@@ -51,7 +50,7 @@ public class Startup(string name, bool gateway = false)
 
         builder.Services.AddApiVersioning(o =>
         {
-            o.DefaultApiVersion = new ApiVersion(1);
+            o.DefaultApiVersion = new ApiVersion(APIVersion);
             o.ApiVersionReader = new UrlSegmentApiVersionReader();
         })
         .AddApiExplorer(o =>

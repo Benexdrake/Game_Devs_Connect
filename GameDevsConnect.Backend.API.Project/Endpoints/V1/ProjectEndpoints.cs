@@ -5,7 +5,7 @@ public static class ProjectEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Project.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.Project.Get, async ([FromServices] IProjectRepository repo) =>

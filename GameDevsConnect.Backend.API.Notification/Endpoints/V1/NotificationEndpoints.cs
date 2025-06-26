@@ -6,7 +6,7 @@ public static class NotificationEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.User.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Notification.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         // Get all Notifications

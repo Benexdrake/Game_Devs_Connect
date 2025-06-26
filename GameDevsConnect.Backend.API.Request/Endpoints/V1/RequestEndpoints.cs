@@ -6,7 +6,7 @@ public static class RequestEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Request.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.Request.Get, async ([FromServices] IRequestRepository repo) =>

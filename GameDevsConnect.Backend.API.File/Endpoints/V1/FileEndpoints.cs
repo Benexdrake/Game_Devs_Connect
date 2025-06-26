@@ -6,7 +6,7 @@ public static class FileEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.File.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.File.GetByOwnerId, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>

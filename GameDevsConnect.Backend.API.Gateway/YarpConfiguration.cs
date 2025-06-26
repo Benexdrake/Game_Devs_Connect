@@ -2,8 +2,9 @@
 
 namespace GameDevsConnect.Backend.API.Gateway
 {
-    public class YarpConfiguration(string azure, string comment, string file, string notification, string project, string profile, string request, string tag, string user, string access_key)
+    public class YarpConfiguration(int apiVersion, string gateway, string azure, string comment, string file, string notification, string project, string profile, string request, string tag, string user, string access_key, bool development)
     {
+        private readonly string _gateway = gateway;
         private readonly string _azure = azure;
         private readonly string _comment = comment;
         private readonly string _file = file;
@@ -14,6 +15,7 @@ namespace GameDevsConnect.Backend.API.Gateway
         private readonly string _tag = tag;
         private readonly string _user = user;
         private readonly string access_Key = access_key;
+        private readonly bool _development = development;
 
         public RouteConfig[] Routes => GetRoutes();
         public ClusterConfig[] Clusters => GetClusters();
@@ -27,104 +29,106 @@ namespace GameDevsConnect.Backend.API.Gateway
                     { "Set", access_Key ?? "" }
             }};
 
+            string authPolicy = _development ? "anonymous" : "default";
+
             return
             [
                 new RouteConfig
                 {
-                    RouteId = "api-azure",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/azure",
                     ClusterId = "api-azure-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/azure/{**catch-all}",
+                        Path = $"api/v{apiVersion}/azure/{{**catch-all}}",
                     },
                     Transforms = transforms,
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-comment",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/comment",
                     ClusterId = "api-comment-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/comment/{**catch-all}"
+                        Path = $"api/v{apiVersion}/comment/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-file",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/file",
                     ClusterId = "api-file-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/file/{**catch-all}"
+                        Path = $"api/v{apiVersion}/file/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-notification",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/notification",
                     ClusterId = "api-notification-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/notification/{**catch-all}"
+                        Path = $"api/v{apiVersion}/notification/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-project",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/project",
                     ClusterId = "api-project-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/project/{**catch-all}"
+                        Path = $"api/v{apiVersion}/project/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-profile",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/profile",
                     ClusterId = "api-profile-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/profile/{**catch-all}"
+                        Path = $"api/v{apiVersion}/profile/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-request",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/request",
                     ClusterId = "api-request-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/request/{**catch-all}"
+                        Path = $"api/v{apiVersion}/request/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-tag",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/tag",
                     ClusterId = "api-tag-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/tag/{**catch-all}"
+                        Path = $"api/v{apiVersion}/tag/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
                 new RouteConfig
                 {
-                    RouteId = "api-user",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/user",
                     ClusterId = "api-user-cluster",
-                    AuthorizationPolicy = "default",
+                    AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = "api/v1/user/{**catch-all}"
+                        Path = $"api/v{apiVersion}/user/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },

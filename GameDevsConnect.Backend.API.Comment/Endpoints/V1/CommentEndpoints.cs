@@ -6,7 +6,7 @@ public static class CommentEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Comment.Group)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.Comment.Count, async ([FromServices] ICommentRepository rep, [FromRoute] string id) =>

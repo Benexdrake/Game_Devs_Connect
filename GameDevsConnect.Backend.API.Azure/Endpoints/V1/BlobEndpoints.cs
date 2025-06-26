@@ -5,7 +5,7 @@ public static class BlobEndpoints
     {
         var apiVersionSet = ApiEndpointsV1.GetVersionSet(app);
 
-        var group = app.MapGroup(ApiEndpointsV1.Tag.Group)
+        var group = app.MapGroup(ApiEndpointsV1.Azure.GroupBlob)
                        .WithApiVersionSet(apiVersionSet);
 
         group.MapGet(ApiEndpointsV1.Azure.Get, async ([FromServices] IBlobRepository rep, [FromRoute] string fileName, [FromRoute] string containerName) =>
