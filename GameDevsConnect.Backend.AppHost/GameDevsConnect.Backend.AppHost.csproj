@@ -21,13 +21,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Azure\GameDevsConnect.Backend.API.Azure.csproj" />
-    <ProjectReference Include="..\GameDevsConnect.Backend.API.Comment\GameDevsConnect.Backend.API.Comment.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.File\GameDevsConnect.Backend.API.File.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Gateway\GameDevsConnect.Backend.API.Gateway.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Notification\GameDevsConnect.Backend.API.Notification.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.Post\GameDevsConnect.Backend.API.Post.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Profile\GameDevsConnect.Backend.API.Profile.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Project\GameDevsConnect.Backend.API.Project.csproj" />
-    <ProjectReference Include="..\GameDevsConnect.Backend.API.Request\GameDevsConnect.Backend.API.Request.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Tag\GameDevsConnect.Backend.API.Tag.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.User\GameDevsConnect.Backend.API.User.csproj" />
   </ItemGroup>

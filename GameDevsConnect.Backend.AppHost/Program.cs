@@ -9,7 +9,8 @@ var accessKey = Guid.NewGuid().ToString();
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
-                 .WithVolume("sqlserver-data", "/var/opt/mssql");
+                 .WithVolume("sqlserver-data", "/var/opt/mssql")
+                 ;
 
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")
        .WithHttpEndpoint(port: 7009, name: "user")
@@ -29,8 +30,8 @@ var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevs
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-var request = builder.AddProject<Projects.GameDevsConnect_Backend_API_Request>("gamedevsconnect-backend-api-request")
-       .WithHttpEndpoint(port: 7007, name: "request")
+var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamedevsconnect-backend-api-post")
+       .WithHttpEndpoint(port: 7007, name: "post")
        .WithReplicas(replicas)
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
@@ -74,15 +75,6 @@ var file = builder.AddProject<Projects.GameDevsConnect_Backend_API_File>("gamede
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-var comment = builder.AddProject<Projects.GameDevsConnect_Backend_API_Comment>("gamedevsconnect-backend-api-comment")
-       .WithHttpEndpoint(port: 7002, name: "comment")
-       .WithReplicas(replicas)
-       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-       .WithEnvironment("X-Access-Key", accessKey)
-       .WaitFor(sql);
-
 var azure = builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("gamedevsconnect-backend-api-azure")
        .WithHttpEndpoint(port: 7001, name: "azure")
        .WithReplicas(replicas)
@@ -110,12 +102,11 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WithEnvironment("TAG_URL", "http://localhost:7008")
        .WithEnvironment("USER_URL", "http://localhost:7009")
        .WaitFor(azure)
-       .WaitFor(comment)
        .WaitFor(file)
        .WaitFor(notification)
        .WaitFor(profile)
        .WaitFor(project)
-       .WaitFor(request)
+       .WaitFor(post)
        .WaitFor(tag)
        .WaitFor(user);
 
