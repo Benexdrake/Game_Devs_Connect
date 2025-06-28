@@ -29,32 +29,12 @@ public static class ApiEndpointsV1
         }
     }
 
-    public static class Comment
-    {
-        public const string Group = $"{Base}/{nameof(Comment)}";
-        public const string Count = $"count/{{id}}";
-        public const string Get = $"{{id}}";
-        public const string GetByRequestId = $"request/{{id}}";
-        public const string Create = "add";
-        public const string Update = "update";
-        public const string Delete = $"delete/{{id}}";
-        public static class MetaData
-        {
-            public const string Count = "GetCommentsCount";
-            public const string Get = "GetComment";
-            public const string GetByRequestId = "GetCommentByRequestId";
-            public const string Create = "AddComment";
-            public const string Update = "UpdateComment";
-            public const string Delete = "DeleteComment";
-        }
-    }
-
     public static class File
     {
         public const string Group = $"{Base}/{nameof(File)}";
         public const string Get = $"{{id}}";
         public const string GetByOwnerId = $"owner/{{id}}";
-        public const string GetByRequestId = $"request/{{id}}";
+        public const string GetByPostParentId = $"post/{{id}}";
         public const string Create = "add";
         public const string Update = "update";
         public const string Delete = $"delete/{{id}}";
@@ -63,7 +43,7 @@ public static class ApiEndpointsV1
         {
             public const string Get = "GetFile";
             public const string GetByOwnerId = "GetFileIdsByOwnerId";
-            public const string GetByRequestId = "GetFileIdsByRequestId";
+            public const string GetByPostParentId = "GetFileIdsByPostParentId";
             public const string Create = "AddFile";
             public const string Update = "UpdateFile";
             public const string Delete = "DeleteFile";

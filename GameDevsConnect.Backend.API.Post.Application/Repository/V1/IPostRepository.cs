@@ -6,6 +6,7 @@ public interface IPostRepository
     Task<GetByIdResponse> GetByIdAsync(string id);
     Task<GetFullResponse> GetFullByIdAsync(string id);
     Task<GetIdsResponse> GetByUserIdAsync(string userId);
+    Task<GetIdsResponse> GetCommentIdsAsync(string parentId);
     Task<ApiResponse> AddAsync(AddPost addPost);
     Task<ApiResponse> UpdateAsync(PostDTO post);
     Task<ApiResponse> DeleteAsync(string id);

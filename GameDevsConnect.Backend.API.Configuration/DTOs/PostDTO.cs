@@ -8,7 +8,7 @@ public partial class PostDTO
 
     public bool IsRequest { get; set; }
 
-    public string? Description { get; set; }
+    public string? Message { get; set; }
 
     public string? Created { get; set; }
 
@@ -17,4 +17,6 @@ public partial class PostDTO
     public string? OwnerId { get; set; }
 
     public string? FileId { get; set; }
+
+    public bool isDeleted { get; set; }
 }

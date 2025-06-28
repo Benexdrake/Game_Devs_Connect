@@ -8,17 +8,16 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            Message.Id = profile.Id;
             var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(profile.Id));
 
             if (dbProfile is not null)
             {
-                Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST, false);
+                Log.Error(Message.EXIST(profile.Id));
+                return new ApiResponse(Message.EXIST(profile.Id), false);
             }
 
-            Log.Information(Message.ADD);
-            return new ApiResponse(Message.ADD, true);
+            Log.Information(Message.ADD(profile.Id));
+            return new ApiResponse(Message.ADD(profile.Id), true);
         }
         catch (Exception ex)
         {
@@ -31,19 +30,18 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            Message.Id = id;
             var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
             if (dbProfile is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(id));
+                return new ApiResponse(Message.NOTFOUND(id), false);
             }
 
             _context.Profiles.Remove(dbProfile);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.DELETE);
-            return new ApiResponse(Message.DELETE, true);
+            Log.Information(Message.DELETE(id));
+            return new ApiResponse(Message.DELETE(id), true);
         }
         catch (Exception ex)
         {
@@ -56,13 +54,12 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            Message.Id = id;
             var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if (dbProfile is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new GetResponse(Message.NOTFOUND, false, null!);
+                Log.Error(Message.NOTFOUND(id));
+                return new GetResponse(Message.NOTFOUND(id), false, null!);
             }
 
             return new GetResponse(null!, true, dbProfile);
@@ -78,22 +75,20 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            Message.Id = id;
             var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if (dbProfile is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new GetFullResponse(Message.NOTFOUND, false, null!, null!);
+                Log.Error(Message.NOTFOUND(id));
+                return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!);
             }
 
             var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(dbProfile.UserId));
 
             if (dbUser is null)
             {
-                Message.Id = dbProfile.UserId!;
-                Log.Error(Message.USERNOTFOUND);
-                return new GetFullResponse(Message.USERNOTFOUND, false, null!, null!);
+                Log.Error(Message.USERNOTFOUND(id));
+                return new GetFullResponse(Message.USERNOTFOUND(id), false, null!, null!);
             }
 
             return new GetFullResponse("", true, null!, dbProfile);
@@ -109,20 +104,19 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            Message.Id = profile.Id;
             var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(profile.Id));
 
             if (dbProfile is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(profile.Id));
+                return new ApiResponse(Message.NOTFOUND(profile.Id), false);
             }
 
             _context.Profiles.Update(profile);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.UPDATE, true);
+            Log.Information(Message.UPDATE(profile.Id));
+            return new ApiResponse(Message.UPDATE(profile.Id), true);
         }
         catch (Exception ex)
         {

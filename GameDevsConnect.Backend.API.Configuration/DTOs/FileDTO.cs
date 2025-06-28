@@ -4,7 +4,7 @@ public partial class FileDTO
 {
     public string Id { get; set; } = null!;
 
-    public string? Description { get; set; }
+    public string Type { get; set; } = string.Empty;
 
     public int? Size { get; set; }
 

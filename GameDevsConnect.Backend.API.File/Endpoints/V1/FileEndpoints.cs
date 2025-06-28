@@ -23,11 +23,11 @@ public static class FileEndpoints
         .WithName(ApiEndpointsV1.File.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapGet(ApiEndpointsV1.File.GetByRequestId, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.File.GetByPostParentId, async ([FromServices] IFileRepository rep, [FromRoute] string id) =>
         {
-            return await rep.GetByRequestIdAsync(id);
+            return await rep.GetByPostParentIdAsync(id);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.GetByRequestId)
+        .WithName(ApiEndpointsV1.File.MetaData.GetByPostParentId)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File) =>

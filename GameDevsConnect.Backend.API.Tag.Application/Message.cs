@@ -2,11 +2,9 @@
 
 internal static class Message
 {
-    internal static string Id { get; set; } = String.Empty;
-
-    internal static string NOTFOUND = $"Tag: {Id} not found";
-    internal static string EXIST = $"Tag: {Id} already exist";
-    internal static string ADD = $"Tag: {Id} Added";
-    internal static string UPDATE = $"Tag: {Id} Updated";
-    internal static string DELETE = $"Tag: {Id} Deleted";
+    internal static string NOTFOUND(string id) => $"Tag: {id} not found";
+    internal static string EXIST(string id) => $"Tag: {id} already exist";
+    internal static string ADD(string id) => $"Tag: {id} Added";
+    internal static string UPDATE(string id) => $"Tag: {id} Updated";
+    internal static string DELETE(string id) => $"Tag: {id} Deleted";
 }

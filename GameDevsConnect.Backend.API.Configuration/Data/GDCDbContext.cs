@@ -9,34 +9,10 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     public virtual DbSet<ProjectDTO> Projects { get; set; }
     public virtual DbSet<NotificationDTO> Notifications { get; set; }
     public virtual DbSet<FileDTO> Files { get; set; }
-    public virtual DbSet<CommentDTO> Comments { get; set; }
     public virtual DbSet<PostTagDTO> PostTags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<CommentDTO>(entity =>
-        //{
-        //    entity.HasKey(e => e.Id).HasName("PK__Comments__3213E83F66D90817");
-
-        //    entity.Property(e => e.Id)
-        //        .HasMaxLength(64)
-        //        .HasColumnName("id");
-        //    entity.Property(e => e.Created)
-        //        .HasMaxLength(128)
-        //        .HasColumnName("created");
-        //    entity.Property(e => e.Deleted).HasColumnName("deleted");
-        //    entity.Property(e => e.FileId)
-        //        .HasMaxLength(64)
-        //        .HasColumnName("file_id");
-        //    entity.Property(e => e.Message).HasColumnName("message");
-        //    entity.Property(e => e.OwnerId)
-        //        .HasMaxLength(64)
-        //        .HasColumnName("owner_id");
-        //    entity.Property(e => e.RequestId)
-        //        .HasMaxLength(64)
-        //        .HasColumnName("request_id");
-        //});
-
         modelBuilder.Entity<FileDTO>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Files__3213E83FF08B3AF0");
@@ -47,7 +23,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Created)
                 .HasMaxLength(128)
                 .HasColumnName("created");
-            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Type).HasColumnType("type");
             entity.Property(e => e.OwnerId)
                 .HasMaxLength(64)
                 .HasColumnName("owner_id");
@@ -143,7 +119,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Created)
                 .HasMaxLength(128)
                 .HasColumnName("created");
-            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.FileId)
                 .HasMaxLength(64)
                 .HasColumnName("file_id");
@@ -157,6 +133,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
                 .HasMaxLength(64)
                 .HasColumnName("parent_id");
             entity.Property(e => e.IsRequest).HasColumnName("is_request");
+            entity.Property(e => e.isDeleted).HasColumnName("is_deleted");
         });
 
         modelBuilder.Entity<PostLikeDTO>(entity =>

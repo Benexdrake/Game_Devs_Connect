@@ -9,9 +9,9 @@ var gatewayUrl = Environment.GetEnvironmentVariable("GATEWAY_URL") ?? "https://l
 var azureUrl = Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001";
 var fileUrl = Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7002";
 var notificationUrl = Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7003";
-var projectUrl = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7004";
-var profileUrl = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7005";
-var postUrl = Environment.GetEnvironmentVariable("POST_URL") ?? "http://localhost:7006";
+var postUrl = Environment.GetEnvironmentVariable("POST_URL") ?? "http://localhost:7004";
+var projectUrl = Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005";
+var profileUrl = Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006";
 var tagUrl = Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7007";
 var userUrl = Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7008";
 

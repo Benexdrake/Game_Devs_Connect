@@ -2,11 +2,9 @@
 
 internal static class Message
 {
-    internal static string Id { get; set; } = String.Empty;
-
-    internal static string NOTFOUND = $"Notification: {Id} not found";
-    internal static string EXIST = $"Notification: {Id} already exist";
-    internal static string ADD = $"Notification: {Id} Added";
-    internal static string UPDATE = $"Notification: {Id} Updated";
-    internal static string DELETE = $"Notification: {Id} Deleted";
+    internal static string NOTFOUND(string id) => $"Notification: {id} not found";
+    internal static string EXIST(string id) => $"Notification: {id} already exist";
+    internal static string ADD(string id) => $"Notification: {id} Added";
+    internal static string UPDATE(string id) => $"Notification: {id} Updated";
+    internal static string DELETE(string id) => $"Notification: {id} Deleted";
 }

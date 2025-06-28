@@ -2,10 +2,8 @@
 
 internal static class Message
 {
-    internal static string Id { get; set; } = String.Empty;
-
-    internal static string NOTFOUND = $"Comment: {Id} not found";
-    internal static string UPLOAD = $"File: {Id} Uploaded";
-    internal static string UPDATE = $"File: {Id} Updated";
-    internal static string DELETE = $"File: {Id} Deleted";
+    internal static string NOTFOUND(string id) => $"Comment: {id} not found";
+    internal static string UPLOAD(string id) => $"File: {id} Uploaded";
+    internal static string UPDATE(string id) => $"File: {id} Updated";
+    internal static string DELETE(string id) => $"File: {id} Deleted";
 }

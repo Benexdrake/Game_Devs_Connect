@@ -7,18 +7,17 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
     {
         try
         {
-            Message.Id = addProject.Project!.Id;
             var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(addProject.Project!.Id));
             if (dbProject is not null)
             {
-                Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST, false);
+                Log.Error(Message.EXIST(addProject.Project!.Id));
+                return new ApiResponse(Message.EXIST(addProject.Project!.Id), false);
             }
 
             await _context.Projects.AddAsync(addProject.Project);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.ADD);
+            Log.Information(Message.ADD(addProject.Project!.Id));
             return new ApiResponse(null!, true);
         }
         catch (Exception ex)
@@ -32,20 +31,19 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
     {
         try
         {
-            Message.Id = id;
             var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             if (project is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(id));
+                return new ApiResponse(Message.NOTFOUND(id), false);
             }
 
             _context.Projects.Remove(project!);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.DELETE);
-            return new ApiResponse(Message.DELETE, true);
+            Log.Information(Message.DELETE(id));
+            return new ApiResponse(Message.DELETE(id), true);
         }
         catch (Exception ex)
         {
@@ -72,13 +70,12 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
     {
         try
         {
-            Message.Id = id;
             var project = await _context.Projects.SingleOrDefaultAsync(x => x.Id == id);
 
             if (project is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new GetResponse(Message.NOTFOUND, false, null!);
+                Log.Error(Message.NOTFOUND(id));
+                return new GetResponse(Message.NOTFOUND(id), false, null!);
             }
 
             return new GetResponse(null!, true, project);
@@ -94,19 +91,18 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
     {
         try
         {
-            Message.Id = updateRequest.Project!.Id;
             var DbProject = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(updateRequest.Project.Id));
             if (DbProject is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(updateRequest.Project!.Id));
+                return new ApiResponse(Message.NOTFOUND(updateRequest.Project!.Id), false);
             }
 
             _context.Projects.Update(updateRequest.Project);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.UPDATE, true);
+            Log.Information(Message.UPDATE(updateRequest.Project!.Id));
+            return new ApiResponse(Message.UPDATE(updateRequest.Project!.Id), true);
         }
         catch (Exception ex)
         {

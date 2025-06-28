@@ -7,21 +7,19 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
     {
         try
         {
-            Message.Id = notification.Id;
-
             var notifivationDb = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(notification.Id));
 
             if (notifivationDb is not null)
             {
-                Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST, false);
+                Log.Error(Message.EXIST(notification.Id));
+                return new ApiResponse(Message.EXIST(notification.Id), false);
             }
 
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.ADD);
-            return new ApiResponse(Message.ADD, true);
+            Log.Information(Message.ADD(notification.Id));
+            return new ApiResponse(Message.ADD(notification.Id), true);
         }
         catch (Exception ex)
         {
@@ -34,21 +32,19 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
     {
         try
         {
-            Message.Id = notificationId;
-
             var notifivationDb = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(notificationId));
 
             if (notifivationDb is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(notificationId));
+                return new ApiResponse(Message.NOTFOUND(notificationId), false);
             }
 
             _context.Notifications.Remove(notifivationDb);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.DELETE);
-            return new ApiResponse(Message.DELETE, true);
+            Log.Information(Message.DELETE(notificationId));
+            return new ApiResponse(Message.DELETE(notificationId), true);
         }
         catch (Exception ex)
         {
@@ -61,13 +57,12 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
     {
         try
         {
-            Message.Id = id;
             var notification = await _context.Notifications.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             if (notification is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new GetByIdResponse(Message.NOTFOUND, false, null!);
+                Log.Error(Message.NOTFOUND(id));
+                return new GetByIdResponse(Message.NOTFOUND(id), false, null!);
             }
 
             return new GetByIdResponse(null!, true, notification);
@@ -113,14 +108,12 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
     {
         try
         {
-            Message.Id = notificationId;
-
             var notificationDb = await _context.Notifications.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(notificationId));
 
             if (notificationDb is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(notificationId));
+                return new ApiResponse(Message.NOTFOUND(notificationId), false);
             }
 
             if (notificationDb.Seen == false)
@@ -130,8 +123,8 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
                 await _context.SaveChangesAsync();
             }
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.UPDATE, true);
+            Log.Information(Message.UPDATE(notificationId));
+            return new ApiResponse(Message.UPDATE(notificationId), true);
         }
         catch (Exception ex)
         {

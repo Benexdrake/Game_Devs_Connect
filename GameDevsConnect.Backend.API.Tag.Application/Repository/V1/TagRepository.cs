@@ -7,20 +7,19 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         try
         {
             tag.Id = 0;
-            Message.Id = tag.Tag!;
             var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Tag!.Equals(tag.Tag));
 
             if (tagsDb is not null)
             {
-                Log.Error(Message.EXIST);
-                return new ApiResponse(Message.EXIST, false);
+                Log.Error(Message.EXIST(tag.Tag!));
+                return new ApiResponse(Message.EXIST(tag.Tag!), false);
             }
 
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.ADD);
-            return new ApiResponse(Message.ADD, true);
+            Log.Information(Message.ADD(tag.Tag!));
+            return new ApiResponse(Message.ADD(tag.Tag!), true);
         }
         catch (Exception ex)
         {
@@ -33,20 +32,19 @@ public class TagRepository(GDCDbContext context) : ITagRepository
     {
         try
         {
-            Message.Id = id.ToString();
             var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
 
             if (tagsDb is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(id.ToString()));
+                return new ApiResponse(Message.NOTFOUND(id.ToString()), false);
             }
 
             _context.Tags.Remove(tagsDb);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.DELETE);
-            return new ApiResponse(Message.DELETE, true);
+            Log.Information(Message.DELETE(id.ToString()));
+            return new ApiResponse(Message.DELETE(id.ToString()), true);
         }
         catch (Exception ex)
         {
@@ -74,19 +72,18 @@ public class TagRepository(GDCDbContext context) : ITagRepository
     {
         try
         {
-            Message.Id = tag.Tag!;
             var tagsDb = await _context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.Id == tag.Id);
             if (tagsDb is null)
             {
-                Log.Error(Message.NOTFOUND);
-                return new ApiResponse(Message.NOTFOUND, false);
+                Log.Error(Message.NOTFOUND(tag.Tag!));
+                return new ApiResponse(Message.NOTFOUND(tag.Tag!), false);
             }
 
             tagsDb.Tag = tag.Tag;
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.UPDATE);
-            return new ApiResponse(Message.UPDATE, true);
+            Log.Information(Message.UPDATE(tag.Tag!));
+            return new ApiResponse(Message.UPDATE(tag.Tag!), true);
         }
         catch (Exception ex)
         {

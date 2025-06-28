@@ -6,5 +6,5 @@ public interface IFileRepository
     Task<ApiResponse> AddAsync(FileDTO file);
     Task<ApiResponse> UpdateAsync(FileDTO file);
     Task<ApiResponse> DeleteAsync(string fileId);
-    Task<GetIdsbyId> GetByRequestIdAsync(string requestId);
+    Task<GetIdsbyId> GetByPostParentIdAsync(string parentId);
 }

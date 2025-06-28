@@ -30,17 +30,8 @@ var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevs
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamedevsconnect-backend-api-post")
-       .WithHttpEndpoint(port: 7006, name: "post")
-       .WithReplicas(replicas)
-       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-       .WithEnvironment("X-Access-Key", accessKey)
-       .WaitFor(sql);
-
 var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("gamedevsconnect-backend-api-project")
-       .WithHttpEndpoint(port: 7005, name: "project")
+       .WithHttpEndpoint(port: 7006, name: "project")
        .WithReplicas(replicas)
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
@@ -49,7 +40,16 @@ var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("
        .WaitFor(sql);
 
 var profile = builder.AddProject<Projects.GameDevsConnect_Backend_API_Profile>("gamedevsconnect-backend-api-profile")
-       .WithHttpEndpoint(port: 7004, name: "profile")
+       .WithHttpEndpoint(port: 7005, name: "profile")
+       .WithReplicas(replicas)
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
+
+var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamedevsconnect-backend-api-post")
+       .WithHttpEndpoint(port: 7004, name: "post")
        .WithReplicas(replicas)
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
@@ -93,14 +93,13 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WithEnvironment("X-Access-Key", accessKey)
        .WithEnvironment("DEVMODUS", "true")
        .WithEnvironment("AZURE_URL", "http://localhost:7001")
-       .WithEnvironment("COMMENT_URL", "http://localhost:7002")
-       .WithEnvironment("FILE_URL", "http://localhost:7003")
-       .WithEnvironment("NOTIFICATION_URL", "http://localhost:7004")
+       .WithEnvironment("FILE_URL", "http://localhost:7002")
+       .WithEnvironment("NOTIFICATION_URL", "http://localhost:7003")
+       .WithEnvironment("POST_URL", "http://localhost:7004")
        .WithEnvironment("PROFILE_URL", "http://localhost:7005")
        .WithEnvironment("PROJECT_URL", "http://localhost:7006")
-       .WithEnvironment("REQUEST_URL", "http://localhost:7007")
-       .WithEnvironment("TAG_URL", "http://localhost:7008")
-       .WithEnvironment("USER_URL", "http://localhost:7009")
+       .WithEnvironment("TAG_URL", "http://localhost:7007")
+       .WithEnvironment("USER_URL", "http://localhost:7008")
        .WaitFor(azure)
        .WaitFor(file)
        .WaitFor(notification)
