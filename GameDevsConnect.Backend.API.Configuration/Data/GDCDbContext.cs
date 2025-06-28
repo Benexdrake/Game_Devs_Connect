@@ -20,6 +20,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
                 .HasColumnName("id");
+            entity.Property(e => e.Url).HasColumnName("url");
             entity.Property(e => e.Created)
                 .HasMaxLength(128)
                 .HasColumnName("created");
