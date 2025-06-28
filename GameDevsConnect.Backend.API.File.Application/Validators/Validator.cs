@@ -29,7 +29,7 @@ public class Validator : AbstractValidator<FileDTO>
 
         RuleFor(x => x.Size)
             .GreaterThan(0)
-            .WithMessage($"File mit ID '{x.Id}' muss größer 0 sein");
+            .WithMessage(x => $"File mit ID '{x.Id}' muss größer 0 sein");
     }
 
     private async Task<bool> ValidateExist(string id, CancellationToken token)
