@@ -197,7 +197,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var tagsArray = tags.ToArray();
 
-            return new GetFullResponse(null!, true, postDb, tagsArray, projectTitle!, owner, file); ;
+            return new GetFullResponse(null!, true, postDb, tagsArray, projectTitle!, owner, file);
         }
         catch (Exception ex)
         {
