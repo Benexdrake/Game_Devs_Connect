@@ -4,16 +4,25 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(ProfileDTO profile)
+    public async Task<ApiResponse> AddAsync(ProfileDTO profile, CancellationToken token)
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(profile.Id));
+            profile.Id = Guid.NewGuid().ToString();
 
-            if (dbProfile is not null)
+            var validator = new Validator(_context, ValidationMode.Add);
+
+            var valid = await validator.ValidateAsync(profile, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.EXIST(profile.Id));
-                return new ApiResponse(Message.EXIST(profile.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(profile.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, [.. errors]);
             }
 
             Log.Information(Message.ADD(profile.Id));
@@ -26,11 +35,11 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(string id)
+    public async Task<ApiResponse> DeleteAsync(string id, CancellationToken token)
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
+            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id), token);
             if (dbProfile is null)
             {
                 Log.Error(Message.NOTFOUND(id));
@@ -50,11 +59,11 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<GetResponse> GetAsync(string id)
+    public async Task<GetResponse> GetAsync(string id, CancellationToken token)
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
+            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id), token);
 
             if (dbProfile is null)
             {
@@ -71,11 +80,11 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<GetFullResponse> GetFullAsync(string id)
+    public async Task<GetFullResponse> GetFullAsync(string id, CancellationToken token)
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id));
+            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id), token);
 
             if (dbProfile is null)
             {
@@ -83,7 +92,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
                 return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!);
             }
 
-            var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(dbProfile.UserId));
+            var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(dbProfile.UserId), token);
 
             if (dbUser is null)
             {
@@ -100,16 +109,23 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(ProfileDTO profile)
+    public async Task<ApiResponse> UpdateAsync(ProfileDTO profile, CancellationToken token)
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(profile.Id));
+            var validator = new Validator(_context, ValidationMode.Update);
 
-            if (dbProfile is null)
+            var valid = await validator.ValidateAsync(profile, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.NOTFOUND(profile.Id));
-                return new ApiResponse(Message.NOTFOUND(profile.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(profile.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, [.. errors]);
             }
 
             _context.Profiles.Update(profile);

@@ -5,3 +5,4 @@ global using GameDevsConnect.Backend.API.Configuration.Responses;
 global using Microsoft.EntityFrameworkCore;
 global using Serilog;
 global using FluentValidation;
+global using GameDevsConnect.Backend.API.File.Application.Validators;

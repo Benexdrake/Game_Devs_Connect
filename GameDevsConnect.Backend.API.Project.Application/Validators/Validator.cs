@@ -1,6 +1,6 @@
 ﻿namespace GameDevsConnect.Backend.API.Project.Application.Validators;
 
-public class Validator : AbstractValidator<ProfileDTO>
+public class Validator : AbstractValidator<ProjectDTO>
 {
     private readonly GDCDbContext _context;
 
@@ -8,13 +8,7 @@ public class Validator : AbstractValidator<ProfileDTO>
     {
         _context = context;
 
-        if (mode == ValidationMode.Add)
-        {
-            RuleFor(x => x.Id)
-                .MustAsync(async (id, token) => !await ValidateExist(id, token))
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
-        }
-        else if (mode == ValidationMode.Update)
+        if (mode == ValidationMode.Update)
         {
             RuleFor(x => x.Id)
                 .NotEmpty()
@@ -24,7 +18,7 @@ public class Validator : AbstractValidator<ProfileDTO>
 
             RuleFor(x => x.Id)
                 .MustAsync(ValidateExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .WithMessage(x => $"Project mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
     }
 

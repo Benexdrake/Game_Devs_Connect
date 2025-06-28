@@ -8,13 +8,7 @@ public class Validator : AbstractValidator<ProfileDTO>
     {
         _context = context;
 
-        if (mode == ValidationMode.Add)
-        {
-            RuleFor(x => x.Id)
-                .MustAsync(async (id, token) => !await ValidateExist(id, token))
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
-        }
-        else if (mode == ValidationMode.Update)
+        if (mode == ValidationMode.Update)
         {
             RuleFor(x => x.Id)
                 .NotEmpty()

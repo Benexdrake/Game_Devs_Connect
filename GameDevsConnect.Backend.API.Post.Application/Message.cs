@@ -7,4 +7,5 @@ internal static class Message
     internal static string ADD(string id) => $"Post: {id} Added";
     internal static string UPDATE(string id) => $"Post: {id} Updated";
     internal static string DELETE(string id) => $"Post: {id} Deleted";
+    internal static string VALIDATIONERROR(string id) => $"Post: '{id}' ValidationError";
 }

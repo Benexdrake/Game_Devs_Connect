@@ -10,49 +10,49 @@ public static class NotificationEndpoints
                        .WithApiVersionSet(apiVersionSet);
 
         // Get all Notifications
-        group.MapGet(ApiEndpointsV1.Notification.GetCount, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.Notification.GetCount, async ([FromServices] INotificationRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.GetUnseenCountAsync(id);
+            return await rep.GetUnseenCountAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.GetCount)
         .Produces(StatusCodes.Status200OK);
 
         // Get Notifications by Request Id
-        group.MapGet(ApiEndpointsV1.Notification.Get, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.Notification.Get, async ([FromServices] INotificationRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.GetByIdAsync(id);
+            return await rep.GetByIdAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
 
         // Get Notifications by Request Id
-        group.MapGet(ApiEndpointsV1.Notification.GetByUserId, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.Notification.GetByUserId, async ([FromServices] INotificationRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.GetIdsByUserIdAsync(id);
+            return await rep.GetIdsByUserIdAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.GetByUserId)
         .Produces(StatusCodes.Status200OK);
 
         // Add a Notification
-        group.MapPost(ApiEndpointsV1.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationDTO notification) =>
+        group.MapPost(ApiEndpointsV1.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationDTO notification, CancellationToken token) =>
         {
-            return await rep.AddAsync(notification);
+            return await rep.AddAsync(notification, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
         // Update a Notification
-        group.MapPut(ApiEndpointsV1.Notification.Update, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        group.MapPut(ApiEndpointsV1.Notification.Update, async ([FromServices] INotificationRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.UpdateAsync(id);
+            return await rep.UpdateAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.Update)
         .Produces(StatusCodes.Status200OK);
 
         // Delete a Notification
-        group.MapDelete(ApiEndpointsV1.Notification.Delete, async ([FromServices] INotificationRepository rep, [FromRoute] string id) =>
+        group.MapDelete(ApiEndpointsV1.Notification.Delete, async ([FromServices] INotificationRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.DeleteAsync(id);
+            return await rep.DeleteAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Notification.MetaData.Delete)
         .Produces(StatusCodes.Status200OK);

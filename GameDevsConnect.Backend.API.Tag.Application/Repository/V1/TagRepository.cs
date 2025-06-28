@@ -2,17 +2,23 @@
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<ApiResponse> AddAsync(TagDTO tag)
+    public async Task<ApiResponse> AddAsync(TagDTO tag, CancellationToken token)
     {
         try
         {
-            tag.Id = 0;
-            var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Tag!.Equals(tag.Tag));
+            var validator = new Validator(_context, ValidationMode.Add);
 
-            if (tagsDb is not null)
+            var valid = await validator.ValidateAsync(tag, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.EXIST(tag.Tag!));
-                return new ApiResponse(Message.EXIST(tag.Tag!), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(tag.Tag!));
+                return new ApiResponse(Message.VALIDATIONERROR(tag.Tag!), false, [.. errors]);
             }
 
             await _context.Tags.AddAsync(tag);
@@ -28,11 +34,11 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(int id)
+    public async Task<ApiResponse> DeleteAsync(int id, CancellationToken token)
     {
         try
         {
-            var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, token);
 
             if (tagsDb is null)
             {
@@ -53,11 +59,11 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<GetTagsResponse> GetAsync()
+    public async Task<GetTagsResponse> GetAsync(CancellationToken token)
     {
         try
         {
-            var tags = await _context.Tags.ToArrayAsync();
+            var tags = await _context.Tags.ToArrayAsync(token);
 
             return new GetTagsResponse(null!, true, tags);
         }
@@ -68,18 +74,26 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(TagDTO tag)
+    public async Task<ApiResponse> UpdateAsync(TagDTO tag, CancellationToken token)
     {
         try
         {
-            var tagsDb = await _context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.Id == tag.Id);
-            if (tagsDb is null)
+            var validator = new Validator(_context, ValidationMode.Update);
+
+            var valid = await validator.ValidateAsync(tag, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.NOTFOUND(tag.Tag!));
-                return new ApiResponse(Message.NOTFOUND(tag.Tag!), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(tag.Tag!));
+                return new ApiResponse(Message.VALIDATIONERROR(tag.Tag!), false, [.. errors]);
             }
 
-            tagsDb.Tag = tag.Tag;
+            _context.Tags.Update(tag);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE(tag.Tag!));

@@ -8,37 +8,37 @@ public static class ProfileEndpoints
         var group = app.MapGroup(ApiEndpointsV1.Profile.Group)
                        .WithApiVersionSet(apiVersionSet);
 
-        group.MapGet(ApiEndpointsV1.Profile.Get, async ([FromServices] IProfileRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.Profile.Get, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.GetAsync(id);
+            return await rep.GetAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapGet(ApiEndpointsV1.Profile.GetFull, async ([FromServices] IProfileRepository rep, [FromRoute] string id) =>
+        group.MapGet(ApiEndpointsV1.Profile.GetFull, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.GetFullAsync(id);
+            return await rep.GetFullAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.GetFull)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile) =>
+        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile, CancellationToken token) =>
         {
-            return await rep.AddAsync(profile);
+            return await rep.AddAsync(profile, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.Profile.Update, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile) =>
+        group.MapPut(ApiEndpointsV1.Profile.Update, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile, CancellationToken token) =>
         {
-            return await rep.UpdateAsync(profile);
+            return await rep.UpdateAsync(profile, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Update)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapDelete(ApiEndpointsV1.Profile.Delete, async ([FromServices] IProfileRepository rep, [FromRoute] string id) =>
+        group.MapDelete(ApiEndpointsV1.Profile.Delete, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.DeleteAsync(id);
+            return await rep.DeleteAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Delete)
         .Produces(StatusCodes.Status200OK);

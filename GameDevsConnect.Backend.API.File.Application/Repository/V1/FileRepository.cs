@@ -1,23 +1,34 @@
-﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
+
+namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
 
 public class FileRepository(GDCDbContext context) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(FileDTO file)
+    public async Task<ApiResponse> AddAsync(FileDTO file, CancellationToken token)
     {
         try
         {
-            var fileDb = _context.Files.AsNoTracking().FirstOrDefault(x => x.Id.Equals(file.Id));
+            file.Id = Guid.NewGuid().ToString();
 
-            if (fileDb is not null)
+            var validator = new Validator(_context, ValidationMode.Add);
+
+            var valid = await validator.ValidateAsync(file, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.EXIST(file.Id));
-                return new ApiResponse(Message.EXIST(file.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(file.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(file.Id), false, [.. errors]);
             }
 
-            await _context.Files.AddAsync(file);
-            await _context.SaveChangesAsync();
+            await _context.Files.AddAsync(file, token);
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(file.Id));
             return new ApiResponse(null!, true);
@@ -29,11 +40,11 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(string fileId)
+    public async Task<ApiResponse> DeleteAsync(string fileId, CancellationToken token)
     {
         try
         {
-            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId));
+            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId), token);
 
             if (fileDb is null)
             {
@@ -42,7 +53,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             }
 
             _context.Files.Remove(fileDb);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.DELETE(fileId));
             return new ApiResponse(Message.DELETE(fileId), true);
@@ -54,11 +65,13 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<GetByIdResponse> GetByIdAsync(string fileId)
+    public async Task<GetByIdResponse> GetByIdAsync(string fileId, CancellationToken token)
     {
         try
         {
-            var file = await _context.Files.Where(x => x.Type.Equals(FileType.File.ToString())).FirstOrDefaultAsync(x => x.Id.Equals(fileId));
+            var file = await _context.Files
+                                        .Where(x => x.Type.Equals(FileType.File.ToString()))
+                                        .FirstOrDefaultAsync(x => x.Id.Equals(fileId), token);
 
             if (file is null)
             {
@@ -75,11 +88,11 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<GetIdsbyId> GetIdsByOwnerIdAsync(string ownerID)
+    public async Task<GetIdsbyId> GetIdsByOwnerIdAsync(string ownerID, CancellationToken token)
     {
         try
         {
-            var ids = await _context.Files.Where(x => x.OwnerId!.Equals(ownerID)).Select(x => x.Id).ToArrayAsync();
+            var ids = await _context.Files.Where(x => x.OwnerId!.Equals(ownerID)).Select(x => x.Id).ToArrayAsync(token);
             return new GetIdsbyId("", true, ids);
         }
         catch (Exception ex)
@@ -89,11 +102,11 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<GetIdsbyId> GetByPostParentIdAsync(string parentId)
+    public async Task<GetIdsbyId> GetByPostParentIdAsync(string parentId, CancellationToken token)
     {
         try
         {
-            var fileIds = await _context.Posts.Where(x => x.ParentId.Equals(parentId)).Select(x => x.FileId).ToArrayAsync();
+            var fileIds = await _context.Posts.Where(x => x.ParentId.Equals(parentId)).Select(x => x.FileId).ToArrayAsync(token);
             return new GetIdsbyId("", true, fileIds!);
         }
         catch (Exception ex)
@@ -103,20 +116,27 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(FileDTO file)
+    public async Task<ApiResponse> UpdateAsync(FileDTO file, CancellationToken token)
     {
         try
         {
-            var fileDb = await _context.Files.AsNoTracking().FirstOrDefaultAsync(x => x.Id == file.Id);
+            var validator = new Validator(_context, ValidationMode.Update);
 
-            if (fileDb is null)
+            var valid = await validator.ValidateAsync(file, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.NOTFOUND(file.Id));
-                return new ApiResponse(Message.NOTFOUND(file.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(file.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(file.Id), false, [.. errors]);
             }
 
             _context.Files.Update(file);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE(file.Id));
             return new ApiResponse(Message.UPDATE(file.Id), true);

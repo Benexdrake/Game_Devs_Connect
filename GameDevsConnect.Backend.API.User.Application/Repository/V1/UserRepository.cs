@@ -9,9 +9,9 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var userValidator = new Validator(_context, ValidationMode.Add);
+            var validator = new Validator(_context, ValidationMode.Add);
 
-            var valid = await userValidator.ValidateAsync(user, token);
+            var valid = await validator.ValidateAsync(user, token);
 
             if (!valid.IsValid)
             {
@@ -23,6 +23,8 @@ public class UserRepository(GDCDbContext context) : IUserRepository
                 Log.Error(Message.VALIDATIONERROR(user.Id));
                 return new ApiResponse(Message.VALIDATIONERROR(user.Id), false, [.. errors]);
             }
+
+            user.Id = Guid.NewGuid().ToString();
 
             await _context.Users.AddAsync(user, token);
             await _context.SaveChangesAsync(token);
@@ -121,9 +123,9 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var userValidator = new Validator(_context, ValidationMode.Update);
+            var validator = new Validator(_context, ValidationMode.Update);
 
-            var valid = await userValidator.ValidateAsync(user, token);
+            var valid = await validator.ValidateAsync(user, token);
 
             if (!valid.IsValid)
             {

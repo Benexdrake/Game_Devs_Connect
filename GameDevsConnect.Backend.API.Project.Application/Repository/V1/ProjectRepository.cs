@@ -1,20 +1,32 @@
-﻿namespace GameDevsConnect.Backend.API.Project.Application.Repository.V1;
+﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
+
+namespace GameDevsConnect.Backend.API.Project.Application.Repository.V1;
 
 public class ProjectRepository(GDCDbContext context) : IProjectRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<ApiResponse> AddAsync(UpsertProject addProject)
+    public async Task<ApiResponse> AddAsync(UpsertProject addProject, CancellationToken token)
     {
         try
         {
-            var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(addProject.Project!.Id));
-            if (dbProject is not null)
+            addProject.Project!.Id = Guid.NewGuid().ToString();
+
+            var validator = new Validator(_context, ValidationMode.Add);
+
+            var valid = await validator.ValidateAsync(addProject.Project!, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.EXIST(addProject.Project!.Id));
-                return new ApiResponse(Message.EXIST(addProject.Project!.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(addProject.Project!.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(addProject.Project!.Id), false, [.. errors]);
             }
 
-            await _context.Projects.AddAsync(addProject.Project);
+            await _context.Projects.AddAsync(addProject.Project!, token);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD(addProject.Project!.Id));
@@ -27,11 +39,11 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(string id)
+    public async Task<ApiResponse> DeleteAsync(string id, CancellationToken token)
     {
         try
         {
-            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(id), token);
 
             if (project is null)
             {
@@ -52,11 +64,11 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<GetIdsResponse> GetIdsAsync()
+    public async Task<GetIdsResponse> GetIdsAsync(CancellationToken token)
     {
         try
         {
-            var projectIds = await _context.Projects.Select(x => x.Id).ToArrayAsync();
+            var projectIds = await _context.Projects.Select(x => x.Id).ToArrayAsync(token);
             return new GetIdsResponse(null!, true, projectIds);
         }
         catch (Exception ex)
@@ -66,11 +78,11 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<GetResponse> GetByIdAsync(string id)
+    public async Task<GetResponse> GetByIdAsync(string id, CancellationToken token)
     {
         try
         {
-            var project = await _context.Projects.SingleOrDefaultAsync(x => x.Id == id);
+            var project = await _context.Projects.SingleOrDefaultAsync(x => x.Id == id, token);
 
             if (project is null)
             {
@@ -87,18 +99,26 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(UpsertProject updateRequest)
+    public async Task<ApiResponse> UpdateAsync(UpsertProject updateRequest, CancellationToken token)
     {
         try
         {
-            var DbProject = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(updateRequest.Project.Id));
-            if (DbProject is null)
+            var validator = new Validator(_context, ValidationMode.Update);
+
+            var valid = await validator.ValidateAsync(updateRequest.Project!, token);
+
+            if (!valid.IsValid)
             {
-                Log.Error(Message.NOTFOUND(updateRequest.Project!.Id));
-                return new ApiResponse(Message.NOTFOUND(updateRequest.Project!.Id), false);
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(updateRequest.Project!.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(updateRequest.Project!.Id), false, [.. errors]);
             }
 
-            _context.Projects.Update(updateRequest.Project);
+            _context.Projects.Update(updateRequest.Project!);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE(updateRequest.Project!.Id));

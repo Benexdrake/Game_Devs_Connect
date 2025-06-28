@@ -7,4 +7,5 @@ internal static class Message
     internal static string ADD(string id) => $"Profile: {id} Added";
     internal static string UPDATE(string id) => $"Profile: {id} Updated";
     internal static string DELETE(string id) => $"Profile: {id} Deleted";
+    internal static string VALIDATIONERROR(string id) => $"Project: '{id}' ValidationError";
 }

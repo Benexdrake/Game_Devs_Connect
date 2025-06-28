@@ -1,10 +1,10 @@
 ﻿namespace GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
 public interface INotificationRepository
 {
-    Task<GetByIdResponse> GetByIdAsync(string id);
-    Task<GetIdsByUserIdResponse> GetIdsByUserIdAsync(string userId);
-    Task<ApiResponse> AddAsync(NotificationDTO notification);
-    Task<ApiResponse> UpdateAsync(string notificationId);
-    Task<GetUnseenCountResponse> GetUnseenCountAsync(string userId);
-    Task<ApiResponse> DeleteAsync(string notificationId);
+    Task<GetByIdResponse> GetByIdAsync(string id, CancellationToken token);
+    Task<GetIdsByUserIdResponse> GetIdsByUserIdAsync(string userId, CancellationToken token);
+    Task<ApiResponse> AddAsync(NotificationDTO notification, CancellationToken token);
+    Task<ApiResponse> UpdateAsync(string notificationId, CancellationToken token);
+    Task<GetUnseenCountResponse> GetUnseenCountAsync(string userId, CancellationToken token);
+    Task<ApiResponse> DeleteAsync(string notificationId, CancellationToken token);
 }
