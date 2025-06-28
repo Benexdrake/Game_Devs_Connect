@@ -2,9 +2,11 @@
 
 public partial class FileDTO
 {
-    public string Id { get; set; } = null!;
+    public string? Id { get; set; }
 
-    public string Type { get; set; } = string.Empty;
+    public string? Url { get; set; }
+
+    public string? Type { get; set; }
 
     public int? Size { get; set; }
 
