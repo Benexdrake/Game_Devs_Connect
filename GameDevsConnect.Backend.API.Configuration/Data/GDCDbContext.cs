@@ -23,7 +23,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Created)
                 .HasMaxLength(128)
                 .HasColumnName("created");
-            entity.Property(e => e.Type).HasColumnType("type");
+            entity.Property(e => e.Type).HasColumnName("type");
             entity.Property(e => e.OwnerId)
                 .HasMaxLength(64)
                 .HasColumnName("owner_id");
