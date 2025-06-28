@@ -1,30 +1,30 @@
 ﻿namespace GameDevsConnect.Backend.API.User.Application.Validators;
 
-public class UserValidator : AbstractValidator<UserDTO>
+public class Validator : AbstractValidator<UserDTO>
 {
     private readonly GDCDbContext _context;
 
-    public UserValidator(GDCDbContext context, ValidationMode mode)
+    public Validator(GDCDbContext context, ValidationMode mode)
     {
         _context = context;
 
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage(x => $"ID '{x.Id}' darf nicht leer sein.")
-            .MinimumLength(8)
-            .WithMessage(x => $"ID '{x.Id}' muss mindestens 8 Zeichen lang sein.");
-
-        if (mode == ValidationMode.Update)
+        if (mode == ValidationMode.Add)
         {
             RuleFor(x => x.Id)
-                .MustAsync(ValidateUserExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .MustAsync(async (id, token) => !await ValidateExist(id, token))
+                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");   
         }
-        else if (mode == ValidationMode.Add)
+        else if (mode == ValidationMode.Update)
         {
             RuleFor(x => x.Id)
-                .MustAsync(async (id, token) => !await ValidateUserExist(id, token))
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
+                .NotEmpty()
+                .WithMessage(x => $"ID '{x.Id}' darf nicht leer sein.")
+                .MinimumLength(8)
+                .WithMessage(x => $"ID '{x.Id}' muss mindestens 8 Zeichen lang sein.");
+
+            RuleFor(x => x.Id)
+                .MustAsync(ValidateExist)
+                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
 
         RuleFor(x => x.Username)
@@ -40,7 +40,7 @@ public class UserValidator : AbstractValidator<UserDTO>
             .WithMessage(x => $"AccountType '{x.Accounttype}' muss mindestens 5 Zeichen lang sein.");
     }
 
-    private async Task<bool> ValidateUserExist(string id, CancellationToken token)
+    private async Task<bool> ValidateExist(string id, CancellationToken token)
     {
         return await _context.Users.AnyAsync(x => x.Id == id, token);
     }

@@ -9,7 +9,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var userValidator = new UserValidator(_context, ValidationMode.Add);
+            var userValidator = new Validator(_context, ValidationMode.Add);
 
             var valid = await userValidator.ValidateAsync(user, token);
 
@@ -121,7 +121,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     {
         try
         {
-            var userValidator = new UserValidator(_context, ValidationMode.Update);
+            var userValidator = new Validator(_context, ValidationMode.Update);
 
             var valid = await userValidator.ValidateAsync(user, token);
 
