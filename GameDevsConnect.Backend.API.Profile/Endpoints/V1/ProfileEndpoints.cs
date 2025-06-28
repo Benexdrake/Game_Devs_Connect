@@ -22,14 +22,14 @@ public static class ProfileEndpoints
         .WithName(ApiEndpointsV1.Profile.MetaData.GetFull)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromBody] ProfileModel profile) =>
+        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile) =>
         {
             return await rep.AddAsync(profile);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.Profile.Update, async ([FromServices] IProfileRepository rep, [FromBody] ProfileModel profile) =>
+        group.MapPut(ApiEndpointsV1.Profile.Update, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile) =>
         {
             return await rep.UpdateAsync(profile);
         })

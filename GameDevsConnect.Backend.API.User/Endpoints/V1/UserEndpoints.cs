@@ -31,14 +31,14 @@ public static class UserEndpoints
         .WithName(ApiEndpointsV1.User.MetaData.Exist)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
+        group.MapPost(ApiEndpointsV1.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserDTO user, CancellationToken token) =>
         {
             return await repo.AddAsync(user, token);
         })
         .WithName(ApiEndpointsV1.User.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.User.Update, async ([FromServices] IUserRepository repo, [FromBody] UserModel user, CancellationToken token) =>
+        group.MapPut(ApiEndpointsV1.User.Update, async ([FromServices] IUserRepository repo, [FromBody] UserDTO user, CancellationToken token) =>
         {
             return await repo.UpdateAsync(user, token);
         })

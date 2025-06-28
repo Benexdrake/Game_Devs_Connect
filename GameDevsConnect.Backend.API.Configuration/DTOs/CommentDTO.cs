@@ -1,6 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.Models;
+﻿namespace GameDevsConnect.Backend.API.Configuration.DTOs;
 
-public partial class CommentModel
+public partial class CommentDTO
 {
     public string Id { get; set; } = null!;
 

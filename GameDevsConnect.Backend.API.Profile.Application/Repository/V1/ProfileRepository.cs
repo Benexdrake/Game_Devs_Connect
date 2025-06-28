@@ -4,7 +4,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(ProfileModel profile)
+    public async Task<ApiResponse> AddAsync(ProfileDTO profile)
     {
         try
         {
@@ -105,7 +105,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(ProfileModel profile)
+    public async Task<ApiResponse> UpdateAsync(ProfileDTO profile)
     {
         try
         {

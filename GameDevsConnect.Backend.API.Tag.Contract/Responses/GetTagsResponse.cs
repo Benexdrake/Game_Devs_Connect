@@ -1,6 +1,6 @@
 ﻿namespace GameDevsConnect.Backend.API.Tag.Contract.Responses;
 
-public class GetTagsResponse(string message, bool status, TagModel[] tags) : ApiResponse(message, status)
+public class GetTagsResponse(string message, bool status, TagDTO[] tags) : ApiResponse(message, status)
 {
-    public TagModel[] Tags { get; set; } = tags;
+    public TagDTO[] Tags { get; set; } = tags;
 }

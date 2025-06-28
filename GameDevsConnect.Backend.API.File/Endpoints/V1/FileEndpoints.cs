@@ -30,14 +30,14 @@ public static class FileEndpoints
         .WithName(ApiEndpointsV1.File.MetaData.GetByRequestId)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
+        group.MapPost(ApiEndpointsV1.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File) =>
         {
             return await rep.AddAsync(File);
         })
         .WithName(ApiEndpointsV1.File.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.File.Update, async ([FromServices] IFileRepository rep, [FromBody] FileModel File) =>
+        group.MapPut(ApiEndpointsV1.File.Update, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File) =>
         {
             return await rep.UpdateAsync(File);
         })

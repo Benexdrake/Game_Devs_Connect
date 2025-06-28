@@ -4,7 +4,7 @@ public interface IProjectRepository
 {
     Task<GetIdsResponse> GetIdsAsync();
     Task<GetResponse> GetByIdAsync(string id);
-    Task<ApiResponse> AddAsync(UpsertRequest addRequest);
-    Task<ApiResponse> UpdateAsync(UpsertRequest updateRequest);
+    Task<ApiResponse> AddAsync(UpsertProject addPost);
+    Task<ApiResponse> UpdateAsync(UpsertProject updatePost);
     Task<ApiResponse> DeleteAsync(string id);
 }

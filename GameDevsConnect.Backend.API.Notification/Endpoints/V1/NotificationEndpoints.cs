@@ -34,7 +34,7 @@ public static class NotificationEndpoints
         .Produces(StatusCodes.Status200OK);
 
         // Add a Notification
-        group.MapPost(ApiEndpointsV1.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationModel notification) =>
+        group.MapPost(ApiEndpointsV1.Notification.Create, async ([FromServices] INotificationRepository rep, [FromBody] NotificationDTO notification) =>
         {
             return await rep.AddAsync(notification);
         })

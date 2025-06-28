@@ -2,7 +2,7 @@
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<ApiResponse> AddAsync(TagModel tag)
+    public async Task<ApiResponse> AddAsync(TagDTO tag)
     {
         try
         {
@@ -70,7 +70,7 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(TagModel tag)
+    public async Task<ApiResponse> UpdateAsync(TagDTO tag)
     {
         try
         {

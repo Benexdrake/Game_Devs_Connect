@@ -22,14 +22,14 @@ public static class ProjectEndpoints
         .WithName(ApiEndpointsV1.Project.MetaData.GetByRequestId)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Project.Create, async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest addRequest) =>
+        group.MapPost(ApiEndpointsV1.Project.Create, async ([FromServices] IProjectRepository repo, [FromBody] UpsertProject addRequest) =>
         {
             return await repo.AddAsync(addRequest);
         })
         .WithName(ApiEndpointsV1.Project.MetaData.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.Project.Update, async ([FromServices] IProjectRepository repo, [FromBody] UpsertRequest updateRequest) =>
+        group.MapPut(ApiEndpointsV1.Project.Update, async ([FromServices] IProjectRepository repo, [FromBody] UpsertProject updateRequest) =>
         {
             return await repo.UpdateAsync(updateRequest);
         })

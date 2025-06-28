@@ -5,7 +5,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
     private readonly GDCDbContext _context = context;
 
 
-    public async Task<ApiResponse> AddAsync(UserModel user, CancellationToken token = default)
+    public async Task<ApiResponse> AddAsync(UserDTO user, CancellationToken token = default)
     {
         try
         {
@@ -117,7 +117,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(UserModel user, CancellationToken token = default)
+    public async Task<ApiResponse> UpdateAsync(UserDTO user, CancellationToken token = default)
     {
         try
         {

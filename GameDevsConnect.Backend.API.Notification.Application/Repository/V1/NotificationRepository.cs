@@ -3,7 +3,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(NotificationModel notification)
+    public async Task<ApiResponse> AddAsync(NotificationDTO notification)
     {
         try
         {

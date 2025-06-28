@@ -5,4 +5,4 @@ global using Microsoft.Net.Http.Headers;
 global using Serilog;
 
 global using GameDevsConnect.Backend.API.Configuration.Data;
-global using GameDevsConnect.Backend.API.Configuration.Models;
+global using GameDevsConnect.Backend.API.Configuration.DTOs;

@@ -1,5 +1,5 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.Models;
-public partial class NotificationModel
+﻿namespace GameDevsConnect.Backend.API.Configuration.DTOs;
+public partial class NotificationDTO
 {
     public string Id { get; set; }
 

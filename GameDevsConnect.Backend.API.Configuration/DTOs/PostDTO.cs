@@ -1,10 +1,12 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.Models;
+﻿namespace GameDevsConnect.Backend.API.Configuration.DTOs;
 
-public partial class RequestModel
+public partial class PostDTO
 {
     public string Id { get; set; } = null!;
 
-    public string? Title { get; set; }
+    public string ParentId { get; set; } = string.Empty;
+
+    public bool IsRequest { get; set; }
 
     public string? Description { get; set; }
 

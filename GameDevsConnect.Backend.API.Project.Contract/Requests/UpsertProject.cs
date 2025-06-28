@@ -1,7 +1,7 @@
 ﻿namespace GameDevsConnect.Backend.API.Project.Contract.Requests;
 
-public class UpsertRequest
+public class UpsertProject
 {
-    public ProjectModel? Project { get; set; }
+    public ProjectDTO? Project { get; set; }
     // Fehlt noch der Content aus dem Project Builder
 }

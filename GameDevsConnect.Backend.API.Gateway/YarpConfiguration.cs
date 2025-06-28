@@ -2,7 +2,7 @@
 
 namespace GameDevsConnect.Backend.API.Gateway
 {
-    public class YarpConfiguration(int apiVersion, string gateway, string azure, string comment, string file, string notification, string project, string profile, string request, string tag, string user, string access_key, bool development)
+    public class YarpConfiguration(int apiVersion, string gateway, string azure, string comment, string file, string notification, string project, string profile, string post, string tag, string user, string access_key, bool development)
     {
         private readonly string _gateway = gateway;
         private readonly string _azure = azure;
@@ -11,7 +11,7 @@ namespace GameDevsConnect.Backend.API.Gateway
         private readonly string _notification = notification;
         private readonly string _project = project;
         private readonly string _profile = profile;
-        private readonly string _request = request;
+        private readonly string _post = post;
         private readonly string _tag = tag;
         private readonly string _user = user;
         private readonly string access_Key = access_key;
@@ -101,12 +101,12 @@ namespace GameDevsConnect.Backend.API.Gateway
                 },
                 new RouteConfig
                 {
-                    RouteId = $"{_gateway}/api/v{apiVersion}/request",
-                    ClusterId = "api-request-cluster",
+                    RouteId = $"{_gateway}/api/v{apiVersion}/post",
+                    ClusterId = "api-post-cluster",
                     AuthorizationPolicy = authPolicy,
                     Match = new RouteMatch
                     {
-                        Path = $"api/v{apiVersion}/request/{{**catch-all}}"
+                        Path = $"api/v{apiVersion}/post/{{**catch-all}}"
                     },
                     Transforms = transforms
                 },
@@ -219,13 +219,13 @@ namespace GameDevsConnect.Backend.API.Gateway
                     },
                     new ClusterConfig
                     {
-                        ClusterId = "api-request-cluster",
+                        ClusterId = "api-post-cluster",
                         Destinations = new Dictionary<string, DestinationConfig>
                         {
                             {
                                 "1", new DestinationConfig
                                 {
-                                    Address = _request
+                                    Address = _post
                                 }
                             }
                         }

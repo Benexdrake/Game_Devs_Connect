@@ -1,10 +1,8 @@
 ﻿namespace GameDevsConnect.Backend.API.User.Application.Validators;
 
-public class UserValidator : AbstractValidator<UserModel>
+public class UserValidator : AbstractValidator<UserDTO>
 {
     private readonly GDCDbContext _context;
-
-    public ValidationMode ValidationMode { get; set; } = ValidationMode.Add;
 
     public UserValidator(GDCDbContext context, ValidationMode mode)
     {
@@ -16,17 +14,17 @@ public class UserValidator : AbstractValidator<UserModel>
             .MinimumLength(8)
             .WithMessage(x => $"ID '{x.Id}' muss mindestens 8 Zeichen lang sein.");
 
-        if (mode == ValidationMode.Add)
+        if (mode == ValidationMode.Update)
         {
             RuleFor(x => x.Id)
                 .MustAsync(ValidateUserExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
+                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
-        else if (mode == ValidationMode.Update)
+        else if (mode == ValidationMode.Add)
         {
             RuleFor(x => x.Id)
-                .MustAsync(ValidateUserDontExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .MustAsync(async (id, token) => !await ValidateUserExist(id, token))
+                .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");
         }
 
         RuleFor(x => x.Username)
@@ -42,18 +40,9 @@ public class UserValidator : AbstractValidator<UserModel>
             .WithMessage(x => $"AccountType '{x.Accounttype}' muss mindestens 5 Zeichen lang sein.");
     }
 
-    private async Task<bool> ValidateUserDontExist(string id, CancellationToken token)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id), token);
-
-        return user is not null;
-    }
-
     private async Task<bool> ValidateUserExist(string id, CancellationToken token)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id), token);
-
-        return user is null;
+        return await _context.Users.AnyAsync(x => x.Id == id, token);
     }
 
 }

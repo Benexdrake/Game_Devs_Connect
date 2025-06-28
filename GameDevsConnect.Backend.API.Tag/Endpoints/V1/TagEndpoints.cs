@@ -16,14 +16,14 @@ public static class TagEndpoints
             .WithName(ApiEndpointsV1.Tag.MetaData.GetAll)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Tag.Create, async ([FromServices] ITagRepository repo, [FromBody] TagModel tag) =>
+        group.MapPost(ApiEndpointsV1.Tag.Create, async ([FromServices] ITagRepository repo, [FromBody] TagDTO tag) =>
         {
             return await repo.AddAsync(tag);
         })
             .WithName(ApiEndpointsV1.Tag.MetaData.Create)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPut(ApiEndpointsV1.Tag.Update, async ([FromServices] ITagRepository repo, [FromBody] TagModel tag) =>
+        group.MapPut(ApiEndpointsV1.Tag.Update, async ([FromServices] ITagRepository repo, [FromBody] TagDTO tag) =>
         {
             return await repo.UpdateAsync(tag);
         })

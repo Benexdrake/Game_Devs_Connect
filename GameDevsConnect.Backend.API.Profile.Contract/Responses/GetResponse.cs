@@ -1,6 +1,6 @@
 ﻿namespace GameDevsConnect.Backend.API.Profile.Contract.Responses;
 
-public class GetResponse(string message, bool status, ProfileModel profile) : ApiResponse(message, status)
+public class GetResponse(string message, bool status, ProfileDTO profile) : ApiResponse(message, status)
 {
-    public ProfileModel Profile { get; set; } = profile;
+    public ProfileDTO Profile { get; set; } = profile;
 }

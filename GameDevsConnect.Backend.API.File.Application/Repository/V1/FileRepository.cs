@@ -4,7 +4,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(FileModel file)
+    public async Task<ApiResponse> AddAsync(FileDTO file)
     {
         try
         {
@@ -109,7 +109,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(FileModel file)
+    public async Task<ApiResponse> UpdateAsync(FileDTO file)
     {
         try
         {

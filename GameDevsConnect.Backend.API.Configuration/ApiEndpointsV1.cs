@@ -103,6 +103,29 @@ public static class ApiEndpointsV1
         }
     }
 
+    public static class Post
+    {
+        public const string Group = $"{Base}/{nameof(Post)}";
+        public const string Get = "/";
+        public const string GetById = $"{{id}}";
+        public const string GetFull = $"full/{{id}}";
+        public const string GetByUserId = $"user/{{id}}";
+        public const string Create = "add";
+        public const string Update = "update";
+        public const string Delete = $"delete/{{id}}";
+
+        public static class MetaData
+        {
+            public const string Get = "GetRequestIds";
+            public const string GetById = "GetRequestById";
+            public const string GetFull = "GetFullRequest";
+            public const string GetByUserId = "GetRequestIdsByUserId";
+            public const string Create = "CreateRequest";
+            public const string Update = "UpdateRequest";
+            public const string Delete = "DeleteRequest";
+        }
+    }
+
     public static class Profile
     {
         public const string Group = $"{Base}/{nameof(Profile)}";

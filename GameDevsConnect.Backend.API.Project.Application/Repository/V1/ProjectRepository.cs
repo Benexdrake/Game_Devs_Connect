@@ -3,19 +3,19 @@
 public class ProjectRepository(GDCDbContext context) : IProjectRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<ApiResponse> AddAsync(UpsertRequest addRequest)
+    public async Task<ApiResponse> AddAsync(UpsertProject addProject)
     {
         try
         {
-            Message.Id = addRequest.Project!.Id;
-            var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(addRequest.Project!.Id));
+            Message.Id = addProject.Project!.Id;
+            var dbProject = await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(addProject.Project!.Id));
             if (dbProject is not null)
             {
                 Log.Error(Message.EXIST);
                 return new ApiResponse(Message.EXIST, false);
             }
 
-            await _context.Projects.AddAsync(addRequest.Project);
+            await _context.Projects.AddAsync(addProject.Project);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD);
@@ -90,7 +90,7 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(UpsertRequest updateRequest)
+    public async Task<ApiResponse> UpdateAsync(UpsertProject updateRequest)
     {
         try
         {
