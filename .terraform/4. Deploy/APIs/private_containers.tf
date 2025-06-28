@@ -272,15 +272,15 @@ resource "azurerm_container_app" "project" {
 }
 
 // Request
-resource "azurerm_container_app" "request" {
-  name                         = "api-${local.containers["request"].name}-container"
+resource "azurerm_container_app" "post" {
+  name                         = "api-${local.containers["post"].name}-container"
   resource_group_name          = data.azurerm_resource_group.main.name
-  container_app_environment_id = local.containers["request"].container_app_environment_id
+  container_app_environment_id = local.containers["post"].container_app_environment_id
   revision_mode = "Single"
 
   ingress {
     external_enabled = true
-    target_port      = local.containers["request"].target_port
+    target_port      = local.containers["post"].target_port
     transport        = "auto"
     traffic_weight {
       percentage = 100
@@ -290,10 +290,10 @@ resource "azurerm_container_app" "request" {
 
   template {
     container {
-      name   = local.containers["request"].template.name
-      image  = local.containers["request"].template.image
-      cpu    = local.containers["request"].template.cpu
-      memory = local.containers["request"].template.memory
+      name   = local.containers["post"].template.name
+      image  = local.containers["post"].template.image
+      cpu    = local.containers["post"].template.cpu
+      memory = local.containers["post"].template.memory
 
       env {
         name = "X-Access-Key"

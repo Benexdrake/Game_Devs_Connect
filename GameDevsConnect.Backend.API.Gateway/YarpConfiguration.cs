@@ -2,11 +2,10 @@
 
 namespace GameDevsConnect.Backend.API.Gateway
 {
-    public class YarpConfiguration(int apiVersion, string gateway, string azure, string comment, string file, string notification, string project, string profile, string post, string tag, string user, string access_key, bool development)
+    public class YarpConfiguration(int apiVersion, string gateway, string azure, string file, string notification, string project, string profile, string post, string tag, string user, string access_key, bool development)
     {
         private readonly string _gateway = gateway;
         private readonly string _azure = azure;
-        private readonly string _comment = comment;
         private readonly string _file = file;
         private readonly string _notification = notification;
         private readonly string _project = project;
@@ -43,17 +42,6 @@ namespace GameDevsConnect.Backend.API.Gateway
                         Path = $"api/v{apiVersion}/azure/{{**catch-all}}",
                     },
                     Transforms = transforms,
-                },
-                new RouteConfig
-                {
-                    RouteId = $"{_gateway}/api/v{apiVersion}/comment",
-                    ClusterId = "api-comment-cluster",
-                    AuthorizationPolicy = authPolicy,
-                    Match = new RouteMatch
-                    {
-                        Path = $"api/v{apiVersion}/comment/{{**catch-all}}"
-                    },
-                    Transforms = transforms
                 },
                 new RouteConfig
                 {
@@ -148,19 +136,6 @@ namespace GameDevsConnect.Backend.API.Gateway
                                 "1", new DestinationConfig
                                 {
                                     Address = _azure
-                                }
-                            }
-                        }
-                    },
-                    new ClusterConfig
-                    {
-                        ClusterId = "api-comment-cluster",
-                        Destinations = new Dictionary<string, DestinationConfig>
-                        {
-                            {
-                                "1", new DestinationConfig
-                                {
-                                    Address = _comment
                                 }
                             }
                         }

@@ -22,10 +22,6 @@ jobs:
             tag: backend_api_azure
             context: ./
 
-          - path: Backend.API.Comment
-            tag: backend_api_comment
-            context: ./
-
           - path: Backend.API.File
             tag: backend_api_file
             context: ./
@@ -46,8 +42,8 @@ jobs:
             tag: backend_api_project
             context: ./
 
-          - path: Backend.API.Request
-            tag: backend_api_request
+          - path: Backend.API.Post
+            tag: backend_api_post
             context: ./
 
           - path: Backend.API.Tag

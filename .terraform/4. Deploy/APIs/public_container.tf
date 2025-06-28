@@ -1,12 +1,11 @@
 resource "azurerm_container_app" "gateway" {
   depends_on = [
                 azurerm_container_app.azure,
-                azurerm_container_app.comment,
                 azurerm_container_app.file,
                 azurerm_container_app.notification,
                 azurerm_container_app.profile,
                 azurerm_container_app.project,
-                azurerm_container_app.request,
+                azurerm_container_app.post,
                 azurerm_container_app.tag,
                 azurerm_container_app.user
                 ]
@@ -57,8 +56,8 @@ resource "azurerm_container_app" "gateway" {
        value = "https://${azurerm_container_app.profile.latest_revision_fqdn}"
       }
       env {
-       name = "REQUEST_URL" 
-       value = "https://${azurerm_container_app.request.latest_revision_fqdn}"
+       name = "POST_URL" 
+       value = "https://${azurerm_container_app.post.latest_revision_fqdn}"
       }
       env {
        name = "TAG_URL" 

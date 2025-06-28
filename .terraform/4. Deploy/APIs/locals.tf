@@ -11,17 +11,6 @@ locals {
             memory = "1.0Gi"
         }
     },
-    "comment" = {
-        name = "comment",
-        container_app_environment_id = data.azurerm_container_app_environment.public.id,
-        target_port = 8080,
-        template = {
-            name = "apicomment",
-            image = "benexdrake012/gamedevsconnect_backend_api_comment",
-            cpu = 0.5,
-            memory = "1.0Gi"
-        }
-    },
     "file" = {
         name = "file",
         container_app_environment_id = data.azurerm_container_app_environment.public.id,
@@ -66,13 +55,13 @@ locals {
             memory = "1.0Gi"
         }
     },
-    "request" = {
-        name = "request",
+    "post" = {
+        name = "post",
         container_app_environment_id = data.azurerm_container_app_environment.public.id,
         target_port = 8080,
         template = {
-            name = "apirequest",
-            image = "benexdrake012/gamedevsconnect_backend_api_request",
+            name = "apipost",
+            image = "benexdrake012/gamedevsconnect_backend_api_post",
             cpu = 0.5,
             memory = "1.0Gi"
         }
