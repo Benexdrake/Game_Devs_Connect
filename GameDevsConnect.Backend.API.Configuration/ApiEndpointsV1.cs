@@ -90,19 +90,21 @@ public static class ApiEndpointsV1
         public const string GetById = $"{{id}}";
         public const string GetFull = $"full/{{id}}";
         public const string GetByUserId = $"user/{{id}}";
+        public const string GetCommentByParentId = $"comment/{{id}}";
         public const string Create = "add";
         public const string Update = "update";
         public const string Delete = $"delete/{{id}}";
 
         public static class MetaData
         {
-            public const string Get = "GetRequestIds";
-            public const string GetById = "GetRequestById";
-            public const string GetFull = "GetFullRequest";
-            public const string GetByUserId = "GetRequestIdsByUserId";
-            public const string Create = "CreateRequest";
-            public const string Update = "UpdateRequest";
-            public const string Delete = "DeleteRequest";
+            public const string Get = "GetPostIds";
+            public const string GetById = "GetPostById";
+            public const string GetFull = "GetFullPost";
+            public const string GetByUserId = "GetPostIdsByUserId";
+            public const string GetCommentByParentId = "GetCommentByParentId";
+            public const string Create = "CreatePost";
+            public const string Update = "UpdatePost";
+            public const string Delete = "DeletePost";
         }
     }
 
