@@ -146,6 +146,25 @@ public static class ApiEndpointsV1
         }
     }
 
+    public static class Quest
+    {
+        public const string Group = $"{Base}/{nameof(Quest)}";
+        public const string Get = $"{{id}}";
+        public const string GetIdsByPostId = $"post/{{id}}";
+        public const string Create = "add";
+        public const string Update = "update";
+        public const string Delete = $"delete/{{id}}";
+
+        public static class MetaData
+        {
+            public const string Get = "GetQuest";
+            public const string GetIdsByPostId = "GetPostIds";
+            public const string Create = "CreatePost";
+            public const string Update = "UpdatePost";
+            public const string Delete = "DeletePost";
+        }
+    }
+
     public static class Request
     {
         public const string Group = $"{Base}/{nameof(Request)}";

@@ -6,7 +6,7 @@ public partial class PostDTO
 
     public string ParentId { get; set; } = string.Empty;
 
-    public bool IsRequest { get; set; }
+    public bool HasQuest { get; set; }
 
     public string? Message { get; set; }
 
@@ -18,5 +18,6 @@ public partial class PostDTO
 
     public string? FileId { get; set; }
 
-    public bool isDeleted { get; set; }
+    public bool IsDeleted { get; set; }
+    public bool Completed { get; set; }
 }

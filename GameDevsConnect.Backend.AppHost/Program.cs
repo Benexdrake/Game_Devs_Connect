@@ -9,11 +9,11 @@ var accessKey = Guid.NewGuid().ToString();
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
-                 .WithVolume("sqlserver-data", "/var/opt/mssql")
+                 //.WithVolume("sqlserver-data", "/var/opt/mssql")
                  ;
 
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")
-       .WithHttpEndpoint(port: 7008, name: "user")
+       .WithHttpEndpoint(port: 7009, name: "user")
        .WithReplicas(replicas)
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
@@ -22,7 +22,16 @@ var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamede
        .WaitFor(sql);
 
 var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevsconnect-backend-api-tag")
-       .WithHttpEndpoint(port: 7007, name: "tag")
+       .WithHttpEndpoint(port: 7008, name: "tag")
+       .WithReplicas(replicas)
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
+
+var quest = builder.AddProject<Projects.GameDevsConnect_Backend_API_Quest>("gamedevsconnect-backend-api-quest")
+       .WithHttpEndpoint(port: 7007, name: "quest")
        .WithReplicas(replicas)
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
@@ -98,16 +107,20 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WithEnvironment("POST_URL", "http://localhost:7004")
        .WithEnvironment("PROFILE_URL", "http://localhost:7005")
        .WithEnvironment("PROJECT_URL", "http://localhost:7006")
-       .WithEnvironment("TAG_URL", "http://localhost:7007")
-       .WithEnvironment("USER_URL", "http://localhost:7008")
+       .WithEnvironment("QUEST_URL", "http://localhost:7007")
+       .WithEnvironment("TAG_URL", "http://localhost:7008")
+       .WithEnvironment("USER_URL", "http://localhost:7009")
        .WaitFor(azure)
        .WaitFor(file)
        .WaitFor(notification)
        .WaitFor(profile)
        .WaitFor(project)
        .WaitFor(post)
+       .WaitFor(quest)
        .WaitFor(tag)
        .WaitFor(user);
+
+
 
 var build = builder.Build();
 

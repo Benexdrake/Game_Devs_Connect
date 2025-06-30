@@ -4,6 +4,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 {
     public virtual DbSet<UserDTO> Users { get; set; }
     public virtual DbSet<TagDTO> Tags { get; set; }
+    public virtual DbSet<QuestDTO> Quests { get; set; }
     public virtual DbSet<PostDTO> Posts { get; set; }
     public virtual DbSet<ProfileDTO> Profiles { get; set; }
     public virtual DbSet<ProjectDTO> Projects { get; set; }
@@ -15,7 +16,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     {
         modelBuilder.Entity<FileDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Files__3213E83FF08B3AF0");
+            entity.HasKey(e => e.Id).HasName("PK__Files");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
@@ -33,7 +34,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<NotificationDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Notifica__3213E83FFA33E195");
+            entity.HasKey(e => e.Id).HasName("PK__Notification");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Created)
@@ -54,7 +55,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<ProfileDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Profiles__3213E83F90589B08");
+            entity.HasKey(e => e.Id).HasName("PK__Profiles");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
@@ -82,7 +83,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<ProjectDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Projects__3213E83F52B40C40");
+            entity.HasKey(e => e.Id).HasName("PK__Projects");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
@@ -112,7 +113,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<PostDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Posts__3213E83F7C3B1A3E");
+            entity.HasKey(e => e.Id).HasName("PK__Posts");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
@@ -133,8 +134,9 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.ParentId)
                 .HasMaxLength(64)
                 .HasColumnName("parent_id");
-            entity.Property(e => e.IsRequest).HasColumnName("is_request");
-            entity.Property(e => e.isDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.HasQuest).HasColumnName("has_quest");
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+            entity.Property(e => e.Completed).HasColumnName("completed");
         });
 
         modelBuilder.Entity<PostLikeDTO>(entity =>
@@ -163,9 +165,20 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.TagId).HasColumnName("tag_id");
         });
 
+        modelBuilder.Entity<QuestDTO>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Quest");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.OwnerId).HasColumnName("owner_id");
+            entity.Property(e => e.Difficulty).HasColumnName("difficulty");
+            entity.Property(e => e.Title).HasColumnName("title");
+            entity.Property(e => e.Description).HasColumnName("description");
+        });
+
         modelBuilder.Entity<TagDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tags__3213E83FFFD2E1F7");
+            entity.HasKey(e => e.Id).HasName("PK__Tags");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Tag)
@@ -175,7 +188,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<UserDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F1FAE596D");
+            entity.HasKey(e => e.Id).HasName("PK__Users");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(64)
