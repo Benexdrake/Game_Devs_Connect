@@ -46,6 +46,10 @@ jobs:
             tag: backend_api_post
             context: ./
 
+          - path: Backend.API.Quest
+            tag: backend_api_quest
+            context: ./
+
           - path: Backend.API.Tag
             tag: backend_api_tag
             context: ./
