@@ -178,7 +178,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             var tags = new List<TagDTO>();
 
 
-            if(postDb.IsRequest)
+            if(postDb.HasQuest)
             {
                 foreach (var rt in postTags)
                 {
@@ -193,7 +193,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var owner = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(postDb.OwnerId), token);
 
-            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(postDb.FileId), token);
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(postDb.FileId), token);
 
             var tagsArray = tags.ToArray();
 
