@@ -117,16 +117,16 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 
     public async Task<GetCountResponse> GetFollowerCountAsync(string id, CancellationToken token = default)
     {
-        var ids = await _context.UserFollows.Where(x => x.UserId!.Equals(id)).Select(x => x.FollowId).ToArrayAsync(token);
+        var count = await _context.UserFollows.Where(x => x.UserId!.Equals(id)).CountAsync(token);
 
-        return new GetCountResponse("", true, ids.Length);
+        return new GetCountResponse("", true, count);
     }
 
     public async Task<GetCountResponse> GetFollowingCountAsync(string id, CancellationToken token = default)
     {
-        var ids = await _context.UserFollows.Where(x => x.FollowId!.Equals(id)).Select(x => x.UserId).ToArrayAsync(token);
+        var count = await _context.UserFollows.Where(x => x.FollowId!.Equals(id)).CountAsync(token);
 
-        return new GetCountResponse("", true, ids.Length);
+        return new GetCountResponse("", true, count);
     }
 
     public async Task<GetUserIdsResponse> GetIdsAsync(CancellationToken token = default)
