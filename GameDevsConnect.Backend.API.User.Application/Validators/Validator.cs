@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.User.Application.Validators;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+
+namespace GameDevsConnect.Backend.API.User.Application.Validators;
 
 public class Validator : AbstractValidator<UserDTO>
 {

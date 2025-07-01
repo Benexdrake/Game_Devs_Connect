@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.User.Contract.Responses;
+﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.User.Contract.Responses;
 
 public class GetUserByIdResponse(string message, bool status, UserDTO user) : ApiResponse(message, status)
 {

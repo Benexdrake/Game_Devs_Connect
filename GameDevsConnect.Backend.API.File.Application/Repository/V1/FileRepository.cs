@@ -1,6 +1,4 @@
-﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
-
-namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
 
 public class FileRepository(GDCDbContext context) : IFileRepository
 {
@@ -44,7 +42,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
     {
         try
         {
-            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId), token);
+            var fileDb = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(fileId), token);
 
             if (fileDb is null)
             {
@@ -70,8 +68,8 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         try
         {
             var file = await _context.Files
-                                        .Where(x => x.Type.Equals(FileType.File.ToString()))
-                                        .FirstOrDefaultAsync(x => x.Id.Equals(fileId), token);
+                                        .Where(x => x.Type!.Equals(FileType.File.ToString()))
+                                        .FirstOrDefaultAsync(x => x.Id!.Equals(fileId), token);
 
             if (file is null)
             {
@@ -93,7 +91,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         try
         {
             var ids = await _context.Files.Where(x => x.OwnerId!.Equals(ownerID)).Select(x => x.Id).ToArrayAsync(token);
-            return new GetIdsbyId("", true, ids);
+            return new GetIdsbyId("", true, ids!);
         }
         catch (Exception ex)
         {
@@ -131,15 +129,15 @@ public class FileRepository(GDCDbContext context) : IFileRepository
                 foreach (var error in valid.Errors)
                     errors.Add(error.ErrorMessage);
 
-                Log.Error(Message.VALIDATIONERROR(file.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(file.Id), false, [.. errors]);
+                Log.Error(Message.VALIDATIONERROR(file.Id!));
+                return new ApiResponse(Message.VALIDATIONERROR(file.Id!), false, [.. errors]);
             }
 
             _context.Files.Update(file);
             await _context.SaveChangesAsync(token);
 
-            Log.Information(Message.UPDATE(file.Id));
-            return new ApiResponse(Message.UPDATE(file.Id), true);
+            Log.Information(Message.UPDATE(file.Id!));
+            return new ApiResponse(Message.UPDATE(file.Id!), true);
         }
         catch (Exception ex)
         {

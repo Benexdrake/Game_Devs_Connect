@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Notification.Application.Validators;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+
+namespace GameDevsConnect.Backend.API.Notification.Application.Validators;
 
 public class Validator : AbstractValidator<NotificationDTO>
 {

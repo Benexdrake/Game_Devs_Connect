@@ -1,1 +1,1 @@
-﻿global using GameDevsConnect.Backend.API.Configuration.Responses;
+﻿global using GameDevsConnect.Backend.API.Configuration.Contract.Responses;

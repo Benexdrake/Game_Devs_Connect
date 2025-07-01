@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Tag.Application.Validators;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+
+namespace GameDevsConnect.Backend.API.Tag.Application.Validators;
 
 public class Validator : AbstractValidator<TagDTO>
 {

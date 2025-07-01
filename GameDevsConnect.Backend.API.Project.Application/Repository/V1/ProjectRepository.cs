@@ -1,4 +1,6 @@
-﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
 
 namespace GameDevsConnect.Backend.API.Project.Application.Repository.V1;
 

@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
 
 public interface IPostRepository
 {

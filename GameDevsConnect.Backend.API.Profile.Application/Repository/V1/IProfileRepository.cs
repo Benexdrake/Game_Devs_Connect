@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
 
 public interface IProfileRepository
 {

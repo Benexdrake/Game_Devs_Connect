@@ -1,4 +1,6 @@
-﻿var start = new Startup("Gateway");
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+
+var start = new Startup("Gateway");
 var builder = start.Build(args);
 
 var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";

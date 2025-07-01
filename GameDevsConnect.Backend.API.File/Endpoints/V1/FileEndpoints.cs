@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.File.Endpoints.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+
+namespace GameDevsConnect.Backend.API.File.Endpoints.V1;
 
 public static class FileEndpoints
 {

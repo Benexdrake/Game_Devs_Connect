@@ -1,8 +1,8 @@
 ﻿global using FluentValidation;
 global using GameDevsConnect.Backend.API.User.Application.Validators;
 global using GameDevsConnect.Backend.API.User.Contract.Responses;
-global using GameDevsConnect.Backend.API.Configuration.Data;
-global using GameDevsConnect.Backend.API.Configuration.DTOs;
-global using GameDevsConnect.Backend.API.Configuration.Responses;
+global using GameDevsConnect.Backend.API.Configuration.Application.Data;
+global using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+global using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
 global using Microsoft.EntityFrameworkCore;
 global using Serilog;

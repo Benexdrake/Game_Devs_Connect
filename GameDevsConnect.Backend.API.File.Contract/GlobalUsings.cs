@@ -1,2 +1,2 @@
-﻿global using GameDevsConnect.Backend.API.Configuration.DTOs;
-global using GameDevsConnect.Backend.API.Configuration.Responses;
+﻿global using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+global using GameDevsConnect.Backend.API.Configuration.Contract.Responses;

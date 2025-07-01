@@ -93,6 +93,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Quest.Contract", "GameDevsConnect.Backend.API.Quest.Contract\GameDevsConnect.Backend.API.Quest.Contract.csproj", "{4164811B-9165-4DFE-8546-BD1AF1170367}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Configuration.Application", "GameDevsConnect.Backend.API.Configuration.Application\GameDevsConnect.Backend.API.Configuration.Application.csproj", "{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDevsConnect.Backend.API.Configuration.Contract", "GameDevsConnect.Backend.API.Configuration.Contract\GameDevsConnect.Backend.API.Configuration.Contract.csproj", "{D2D5D68D-0B45-40BF-8A90-56365F6E353D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -365,6 +369,22 @@ Global
 		{4164811B-9165-4DFE-8546-BD1AF1170367}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4164811B-9165-4DFE-8546-BD1AF1170367}.Release|x64.ActiveCfg = Release|Any CPU
 		{4164811B-9165-4DFE-8546-BD1AF1170367}.Release|x64.Build.0 = Release|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Debug|x64.Build.0 = Debug|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Release|x64.ActiveCfg = Release|Any CPU
+		{FD5B31C5-E71C-4FE3-A114-5D5B7399E62A}.Release|x64.Build.0 = Release|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Debug|x64.Build.0 = Debug|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Release|x64.ActiveCfg = Release|Any CPU
+		{D2D5D68D-0B45-40BF-8A90-56365F6E353D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

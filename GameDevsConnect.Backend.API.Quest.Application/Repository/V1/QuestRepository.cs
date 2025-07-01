@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
 public class QuestRepository(GDCDbContext context) : IQuestRepository
 {
     private readonly GDCDbContext _context = context;

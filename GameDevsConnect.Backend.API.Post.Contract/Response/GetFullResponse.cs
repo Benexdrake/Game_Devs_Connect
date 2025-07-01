@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.Post.Contract.Response;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Post.Contract.Response;
 
 public class GetFullResponse(string message, bool status, PostDTO? post, TagDTO[]? tags, string projectTitle, UserDTO? owner, FileDTO? file) : ApiResponse(message, status)
 {

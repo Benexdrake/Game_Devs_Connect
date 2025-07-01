@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.Tag.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Tag.Application.Repository.V1;
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;

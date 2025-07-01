@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Project.Contract.Responses;
+﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.Project.Contract.Responses;
 
 public class GetResponse(string message, bool status, ProjectDTO project) : ApiResponse(message, status)
 {

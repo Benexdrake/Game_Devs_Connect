@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+
+namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
 public interface IFileRepository
 {
     Task<GetIdsbyId> GetIdsByOwnerIdAsync(string ownerID, CancellationToken token);
