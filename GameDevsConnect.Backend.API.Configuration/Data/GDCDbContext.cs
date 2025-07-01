@@ -3,11 +3,13 @@
 public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbContext(options)
 {
     public virtual DbSet<UserDTO> Users { get; set; }
+    public virtual DbSet<UserFollowDTO> UserFollows { get; set; }
     public virtual DbSet<TagDTO> Tags { get; set; }
     public virtual DbSet<QuestDTO> Quests { get; set; }
     public virtual DbSet<PostDTO> Posts { get; set; }
     public virtual DbSet<ProfileDTO> Profiles { get; set; }
     public virtual DbSet<ProjectDTO> Projects { get; set; }
+    public virtual DbSet<ProjectFollowDTO> ProjectFollwers { get; set; }
     public virtual DbSet<NotificationDTO> Notifications { get; set; }
     public virtual DbSet<FileDTO> Files { get; set; }
     public virtual DbSet<PostTagDTO> PostTags { get; set; }
@@ -95,6 +97,14 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Title)
                 .HasMaxLength(128)
                 .HasColumnName("title");
+        });
+
+        modelBuilder.Entity<ProjectFollowDTO>(entity =>
+        {
+            entity.HasNoKey().ToTable("Project_Follow");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.ProjectId).HasColumnName("project_id");
         });
 
         modelBuilder.Entity<ProjectTeamDTO>(entity =>
@@ -202,6 +212,14 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Username)
                 .HasMaxLength(128)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<UserFollowDTO>(entity =>
+        {
+            entity.HasNoKey().ToTable("User_Follow");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.FollowId).HasColumnName("follow_id");
         });
 
         OnModelCreatingPartial(modelBuilder);

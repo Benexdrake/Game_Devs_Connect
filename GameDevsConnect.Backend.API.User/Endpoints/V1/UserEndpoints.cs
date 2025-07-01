@@ -31,6 +31,41 @@ public static class UserEndpoints
         .WithName(ApiEndpointsV1.User.MetaData.Exist)
         .Produces(StatusCodes.Status200OK);
 
+        group.MapGet(ApiEndpointsV1.User.GetFollower, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetFollowerAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.GetFollower)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapGet(ApiEndpointsV1.User.GetFollowing, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetFollowingAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.GetFollowing)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapGet(ApiEndpointsV1.User.GetFollowerCount, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetFollowerCountAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.GetFollowerCount)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapGet(ApiEndpointsV1.User.GetFollowingCount, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetFollowingCountAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.GetFollowingCount)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapGet(ApiEndpointsV1.User.GetIdsByProjectId, async ([FromServices] IUserRepository repo, [FromRoute] string id, CancellationToken token) =>
+        {
+            return await repo.GetIdsByProjectIdAsync(id, token);
+        })
+        .WithName(ApiEndpointsV1.User.MetaData.GetIdsByProjectId)
+        .Produces(StatusCodes.Status200OK);
+
         group.MapPost(ApiEndpointsV1.User.Create, async ([FromServices] IUserRepository repo, [FromBody] UserDTO user, CancellationToken token) =>
         {
             return await repo.AddAsync(user, token);

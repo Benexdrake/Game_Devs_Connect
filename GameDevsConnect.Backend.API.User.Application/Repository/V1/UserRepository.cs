@@ -4,7 +4,6 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
 
-
     public async Task<ApiResponse> AddAsync(UserDTO user, CancellationToken token = default)
     {
         try
@@ -102,6 +101,34 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
+    public async Task<GetUserIdsResponse> GetFollowerAsync(string id, CancellationToken token = default)
+    {
+        var ids = await _context.UserFollows.Where(x => x.UserId!.Equals(id)).Select(x => x.FollowId).ToArrayAsync(token);
+
+        return new GetUserIdsResponse("", true, ids!);
+    }
+
+    public async Task<GetUserIdsResponse> GetFollowingAsync(string id, CancellationToken token = default)
+    {
+        var ids = await _context.UserFollows.Where(x => x.FollowId!.Equals(id)).Select(x => x.UserId).ToArrayAsync(token);
+
+        return new GetUserIdsResponse("", true, ids!);
+    }
+
+    public async Task<GetCountResponse> GetFollowerCountAsync(string id, CancellationToken token = default)
+    {
+        var ids = await _context.UserFollows.Where(x => x.UserId!.Equals(id)).Select(x => x.FollowId).ToArrayAsync(token);
+
+        return new GetCountResponse("", true, ids.Length);
+    }
+
+    public async Task<GetCountResponse> GetFollowingCountAsync(string id, CancellationToken token = default)
+    {
+        var ids = await _context.UserFollows.Where(x => x.FollowId!.Equals(id)).Select(x => x.UserId).ToArrayAsync(token);
+
+        return new GetCountResponse("", true, ids.Length);
+    }
+
     public async Task<GetUserIdsResponse> GetIdsAsync(CancellationToken token = default)
     {
         try
@@ -115,6 +142,13 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             Log.Error(ex.Message);
             return new GetUserIdsResponse(ex.Message, false, null!);
         }
+    }
+
+    public async Task<GetUserIdsResponse> GetIdsByProjectIdAsync(string id, CancellationToken token = default)
+    {
+        var ids = await _context.ProjectFollwers.Where(x => x.ProjectId!.Equals(id)).Select(x => x.UserId).ToArrayAsync(token);
+
+        return new GetUserIdsResponse("", true, ids!);
     }
 
     public async Task<ApiResponse> UpdateAsync(UserDTO user, CancellationToken token = default)

@@ -211,6 +211,14 @@ public static class ApiEndpointsV1
         public const string Group = $"{Base}/{nameof(User)}";
         public const string GetIds = $"";
         public const string Get = $"{{id}}";
+        
+        public const string GetFollower = $"follower/{{id}}";
+        public const string GetFollowing = $"following/{{id}}";
+        public const string GetFollowerCount = $"follower/count/{{id}}";
+        public const string GetFollowingCount = $"following/count/{{id}}";
+        public const string GetIdsByProjectId = $"project/{{id}}";
+
+
         public const string Exist = $"exist/{{id}}";
         public const string Create = $"add";
         public const string Update = $"update";
@@ -220,6 +228,11 @@ public static class ApiEndpointsV1
         {
             public const string GetIds = $"GetAllUserIds";
             public const string Get = $"GetUserById";
+            public const string GetFollower = $"GetFollowerIds";
+            public const string GetFollowing = $"GetFollowingIds";
+            public const string GetFollowerCount = $"GetFollowerCount";
+            public const string GetFollowingCount = $"GetFollwingCount";
+            public const string GetIdsByProjectId = $"GetIdsByProjectId";
             public const string Exist = $"GetExistingUserById";
             public const string Create = $"CreateUser";
             public const string Update = $"UpdateUser";
