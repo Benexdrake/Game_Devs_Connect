@@ -4,5 +4,5 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Net.Http.Headers;
 global using Serilog;
 
-global using GameDevsConnect.Backend.API.Configuration.Data;
-global using GameDevsConnect.Backend.API.Configuration.DTOs;
+global using GameDevsConnect.Backend.API.Configuration.Application.Data;
+global using GameDevsConnect.Backend.API.Configuration.Application.DTOs;

@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.DTOs;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Application.DTOs;
 
 public class UserFollowDTO
 {

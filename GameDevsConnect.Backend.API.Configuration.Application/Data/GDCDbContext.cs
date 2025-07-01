@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.Data;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Application.Data;
 
 public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbContext(options)
 {

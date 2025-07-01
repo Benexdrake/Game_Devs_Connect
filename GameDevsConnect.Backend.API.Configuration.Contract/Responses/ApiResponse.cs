@@ -1,4 +1,4 @@
-﻿namespace GameDevsConnect.Backend.API.Configuration.Responses;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Contract.Responses;
 
 public class ApiResponse(string message, bool status, string[] validateErrors = null!)
 {

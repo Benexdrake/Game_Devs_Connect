@@ -1,4 +1,5 @@
-﻿using OpenTelemetry.Logs;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
