@@ -22,9 +22,9 @@ public static class ProfileEndpoints
         .WithName(ApiEndpointsV1.Profile.MetaData.GetFull)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile, CancellationToken token) =>
+        group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
-            return await rep.AddAsync(profile, token);
+            return await rep.AddAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Profile.MetaData.Create)
         .Produces(StatusCodes.Status200OK);

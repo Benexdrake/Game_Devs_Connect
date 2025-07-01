@@ -113,7 +113,7 @@ public static class ApiEndpointsV1
         public const string Group = $"{Base}/{nameof(Profile)}";
         public const string Get = $"{{id}}";
         public const string GetFull = $"full/{{id}}";
-        public const string Create = $"add";
+        public const string Create = $"add/{{id}}";
         public const string Update = $"update";
         public const string Delete = $"delete/{{id}}";
 
