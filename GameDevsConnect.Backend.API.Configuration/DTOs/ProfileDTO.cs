@@ -1,24 +1,24 @@
 ﻿namespace GameDevsConnect.Backend.API.Configuration.DTOs;
 
-public partial class ProfileDTO
+public partial class ProfileDTO(string userId)
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; init; } = Guid.NewGuid().ToString();
 
-    public string? UserId { get; set; }
+    public string? UserId { get; set; } = userId;
 
-    public string? DiscordUrl { get; set; }
+    public string? DiscordUrl { get; set; } = string.Empty;
 
-    public string? XUrl { get; set; }
+    public string? XUrl { get; set; } = string.Empty;
 
-    public string? WebsiteUrl { get; set; }
+    public string? WebsiteUrl { get; set; } = string.Empty;
 
-    public string? Email { get; set; }
+    public string? Email { get; set; } = string.Empty;
 
-    public byte? ShowDiscord { get; set; }
+    public bool? ShowDiscord { get; set; }
 
-    public byte? ShowX { get; set; }
+    public bool? ShowX { get; set; }
 
-    public byte? ShowWebsite { get; set; }
+    public bool? ShowWebsite { get; set; }
 
-    public byte? ShowEmail { get; set; }
+    public bool? ShowEmail { get; set; }
 }
