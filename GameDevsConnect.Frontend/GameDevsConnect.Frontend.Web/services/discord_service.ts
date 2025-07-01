@@ -1,4 +1,4 @@
-import { UserType } from "../interfaces/user";
+import { IUser } from "../interfaces/user";
 import axios from "axios";
 
 export async function getDiscordUser(token:any)
@@ -19,7 +19,7 @@ export async function getDiscordUser(token:any)
         if(!username)
             username = d.username;
     
-        const user:UserType = {id:d.id, username, avatar, accountType:'discord'}
+        const user:IUser = {id:d.id, username, avatar, accountType:'discord'}
         
         return user;
     } 
