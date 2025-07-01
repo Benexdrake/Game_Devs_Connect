@@ -1,4 +1,5 @@
-import axios from "axios";
+import { getDiscordUser } from "@/services/discord_service";
+import { addUserAsync, existUser, getUserAsync } from "@/services/user_service";
 import NextAuth from "next-auth/next";
 import DiscordProvider from "next-auth/providers/discord"
 const scopes = ['identify'].join(' ')
@@ -17,49 +18,43 @@ export const authOptions =
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
-        token.expiresAt = account.expires_at * 1;
+        token.expiresAt = account.expires_at;
+        token.id = user?.id;
 
-        // await addDiscordUser(token);
-        
-        // token.id = user?.id;
+        const u = await getDiscordUser(token);
 
-        // name: 'benexdrake.net',
-        // email: 'benex@hotmail.de',
-        // picture: 'https://cdn.discordapp.com/avatars/248882444005015552/ca607040d42518b2c1fe76819b0b3d79.png',
-        // sub: '248882444005015552',
-        // accessToken: 'mvrzosjK6037Boac0oSwTVLalGlLEb',
-        // refreshToken: 'PxXHzwpT5WfpodGYYCT4SV5zjIxqZH',
-        // expiresAt: 1748272013000
-        console.log('>>>>>>>>>>>> JWT');
+        const responseExist = await existUser(u.id);
 
-        // Senden des token Objects an das Gateway zum speichern des Users, aber auch speichern des accessToken
-        // Somit kann jede weitere API mit dem AccessToken angesteuert werden.
-        
+        if(!responseExist.status)
+        {
+          try
+          { 
+            const response = await addUserAsync(u);
+            console.log(response); 
+          }
+          catch(error)
+          {
+            console.log(error);
+          }
+        }
+
       }
       return token;
     },
     async session({ session, token }) 
     {
-      try 
+      if(session)
       {
-
-        console.log('>>>>>>>>>>>>>>> SESSION', token.name);
-        // Hier /login Route des Gateways abrufen und bearer Token holen, diesen vllt in session.accessToken speichern?
+        const response = await getUserAsync(token.id);
         
-        // const user = await getUser(token)
-        // session.user = user;
-        session.accessToken = token.accessToken;
-      } 
-      catch (error) 
-      {
-        console.error("Error fetching Discord user:", error);
-        session.user = null;
+        if(response.status)
+          session.user = response.user;
       }
+
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET
 };
-
 
 export default NextAuth(authOptions);

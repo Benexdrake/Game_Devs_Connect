@@ -1,6 +1,6 @@
 ﻿namespace GameDevsConnect.Backend.API.User.Contract.Responses;
 
-public class GetUserByIdResponse(string message, bool status, UserDTO myProperty) : ApiResponse(message, status)
+public class GetUserByIdResponse(string message, bool status, UserDTO user) : ApiResponse(message, status)
 {
-    public UserDTO MyProperty { get; set; } = myProperty;
+    public UserDTO User { get; set; } = user;
 }

@@ -9,7 +9,7 @@ var accessKey = Guid.NewGuid().ToString();
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
-                 //.WithVolume("sqlserver-data", "/var/opt/mssql")
+                 .WithVolume("sqlserver-data", "/var/opt/mssql")
                  ;
 
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")

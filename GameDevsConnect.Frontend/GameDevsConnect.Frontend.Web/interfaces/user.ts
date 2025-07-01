@@ -1,4 +1,4 @@
-export type UserType =
+export interface IUser
 {
     id:string;
     username:string;

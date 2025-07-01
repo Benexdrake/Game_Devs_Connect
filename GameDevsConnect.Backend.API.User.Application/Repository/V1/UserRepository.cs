@@ -24,8 +24,6 @@ public class UserRepository(GDCDbContext context) : IUserRepository
                 return new ApiResponse(Message.VALIDATIONERROR(user.Id), false, [.. errors]);
             }
 
-            user.Id = Guid.NewGuid().ToString();
-
             await _context.Users.AddAsync(user, token);
             await _context.SaveChangesAsync(token);
 
