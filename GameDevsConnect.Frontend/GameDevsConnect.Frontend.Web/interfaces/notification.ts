@@ -1,10 +1,10 @@
-export type NotificationType =
+export interface NotificationType
 {
     id:string;
     requestId:number;
     type:number;
     ownerId:string;
     userId:string;
-    seen:string;
+    seen:boolean;
     created:string;
 }

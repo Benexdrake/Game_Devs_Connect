@@ -1,4 +1,4 @@
-export type FileType =
+export interface FileType
 {
     id:number;
     name:string;
