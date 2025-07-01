@@ -1,10 +1,11 @@
 import { IAPIResponse } from "@/interfaces/responses/api_response";
 import axios from "axios";
 import { IProfile } from "@/interfaces/profile";
+import { url } from "@/lib/api";
 
-const getUrl = `${process.env.NEXT_PUBLIC_URL}/api/get/api/v1/profile`;
-const postUrl = `${process.env.NEXT_PUBLIC_URL}/api/post/api/v1/profile`;
-const putUrl = `${process.env.NEXT_PUBLIC_URL}/api/put/api/v1/profile`;
+const getUrl = url('get','profile')
+const postUrl = url('post','profile')
+const putUrl = url('put','profile')
 
 export const getProfileAsync = async (id:string) =>
 {

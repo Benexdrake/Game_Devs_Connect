@@ -1,6 +1,7 @@
+import { url } from "@/lib/api";
 import axios from "axios";
 
-const getUrl = `${process.env.NEXT_PUBLIC_URL}/api/get/api/v1/tag`;
+const getUrl = url('get','tag')
 
 export const getTags = async () =>
 {

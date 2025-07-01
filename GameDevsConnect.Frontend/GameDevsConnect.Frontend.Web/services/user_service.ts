@@ -1,12 +1,13 @@
 import { IAPIResponse } from "@/interfaces/responses/api_response";
 import { IAPIUserResponse } from "@/interfaces/responses/user/api_user_response";
 import { IUser } from "@/interfaces/user";
+import { url } from "@/lib/api";
 import axios from "axios";
 
-const getUrl = `${process.env.NEXT_PUBLIC_URL}/api/get/api/v1/user`;
-const postUrl = `${process.env.NEXT_PUBLIC_URL}/api/post/api/v1/user`;
-const putUrl = `${process.env.NEXT_PUBLIC_URL}/api/put/api/v1/user`;
-const deleteUrl = `${process.env.NEXT_PUBLIC_URL}/api/delete/api/v1/user`;
+const getUrl = url('get','user')
+const postUrl = url('post','user')
+const putUrl = url('put','user')
+const deleteUrl = url('delete','user')
 
 export const getUserAsync = async (id:string) =>
 {
