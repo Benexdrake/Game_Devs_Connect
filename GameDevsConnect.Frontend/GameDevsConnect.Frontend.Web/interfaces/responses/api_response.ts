@@ -1,6 +1,6 @@
 export interface IAPIResponse
 {
-    message:string;
+    message:string | null;
     status:boolean;
-    validateErrors:string[];
+    validateErrors:string[] | null;
 }
