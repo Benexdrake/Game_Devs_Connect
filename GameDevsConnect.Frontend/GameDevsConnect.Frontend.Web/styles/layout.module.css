@@ -1,0 +1,16 @@
+.main {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    height: 100vh;
+    width: 800px;
+    margin: auto;
+}
+
+.sidebar {
+    width: 100px;
+    margin-inline: 20px;
+}
+
+.child {
+    width: 700px;
+}
