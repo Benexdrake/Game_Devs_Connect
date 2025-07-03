@@ -1,6 +1,6 @@
-export interface FileType
+export interface IFile
 {
-    id:number;
+    id:string;
     name:string;
     size:number;
     ownerId:string;

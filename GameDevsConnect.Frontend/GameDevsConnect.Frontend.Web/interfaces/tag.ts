@@ -1,5 +1,5 @@
-export type TagType =
+export interface ITag
 {
     id:number;
-    name:string;
+    tag:string;
 }
