@@ -1,0 +1,33 @@
+.main {
+    height: 100vh;
+}
+
+.nav {
+    position:fixed;
+    top:30%;
+    /* transform: translate(0, -50%); */
+    padding: 16px;
+    background-color: var(--color1);
+
+    border: var(--color-text) solid 2px;
+    border-radius: 8px;
+    display: grid;
+    gap: 16px;
+}
+
+.nav_item {
+    color: var(--color-text);
+    text-align: center;
+    display: flex;
+    margin: auto;
+    height: 60px;
+    width: 60px;
+    background-color: var(--color1);
+    border: var(--color4) solid 2px;
+    border-radius: 8px;
+}
+
+.nav_item > i {
+    font-size: 32px;
+    margin: auto;
+}
