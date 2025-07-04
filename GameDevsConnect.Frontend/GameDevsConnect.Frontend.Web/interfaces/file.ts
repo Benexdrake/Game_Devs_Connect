@@ -1,7 +1,8 @@
 export interface IFile
 {
     id:string;
-    name:string;
+    url:string;
+    type:string;
     size:number;
     ownerId:string;
     created:string;
