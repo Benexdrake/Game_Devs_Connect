@@ -14,11 +14,11 @@ public partial class ProfileDTO(string userId)
 
     public string? Email { get; set; } = string.Empty;
 
-    public bool? ShowDiscord { get; set; }
+    public bool ShowDiscord { get; set; }
 
-    public bool? ShowX { get; set; }
+    public bool ShowX { get; set; }
 
-    public bool? ShowWebsite { get; set; }
+    public bool ShowWebsite { get; set; }
 
-    public bool? ShowEmail { get; set; }
+    public bool ShowEmail { get; set; }
 }
