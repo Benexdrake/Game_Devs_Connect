@@ -13,6 +13,24 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
         {
             var profile = new ProfileDTO(userId);
 
+            var validator = new Validator(_context, userId, ValidationMode.Add);
+
+            var valid = await validator.ValidateAsync(profile, token);
+
+            if (!valid.IsValid)
+            {
+                var errors = new List<string>();
+
+                foreach (var error in valid.Errors)
+                    errors.Add(error.ErrorMessage);
+
+                Log.Error(Message.VALIDATIONERROR(profile.Id));
+                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, [.. errors]);
+            }
+
+            _context.Profiles.Add(profile);
+            await _context.SaveChangesAsync(token);
+
             Log.Information(Message.ADD(profile.Id));
             return new ApiResponse(Message.ADD(profile.Id), true);
         }
@@ -35,7 +53,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             }
 
             _context.Profiles.Remove(dbProfile);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.DELETE(id));
             return new ApiResponse(Message.DELETE(id), true);
@@ -72,7 +90,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id.Equals(id), token);
+            var dbProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.UserId!.Equals(id), token);
 
             if (dbProfile is null)
             {
@@ -104,7 +122,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
+            var validator = new Validator(_context, "", ValidationMode.Update);
 
             var valid = await validator.ValidateAsync(profile, token);
 
@@ -120,7 +138,7 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
             }
 
             _context.Profiles.Update(profile);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             Log.Information(Message.UPDATE(profile.Id));
             return new ApiResponse(Message.UPDATE(profile.Id), true);
