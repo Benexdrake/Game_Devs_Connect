@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
 
 public class UserRepository(GDCDbContext context) : IUserRepository
 {
@@ -27,6 +24,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             }
 
             await _context.Users.AddAsync(user, token);
+            await _context.Profiles.AddAsync(new ProfileDTO(user.Id), token);
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(user.Id));
