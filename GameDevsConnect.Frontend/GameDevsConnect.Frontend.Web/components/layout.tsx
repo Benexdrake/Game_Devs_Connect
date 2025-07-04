@@ -1,16 +1,22 @@
-import style from '@/styles/layout.module.css'
+import styles from '@/styles/layout.module.css'
 import Navbar from "./nav/navbar";
+import { useSession } from 'next-auth/react';
+import { IUser } from '@/interfaces/user';
 
 export default function Layout(props:any)
 {
     const {children} = props;
 
+    const {data:session} = useSession();
+
+    const user = session?.user as IUser;
+
     return (
-        <div className={style.main}>
-            <nav className={style.sidebar}>
-                <Navbar/>
+        <div className={styles.main}>
+            <nav className={styles.sidebar}>
+                {session && <Navbar/>}
             </nav>
-            <div className={style.child}>
+            <div className={styles.child}>
                 {children}
             </div>
         </div>

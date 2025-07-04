@@ -8,9 +8,9 @@
 
 .sidebar {
     width: 100px;
-    margin-inline: 20px;
 }
 
 .child {
     width: 700px;
+    margin-inline: 20px;
 }
