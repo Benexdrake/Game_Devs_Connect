@@ -26,6 +26,7 @@
 
 .content {
     display: flex;
+    flex-wrap: wrap;
     background-color: var(--color2);
     border: var(--color-text) solid 1px;
     border-top: none;
@@ -39,9 +40,17 @@
 
 .content_right {
     padding: 12px;
-    width: 100%;
+    width: 84%;
     display: grid;
     color: var(--color-text);
+}
+
+.file {
+    padding-bottom: 8px;
+    text-align: center;
+    margin: auto;
+    max-height: 500px;
+    max-width: 600px;
 }
 
 .avatar_level {
@@ -60,19 +69,25 @@
 }
 
 .info_bar {
-
-    height: 40px;
     display: grid;
-    grid-template-columns: 60px 60px 10px;
-    justify-content: end;
-    padding: 8px 16px;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    padding: 16px;
     color: var(--color-text);
 }
 
-.tags {
-    justify-self: end;
-    padding: 8px;
+.buttons {
+    display: grid;
+    grid-template-columns: 60px 60px 10px;
+    justify-content: flex-end;
 }
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    width: 450px;
+}
+
 
 .tag {
     margin: 4px;
