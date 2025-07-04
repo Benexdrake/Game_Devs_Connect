@@ -10,11 +10,15 @@ export default function Home(props:any)
 
   return (
     <>
-      <Post user= {user}/>
-      <Post user= {user}/>
-      <Post user= {user}/>
-      <Post user= {user}/>
-      <Post user= {user}/>
+    {session && (
+      <>
+        <Post user= {user}/>
+        <Post user= {user}/>
+        <Post user= {user}/>
+        <Post user= {user}/>
+        <Post user= {user}/>
+      </>
+    )}
     </>
   )
 }
