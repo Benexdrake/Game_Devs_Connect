@@ -15,6 +15,8 @@ public class PostRepository(GDCDbContext context) : IPostRepository
         {
             addPost.Post!.Id = Guid.NewGuid().ToString();
 
+            addPost.Post!.Created = DateTime.UtcNow;
+
             var validator = new Validator(_context, ValidationMode.Add);
 
             var valid = await validator.ValidateAsync(addPost.Post!, token);
@@ -103,9 +105,11 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var ids = await postQuery.Where(p =>
             p.Message!.Contains(request.SearchTerm))
+            .OrderByDescending(x => x.Created)
             .Skip(((request.Page - 1) * request.PageSize))
             .Take(request.PageSize)
-            .Select(p => p.Id).ToListAsync(token);
+            .Select(p => p.Id)
+            .ToListAsync(token);
 
             return new GetIdsResponse(null!, true, [.. ids]);
         }
@@ -177,42 +181,46 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             if (postDb is null)
             {
                 Log.Error(Message.NOTFOUND(id));
-                return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!, null!, null!, null!);
+                return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!, null!, null!, null!, null!, 0, 0);
             }
 
-            // get Tag IDs from RequestTags
             var postTags = await _context.PostTags.Where(rt => rt.PostId!.Equals(id)).ToArrayAsync(token);
 
-
-            // get Tags from TagIDS Array
             var tags = new List<TagDTO>();
+            var quests = new List<string>();
 
-
-            if(postDb.HasQuest)
+            if (postDb.HasQuest)
             {
-                foreach (var rt in postTags)
-                {
-                    var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == rt.TagId, token);
-                    if (tag is null) continue;
-                    tags.Add(tag);
-                }
+                // Get Quest Ids
+                quests = await _context.Quests.Where(x => x.PostId!.Equals(id)).Select(x => x.Id!).ToListAsync(token);
+            }
+
+            foreach (var rt in postTags)
+            {
+                var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == rt.TagId, token);
+                if (tag is null) continue;
+                tags.Add(tag);
             }
 
             // Project
-            var projectTitle = await _context.Projects.Where(x => x.Id.Equals(postDb.ProjectId)).Select(x => x.Title).FirstAsync(token);
+            string? projectTitle = (await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(postDb.ProjectId), token))?.Title;
 
             var owner = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(postDb.OwnerId), token);
 
             var file = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(postDb.FileId), token);
 
+            // comments count
+
+            // likes
+
             var tagsArray = tags.ToArray();
 
-            return new GetFullResponse(null!, true, postDb, tagsArray, projectTitle!, owner, file);
+            return new GetFullResponse(null!, true, postDb, [.. quests], tagsArray, projectTitle!, owner, file, 0, 0);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetFullResponse(ex.Message, false, null!, null!, null!, null!, null!);
+            return new GetFullResponse(ex.Message, false, null!, null!, null!, null!, null!, null!, 0, 0);
         }
     }
 
