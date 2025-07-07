@@ -4,7 +4,7 @@ namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
 
 public interface IPostRepository
 {
-    Task<GetIdsResponse> GetIdsAsync(CancellationToken token);
+    Task<GetIdsResponse> GetIdsAsync(GetPostIdsRequest request ,CancellationToken token);
     Task<GetByIdResponse> GetByIdAsync(string id, CancellationToken token);
     Task<GetFullResponse> GetFullByIdAsync(string id, CancellationToken token);
     Task<GetIdsResponse> GetByUserIdAsync(string userId, CancellationToken token);

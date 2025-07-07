@@ -9,9 +9,9 @@ public static class PostEndpoints
         var group = app.MapGroup(ApiEndpointsV1.Post.Group)
                        .WithApiVersionSet(apiVersionSet);
 
-        group.MapGet(ApiEndpointsV1.Post.Get, async ([FromServices] IPostRepository repo, CancellationToken token) =>
+        group.MapGet(ApiEndpointsV1.Post.Get, async ([FromServices] IPostRepository repo, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchTerm = "",  CancellationToken token = default) =>
         {
-            return await repo.GetIdsAsync(token);
+            return await repo.GetIdsAsync(new GetPostIdsRequest(page, pageSize, searchTerm), token);
         })
         .WithName(ApiEndpointsV1.Post.MetaData.Get)
         .Produces(StatusCodes.Status200OK);

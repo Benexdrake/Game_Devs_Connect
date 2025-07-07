@@ -1,5 +1,6 @@
 ﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
 using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
+using System.Linq;
 using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
 
 namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
@@ -94,12 +95,19 @@ public class PostRepository(GDCDbContext context) : IPostRepository
         }
     }
 
-    public async Task<GetIdsResponse> GetIdsAsync(CancellationToken token)
+    public async Task<GetIdsResponse> GetIdsAsync(GetPostIdsRequest request, CancellationToken token)
     {
         try
         {
-            var postDb = await _context.Posts.OrderByDescending(x => x.Created).Select(x => x.Id).ToArrayAsync(token);
-            return new GetIdsResponse(null!, true, postDb);
+            IQueryable<PostDTO> postQuery = _context.Posts;
+
+            var ids = await postQuery.Where(p =>
+            p.Message!.Contains(request.SearchTerm))
+            .Skip(((request.Page - 1) * request.PageSize))
+            .Take(request.PageSize)
+            .Select(p => p.Id).ToListAsync(token);
+
+            return new GetIdsResponse(null!, true, [.. ids]);
         }
         catch (Exception ex)
         {
