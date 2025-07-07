@@ -165,9 +165,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<PostTagDTO>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Post_Tag");
+            entity.HasKey(e => new { e.PostId, e.TagId }).HasName("Post_Tag");
 
             entity.Property(e => e.PostId)
                 .HasMaxLength(64)
