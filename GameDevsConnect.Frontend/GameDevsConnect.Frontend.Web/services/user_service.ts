@@ -26,7 +26,7 @@ export const updateUserAsync = async (user:IUser) =>
 
 export const deleteUserAsync = async (id:string) =>
 {
-    return await axios.delete<IAPIResponse>(`${deleteUrl}/${id}`).then(x => x.data)
+    return await axios.delete<IAPIResponse>(`${deleteUrl}/delete/${id}`).then(x => x.data)
 }
 
 export const existUser = async (id:string) =>
