@@ -7,8 +7,11 @@ import { IPost } from "@/interfaces/post";
 export interface IAPIPostResponse extends IAPIResponse
 {
     post:IPost;
+    questUds:string[] | null;
     tags: ITag[] | null;
     projectTitle:string;
     owner:IUser;
     file:IFile | null;
+    comments:number;
+    likes:number;
 }
