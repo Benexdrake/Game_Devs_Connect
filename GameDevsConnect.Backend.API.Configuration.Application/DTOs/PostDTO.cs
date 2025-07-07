@@ -10,7 +10,7 @@ public partial class PostDTO
 
     public string? Message { get; set; }
 
-    public string? Created { get; set; }
+    public DateTime? Created { get; set; }
 
     public string? ProjectId { get; set; }
 
