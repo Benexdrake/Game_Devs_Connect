@@ -1,5 +1,4 @@
 .main {
-    background-color: var(--color3);
     border: var(--color-text) solid 2px;
     border-radius: 12px;
     margin: 8px 0;
@@ -46,11 +45,13 @@
 }
 
 .file {
-    padding-bottom: 8px;
     text-align: center;
     margin: auto;
     max-height: 500px;
     max-width: 600px;
+    border: var(--color4) solid 1px;
+    border-radius: 16px;
+    margin-bottom: 8px;
 }
 
 .avatar_level {
@@ -83,9 +84,8 @@
 }
 
 .tags {
-    display: flex;
-    flex-wrap: wrap;
     width: 450px;
+
 }
 
 
