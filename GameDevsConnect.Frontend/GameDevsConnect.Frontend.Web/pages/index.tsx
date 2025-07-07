@@ -10,7 +10,7 @@ export default function Home(props:any)
 
   return (
     <>
-    {session && (
+    { session && (
       <>
         <Post user= {user}/>
         <Post user= {user}/>
