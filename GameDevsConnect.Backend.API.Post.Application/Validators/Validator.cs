@@ -27,17 +27,13 @@ public class Validator : AbstractValidator<PostDTO>
             .NotEmpty()
             .WithMessage(x => $"Message '{x.Id}' darf nicht leer sein.")
             .MinimumLength(1)
-            .WithMessage(x => $"AccountType '{x.Id}' muss mindestens 1 Zeichen lang sein."); ;
+            .WithMessage(x => $"AccountType '{x.Id}' muss mindestens 1 Zeichen lang sein.");
 
         RuleFor(x => x.OwnerId)
             .NotEmpty()
             .WithMessage(x => $"OwnerID '{x.Id}' darf nicht leer sein.")
             .MinimumLength(5)
-            .WithMessage(x => $"OwnerID '{x.Id}' muss mindestens 5 Zeichen lang sein."); ;
-
-        RuleFor(x => x.ProjectId)
-            .MinimumLength(5)
-            .WithMessage(x => $"ProjectID '{x.Id}' muss mindestens 5 Zeichen lang sein."); ;
+            .WithMessage(x => $"OwnerID '{x.Id}' muss mindestens 5 Zeichen lang sein.");
     }
 
     private async Task<bool> ValidateExist(string id, CancellationToken token)
