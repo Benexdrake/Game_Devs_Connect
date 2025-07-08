@@ -1,9 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-using System.Linq;
-using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
-
-namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Post.Application.Repository.V1;
 
 public class PostRepository(GDCDbContext context) : IPostRepository
 {
