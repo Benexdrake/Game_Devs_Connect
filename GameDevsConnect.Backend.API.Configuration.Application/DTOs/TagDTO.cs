@@ -2,7 +2,6 @@
 
 public partial class TagDTO
 {
-    public int Id { get; set; }
-
-    public string? Tag { get; set; }
+    public string Tag { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
 }

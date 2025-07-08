@@ -1,7 +1,7 @@
 ﻿namespace GameDevsConnect.Backend.API.Configuration.Application.DTOs;
 
-public partial class PostTagDTO(string? postId, int? tagId)
+public partial class PostTagDTO(string postId, string tag)
 {
-    public string? PostId { get; set; } = postId;
-    public int? TagId { get; set; } = tagId;
+    public string PostId { get; set; } = postId;
+    public string Tag { get; set; } = tag;
 }

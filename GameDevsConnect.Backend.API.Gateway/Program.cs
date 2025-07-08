@@ -47,7 +47,7 @@ using (var scope = app.Services.CreateScope())
             await gdcDbContext.Database.MigrateAsync();
             var tags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
 
-            tags.ForEach(t => gdcDbContext.Tags.Add(new TagDTO() { Id = 0, Tag = t }));
+            tags.ForEach(t => gdcDbContext.Tags.Add(new TagDTO() { Tag = t, Type = "Assets" }));
 
             await gdcDbContext.SaveChangesAsync();
         }

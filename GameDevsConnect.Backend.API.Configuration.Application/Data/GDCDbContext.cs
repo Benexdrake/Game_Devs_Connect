@@ -165,12 +165,12 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<PostTagDTO>(entity =>
         {
-            entity.HasKey(e => new { e.PostId, e.TagId }).HasName("Post_Tag");
+            entity.HasKey(e => new { e.PostId, e.Tag }).HasName("Post_Tag");
 
             entity.Property(e => e.PostId)
                 .HasMaxLength(64)
                 .HasColumnName("post_id");
-            entity.Property(e => e.TagId).HasColumnName("tag_id");
+            entity.Property(e => e.Tag).HasColumnName("tag");
         });
 
         modelBuilder.Entity<QuestDTO>(entity =>
@@ -186,12 +186,10 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
 
         modelBuilder.Entity<TagDTO>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tags");
+            entity.HasKey(e => e.Tag).HasName("PK__Tags");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Tag)
-                .HasMaxLength(128)
-                .HasColumnName("tag");
+            entity.Property(e => e.Type).HasColumnName("type");
+            entity.Property(e => e.Tag).HasColumnName("tag");
         });
 
         modelBuilder.Entity<UserDTO>(entity =>

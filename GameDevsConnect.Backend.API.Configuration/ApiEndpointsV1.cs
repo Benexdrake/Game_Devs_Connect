@@ -195,7 +195,7 @@ public static class ApiEndpointsV1
         public const string GetAll = "/";
         public const string Create = "/add";
         public const string Update = "/update";
-        public const string Delete = $"/delete/{{id}}";
+        public const string Delete = $"/delete/{{tag}}";
 
         public static class MetaData
         {

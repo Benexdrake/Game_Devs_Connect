@@ -12,20 +12,26 @@ public class Validator : AbstractValidator<TagDTO>
 
         if (mode == ValidationMode.Update)
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.Tag)
                 .MustAsync(ValidateExist)
-                .WithMessage(x => $"Tag mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .WithMessage(x => $"Tag existiert nicht in der Datenbank.");
         }
 
         RuleFor(x => x.Tag)
             .NotEmpty()
-            .WithMessage(x => $"Tag '{x.Id}' darf nicht leer sein.")
+            .WithMessage(x => $"Tag darf nicht leer sein.")
             .MinimumLength(2)
             .WithMessage(x => $"Tag '{x.Tag}' muss mindestens 2 Zeichen lang sein.");
+
+        RuleFor(x => x.Type)
+            .NotEmpty()
+            .WithMessage(x => $"Tag Type darf nicht leer sein.")
+            .MinimumLength(2)
+            .WithMessage(x => $"Tag '{x.Type}' muss mindestens 2 Zeichen lang sein.");
     }
 
-    private async Task<bool> ValidateExist(int id, CancellationToken token)
+    private async Task<bool> ValidateExist(string tag, CancellationToken token)
     {
-        return await _context.Tags.AnyAsync(x => x.Id == id, token);
+        return await _context.Tags.AnyAsync(x => x.Tag.Equals(tag), token);
     }
 }

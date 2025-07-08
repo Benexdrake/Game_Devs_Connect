@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Tag.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Tag.Application.Repository.V1;
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;
@@ -37,23 +34,23 @@ public class TagRepository(GDCDbContext context) : ITagRepository
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(int id, CancellationToken token)
+    public async Task<ApiResponse> DeleteAsync(string tag, CancellationToken token)
     {
         try
         {
-            var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, token);
+            var tagsDb = await _context.Tags.FirstOrDefaultAsync(x => x.Tag.Equals(tag), token);
 
             if (tagsDb is null)
             {
-                Log.Error(Message.NOTFOUND(id.ToString()));
-                return new ApiResponse(Message.NOTFOUND(id.ToString()), false);
+                Log.Error(Message.NOTFOUND(tag));
+                return new ApiResponse(Message.NOTFOUND(tag), false);
             }
 
             _context.Tags.Remove(tagsDb);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.DELETE(id.ToString()));
-            return new ApiResponse(Message.DELETE(id.ToString()), true);
+            Log.Information(Message.DELETE(tag));
+            return new ApiResponse(Message.DELETE(tag), true);
         }
         catch (Exception ex)
         {

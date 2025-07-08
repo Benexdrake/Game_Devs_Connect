@@ -31,7 +31,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             foreach (var tag in addPost.Tags!)
             {
-                await _context.PostTags.AddAsync(new PostTagDTO(addPost.Post!.Id, tag.Id), token);
+                await _context.PostTags.AddAsync(new PostTagDTO(addPost.Post!.Id, tag.Tag), token);
             }
 
             await _context.SaveChangesAsync(token);
@@ -192,7 +192,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             foreach (var rt in postTags)
             {
-                var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == rt.TagId, token);
+                var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Tag.Equals(rt.Tag), token);
                 if (tag is null) continue;
                 tags.Add(tag);
             }

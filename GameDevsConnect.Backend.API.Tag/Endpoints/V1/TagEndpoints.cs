@@ -30,9 +30,9 @@ public static class TagEndpoints
             .WithName(ApiEndpointsV1.Tag.MetaData.Update)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapDelete(ApiEndpointsV1.Tag.Delete, async ([FromServices] ITagRepository repo, [FromRoute] int id, CancellationToken token) =>
+        group.MapDelete(ApiEndpointsV1.Tag.Delete, async ([FromServices] ITagRepository repo, [FromRoute] string tag, CancellationToken token) =>
         {
-            return await repo.DeleteAsync(id, token);
+            return await repo.DeleteAsync(tag, token);
         })
             .WithName(ApiEndpointsV1.Tag.MetaData.Delete)
             .Produces(StatusCodes.Status200OK);
