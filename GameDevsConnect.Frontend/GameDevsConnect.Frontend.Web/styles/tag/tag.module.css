@@ -1,0 +1,14 @@
+.tags {
+    padding: 16px;
+    border: var(--color-text) solid 1px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tag {
+    padding: 4px 8px;
+    border: var(--color3) solid 1px;
+    margin: 4px;
+}
