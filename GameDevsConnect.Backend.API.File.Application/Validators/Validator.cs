@@ -23,10 +23,6 @@ public class Validator : AbstractValidator<FileDTO>
                 .MustAsync(ValidateExist)
                 .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
-
-        RuleFor(x => x.Size)
-            .GreaterThan(0)
-            .WithMessage(x => $"File mit ID '{x.Id}' muss größer 0 sein");
     }
 
     private async Task<bool> ValidateExist(string id, CancellationToken token)
