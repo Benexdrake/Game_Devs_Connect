@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { useSession, getSession } from "next-auth/react";
 import Post from "@/components/post/post";
 import { getPostIdsAsync } from "@/services/post_service";
+import AddPost from "@/components/post/add_post";
 
 export default function Home(props:any) 
 {
@@ -15,6 +16,7 @@ export default function Home(props:any)
     <>
     { session && (
       <>
+        <AddPost userId={user.id}/>
         { ids && ids.map(x => <Post id={x}/> )}
       </>
     )}
