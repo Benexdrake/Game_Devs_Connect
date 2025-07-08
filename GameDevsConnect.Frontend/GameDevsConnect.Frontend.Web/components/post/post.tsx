@@ -28,6 +28,11 @@ export default function Post(props:any)
     <>
       <div className={styles.main} style={{backgroundColor:`${response.post.hasQuest?response.post.completed?'var(--color3)':'#FFD700':'var(--color1)'}`}}>
           <article>
+            <div className={styles.project_name}>
+              {response.projectTitle && (
+                    <p>{response.projectTitle}</p>
+                )}
+            </div>
             <header className={styles.header}>
               <div>
                 <p>{ response.owner.username}</p>
@@ -41,6 +46,11 @@ export default function Post(props:any)
                 <div className={styles.avatar}>
                   <img src={response?.owner.avatar} alt="" />
                 </div>
+                {response.projectTitle && (
+                  <div className={styles.team_position}>
+                    <p>Owner</p>
+                  </div>
+                )}
                 <div className={styles.avatar_level}>
                   <p>Lv. 10</p>
                 </div>
