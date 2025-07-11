@@ -10,7 +10,7 @@ public partial class FileDTO
 
     public int? Size { get; set; }
 
-    public string? Created { get; set; }
+    public DateTime? Created { get; set; }
 
     public string? OwnerId { get; set; }
 }
