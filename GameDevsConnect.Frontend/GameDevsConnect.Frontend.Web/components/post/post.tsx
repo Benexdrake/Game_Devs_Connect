@@ -38,7 +38,7 @@ export default function Post(props:any)
                 <p>{ response.owner.username}</p>
             </div>
               <div>
-                <p>{new Date(response.post.created).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })}</p>
+                <p>{new Date(response.post.created!).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })}</p>
               </div>
             </header>
             <div className={styles.content}>
@@ -66,7 +66,7 @@ export default function Post(props:any)
             </div>
             <div className={styles.info_bar}>
                 <div className={styles.tags}>
-                  { response.tags?.map(x => {return <span className={styles.tag}>{x.tag}</span>})}
+                  { response.tags?.map(x => {return <span key={x.tag + id} className={styles.tag}>{x.tag}</span>})}
                 </div>
                 <div className={styles.buttons}>
                   <div><i className="fa-solid fa-comment"></i> {response.comments}</div>
