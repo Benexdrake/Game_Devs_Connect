@@ -9,6 +9,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         try
         {
             file.Id = Guid.NewGuid().ToString();
+            file.Created = DateTime.UtcNow;
 
             var validator = new Validator(_context, ValidationMode.Add);
 
@@ -22,19 +23,19 @@ public class FileRepository(GDCDbContext context) : IFileRepository
                     errors.Add(error.ErrorMessage);
 
                 Log.Error(Message.VALIDATIONERROR(file.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(file.Id), false, [.. errors]);
+                return new AddResponse(Message.VALIDATIONERROR(file.Id), false, null, [.. errors]);
             }
 
             await _context.Files.AddAsync(file, token);
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(file.Id));
-            return new ApiResponse(null!, true);
+            return new AddResponse("", true, file.Id, null!);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return new AddResponse(ex.Message, false, null, null!);
         }
     }
 
@@ -67,9 +68,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
     {
         try
         {
-            var file = await _context.Files
-                                        .Where(x => x.Type!.Equals(FileType.File.ToString()))
-                                        .FirstOrDefaultAsync(x => x.Id!.Equals(fileId), token);
+            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(fileId), token);
 
             if (file is null)
             {
