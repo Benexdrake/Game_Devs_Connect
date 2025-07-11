@@ -1,5 +1,5 @@
 import styles from '@/styles/post/add_post.module.css'
-
+import { useRouter } from 'next/router';
 import { IPost } from "@/interfaces/post";
 import { ITag } from "@/interfaces/tag";
 import { useEffect, useState } from "react";
@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { getTags } from "@/services/tag_service";
 import SelectTags from "../tag/select_tags";
 import { IUpsertPostRequest } from '@/interfaces/requests/post/api_add_post_request';
+import { addPostAsync } from '@/services/post_service';
+import { addFileAsync, getFileByIdAsync } from '@/services/file_service';
+import { IFile } from '@/interfaces/file';
 
 export default function AddPost(props:any)
 {
@@ -16,6 +19,7 @@ export default function AddPost(props:any)
 
     const [message, setMessage] = useState<string>('');
 
+    const router = useRouter();
 
     useEffect(() => {
         const get = async () =>
@@ -34,12 +38,22 @@ export default function AddPost(props:any)
     // Choose Project or none
     // Need Project Names with IDs
     
-    const sendHandler = () =>
+    const sendHandler = async () =>
     {
-        const post:IPost = { id:'', parentId:'', hasQuest:false, message, created:new Date().toUTCString(), projectId:'', ownerId: userId, fileId:'', isDeleted:false, completed:false}
+        // Upload File and get Url
 
+        // Add File
+        const file:IFile = {id:'', url:'https://fantasyanime.com/finalfantasy/ff/maps/Final-Fantasy-1-GBA-World-Map-Labeled.png', size:1000, type:'image', ownerId:userId, created:null}
+        const fileResponse = await addFileAsync(file)
 
+        console.log(fileResponse);
 
+        const getFileResponse = await getFileByIdAsync(fileResponse.id);
+        console.log(getFileResponse);
+        
+        
+
+        const post:IPost = { id:'', parentId:'', hasQuest:false, message, created:null, projectId:'', ownerId: userId, fileId:fileResponse.id, isDeleted:false, completed:false}
         const addPost:IUpsertPostRequest = {post, tags:selectedTags}
         console.log(addPost);
         
@@ -48,6 +62,13 @@ export default function AddPost(props:any)
         // Tags min 1 Tag
         // File nicht nötig.
         //
+
+        const response = await addPostAsync(addPost)
+        console.log(response);
+        if(router.pathname === '/')
+            router.reload();
+        else
+            router.push('/')   
     }
 
     return (
@@ -86,7 +107,7 @@ export default function AddPost(props:any)
             </div>
             <div className={styles.footer}>
                 <div className={styles.send_button} onClick={sendHandler}>
-                    <p>Send</p>
+                <p>Send</p>
                 </div>
             </div>
         </div>
