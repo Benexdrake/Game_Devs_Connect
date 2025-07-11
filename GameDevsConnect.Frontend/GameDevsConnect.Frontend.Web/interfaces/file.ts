@@ -5,5 +5,5 @@ export interface IFile
     type:string;
     size:number;
     ownerId:string;
-    created:string;
+    created:string | null;
 }

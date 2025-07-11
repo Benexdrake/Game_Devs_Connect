@@ -4,7 +4,7 @@ export interface IPost
     parentId:string | null;
     hasQuest:boolean;
     message:string;
-    created:string;
+    created:string | null;
     projectId:string;
     ownerId:string;
     fileId:string;
