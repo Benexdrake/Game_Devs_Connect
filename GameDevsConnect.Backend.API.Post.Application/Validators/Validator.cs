@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-
-namespace GameDevsConnect.Backend.API.Post.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.Post.Application.Validators;
 
 public class Validator : AbstractValidator<PostDTO>
 {
@@ -22,12 +20,6 @@ public class Validator : AbstractValidator<PostDTO>
                 .MustAsync(ValidateExist)
                 .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
-
-        RuleFor(x => x.Message)
-            .NotEmpty()
-            .WithMessage(x => $"Message '{x.Id}' darf nicht leer sein.")
-            .MinimumLength(1)
-            .WithMessage(x => $"AccountType '{x.Id}' muss mindestens 1 Zeichen lang sein.");
 
         RuleFor(x => x.OwnerId)
             .NotEmpty()
