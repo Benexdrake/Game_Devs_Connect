@@ -28,8 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         let instance = await getAxiosInstance()
 
-            let response = await instance.post(url, req.body).then(x => x.data)
-            res.status(200).json(response);
+        let response = await instance.post(url, req.body).then(x => x.data)
+            
+        res.status(200).json(response);
     } 
     catch (error) 
     {
