@@ -36,26 +36,35 @@ var app = start.Create(builder);
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
+    var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
+    
+    var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
+
+    if (!gdcCreated)
+    {
+        await gdcDbContext.Database.MigrateAsync();
+    }
+    var assetTags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
+    var genreTags = new List<string>() {"RPG", "Action", "Horror", "Adventure", "Jump n Run", "Shooter"};
+
     try
     {
-        var gdcDbContext = serviceProvider.GetRequiredService<GDCDbContext>();
-
-        var gdcCreated = await gdcDbContext.Database.EnsureCreatedAsync();
-
-        if (!gdcCreated)
-        {
-            await gdcDbContext.Database.MigrateAsync();
-            var tags = new List<string>() { "2D", "3D", "LP", "HP", "2D Animation", "3D Animation", "Texture", "BGM" };
-
-            tags.ForEach(t => gdcDbContext.Tags.Add(new TagDTO() { Tag = t, Type = "Assets" }));
-
-            await gdcDbContext.SaveChangesAsync();
-        }
+        assetTags.ForEach(t => gdcDbContext.Tags.Add(new TagDTO() { Tag = t, Type = "Assets" }));
+        await gdcDbContext.SaveChangesAsync();
     }
-    catch (Exception ex)
+    catch (Exception)
     {
-        Console.WriteLine($"Fehler bei der Datenbankmigration: {ex.Message}");
     }
+    try
+    {
+        genreTags.ForEach(t => gdcDbContext.Tags.Add(new TagDTO() { Tag = t, Type = "Genres" }));
+        await gdcDbContext.SaveChangesAsync();
+    }
+    catch (Exception)
+    {
+    }    
+
+
 }
 
 app.MapGet(ApiEndpointsV1.Gateway.Login, () =>
