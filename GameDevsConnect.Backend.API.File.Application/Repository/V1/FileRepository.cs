@@ -4,7 +4,7 @@ public class FileRepository(GDCDbContext context) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(FileDTO file, CancellationToken token)
+    public async Task<AddResponse> AddAsync(FileDTO file, CancellationToken token)
     {
         try
         {
