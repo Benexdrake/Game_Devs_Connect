@@ -1,41 +1,28 @@
-import { ITag } from '@/interfaces/tag';
+import { useEffect, useState } from "react";
+import ShowTagsByType from "./show_tags_by_type";
 import styles from '@/styles/tag/tag.module.css'
+import { ITag } from "@/interfaces/tag";
+import { getTags } from "@/services/tag_service";
 
 export default function SelectTags(props:any)
 {
-    const {tags, setSelectedTags, selectedTags} = props;
-    
-    const changeTagHandler = (tag:ITag) =>
-    {
-        const findTag = selectedTags.find((x:ITag) => x.tag === tag.tag)
-        if(findTag)
-        {
-            setSelectedTags((prev:ITag[]) => [...prev.filter(x => x.tag !== tag.tag)])
-        }
-        else
-        {
-            if(selectedTags.length < 5)
-                setSelectedTags((prev:ITag[]) => [...prev, tag])
-        }
-    }
+    const {setSelectedTags, selectedTags} = props;
+    const [tags, setTags] = useState<ITag[]>([]);
 
-    const selectedHandler = (tag:ITag) =>
-    {
-        return selectedTags.includes(tag);
-    }
-
+    useEffect(() => {
+        const get = async () =>
+        {
+            const response = await getTags();
+            if(response.status)
+                setTags(response.tags);
+        }
+        get();
+    }, [])
+        
     return (
         <div className={styles.tags}>
-            { tags.map((t:ITag) => 
-                <span className={styles.tag}
-                    key={t.tag} 
-                    onClick={ () => changeTagHandler(t)}
-                    style={{ 
-                        backgroundColor:selectedHandler(t)? 'var(--color4)':'',
-                        color:selectedHandler(t)? 'var(--color1)':''}}>
-                        {t.tag}
-                </span>
-            )}
-        </div>
+            <ShowTagsByType type='Assets' tags={tags} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
+            <ShowTagsByType type='Genres' tags={tags} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
+        </div>       
     )
 }
