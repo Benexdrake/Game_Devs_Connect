@@ -5,16 +5,14 @@ import { IAPIPostResponse } from "@/interfaces/responses/post/api_post_response"
 import { url } from "@/lib/api"
 import axios from "axios"
 
-
-
 const getUrl = url('get','post')
 const postUrl = url('post','post')
 const putUrl = url('put','post')
 const deleteUrl = url('delete','post')
 
-export const getPostIdsAsync = async (page:number=1, pageSize:number=10, searchTerm:string='') =>
-{
-    return await axios.get<IAPIPostIdsResponse>(`${getUrl}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`).then(x => x.data)
+export const getPostIdsAsync = async (page:number=1, pageSize:number=10, searchTerm:string='', parentId:string='') =>
+{   
+    return await axios.get<IAPIPostIdsResponse>(`${getUrl}?page=${page}&pageSize=${pageSize}&parentId=${parentId}&searchTerm=${searchTerm}`).then(x => x.data)
 }
 
 export const getPostAsync = async (id:string) =>

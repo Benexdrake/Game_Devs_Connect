@@ -99,7 +99,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             IQueryable<PostDTO> postQuery = _context.Posts;
 
             var ids = await postQuery.Where(p =>
-            p.Message!.Contains(request.SearchTerm))
+            p.Message!.Contains(request.SearchTerm) && p.ParentId.Equals(request.ParentId))
             .OrderByDescending(x => x.Created)
             .Skip(((request.Page - 1) * request.PageSize))
             .Take(request.PageSize)
