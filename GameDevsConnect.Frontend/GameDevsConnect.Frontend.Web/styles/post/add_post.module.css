@@ -60,3 +60,7 @@
     display: grid;
     grid-template-columns: 5% 90% 1%;
 }
+
+.show_tags_button {
+    text-align: center;
+}

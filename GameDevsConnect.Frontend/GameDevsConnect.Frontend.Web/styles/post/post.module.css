@@ -31,34 +31,38 @@
 }
 
 .content {
-    display: flex;
-    flex-wrap: wrap;
     background-color: var(--color2);
     border: var(--color-text) solid 1px;
     border-top: none;
+    padding-top: 8px;
+    min-height: 100px;
+    text-align: center;
 }
 
 .content_left {
     /* background-color: aqua; */
     position: relative;
-    top: -40px;
+    height: 90px;
+    margin-right: 16px;
+    top: -48px;
 }
 
 .content_right {
-    padding: 12px;
-    width: 84%;
-    display: grid;
+    padding: 0 17px 16px 16px;
     color: var(--color-text);
 }
 
+.message {
+    text-align: justify;
+}
+
 .file {
-    text-align: center;
-    margin: auto;
     max-height: 500px;
     max-width: 600px;
     border: var(--color4) solid 1px;
     border-radius: 16px;
     margin-bottom: 8px;
+    cursor: pointer;
 }
 
 .avatar_level {
@@ -75,6 +79,7 @@
     border-right: var(--color-text) solid 1px;
     height: 100px;
     width: 100px;
+    cursor: pointer;
 }
 
 .avatar > img {
@@ -93,22 +98,24 @@
 }
 
 .info_bar {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    padding: 16px;
+    
+    padding: 8px;
     color: var(--color-text);
 }
 
 .buttons {
-    display: grid;
-    grid-template-columns: 60px 60px 10px;
+    display: flex;
     justify-content: flex-end;
 }
 
-.tags {
-    width: 450px;
+.button {
+    padding-left: 16px;
+    cursor: pointer;
+}
 
+.tags {
+    margin: auto;
+    padding: 16px;
 }
 
 
@@ -117,4 +124,5 @@
     border: var(--color3) solid 1px;
     padding: 4px 8px;
     color: var(--color-text);
+    background-color: var(--color1);
 }
