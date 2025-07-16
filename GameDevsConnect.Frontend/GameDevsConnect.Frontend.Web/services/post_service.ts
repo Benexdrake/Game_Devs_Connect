@@ -20,6 +20,11 @@ export const getPostAsync = async (id:string) =>
     return await axios.get<IAPIPostResponse>(`${getUrl}/full/${id}`).then(x => x.data)
 }
 
+export const getPostIdsByUserIdAsync = async (id:string='') =>
+{   
+    return await axios.get<IAPIPostIdsResponse>(`${getUrl}/user/${id}`).then(x => x.data)
+}
+
 export const addPostAsync = async (addPost:IUpsertPostRequest) =>
 {
     return await axios.post<IAPIResponse>(`${postUrl}/add`, addPost).then(x => x.data)

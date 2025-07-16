@@ -95,7 +95,7 @@ export default function AddPost(props: any) {
                     </div>
                 )}
             </div>
-            {page && (
+            {!page && (
                 <>
                     <div onClick={() => setShowTags(!showtags)}>
                         {!showtags ?

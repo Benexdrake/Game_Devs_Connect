@@ -9,9 +9,10 @@ import { getPostAsync } from '@/services/post_service';
 export default function ShowPost(props: any) 
 {
     const { id, page } = props;
-    const router = useRouter();
-
+    
     const [response, setResponse] = useState<IAPIPostResponse>();
+    
+    const router = useRouter();
 
     useEffect(() =>
     {
@@ -20,13 +21,10 @@ export default function ShowPost(props: any)
             const r = await getPostAsync(id);
             if(r.status)
                 setResponse(r)
-            else
-                router.push('/')
         }
 
         get();
     }, [])
-
 
     const stopClick = (e: React.MouseEvent) => 
     {
@@ -36,9 +34,8 @@ export default function ShowPost(props: any)
     const routeProfileHandler = (e: React.MouseEvent) => 
     {
         e.stopPropagation();
-        router.push(`/`)
+        router.push(`/profile/${response?.owner.id}`)
     };
-
 
     return (
         <div className={styles.main} style={{ backgroundColor: `${response?.post.hasQuest ? response.post.completed ? 'var(--color3)' : '#FFD700' : 'var(--color1)'}` }}>
@@ -63,7 +60,7 @@ export default function ShowPost(props: any)
                         <div className={styles.avatar}>
                             <img src={response?.owner.avatar} alt="" />
                         </div>
-                        {response?.projectTitle && (
+                        { response?.projectTitle && (
                             <div className={styles.team_position}>
                                 <p>Owner</p>
                             </div>

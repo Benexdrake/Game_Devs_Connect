@@ -120,7 +120,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
         try
         {
             var postDb = await _context.Posts
-                                         .Where(x => x.OwnerId!.Equals(userId))
+                                         .Where(x => x.OwnerId!.Equals(userId) && x.ParentId.Equals(string.Empty))
                                          .OrderByDescending(x => x.Created)
                                          .Select(x => x.Id)
                                          .ToArrayAsync(token);
@@ -186,7 +186,6 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             if (postDb.HasQuest)
             {
-                // Get Quest Ids
                 quests = await _context.Quests.Where(x => x.PostId!.Equals(id)).Select(x => x.Id!).ToListAsync(token);
             }
 
@@ -197,20 +196,19 @@ public class PostRepository(GDCDbContext context) : IPostRepository
                 tags.Add(tag);
             }
 
-            // Project
             string? projectTitle = (await _context.Projects.FirstOrDefaultAsync(x => x.Id.Equals(postDb.ProjectId), token))?.Title;
 
             var owner = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(postDb.OwnerId), token);
 
             var file = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(postDb.FileId), token);
 
-            // comments count
+            var commentsCount = await _context.Posts.Where(x => x.ParentId.Equals(id)).CountAsync(token);
 
-            // likes
+            var likes = 0;
 
             var tagsArray = tags.ToArray();
 
-            return new GetFullResponse(null!, true, postDb, [.. quests], tagsArray, projectTitle!, owner, file, 0, 0);
+            return new GetFullResponse(null!, true, postDb, [.. quests], tagsArray, projectTitle!, owner, file, commentsCount, likes);
         }
         catch (Exception ex)
         {

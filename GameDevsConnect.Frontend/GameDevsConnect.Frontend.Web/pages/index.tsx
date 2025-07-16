@@ -17,7 +17,7 @@ export default function Home(props:any)
     <>
     { session && (
       <>
-        <AddPost userId={user.id} postId=''/>
+        <AddPost userId={user.id} postId='' page={false}/>
         { 
           ids && ids.map(x => {
             return (

@@ -27,7 +27,7 @@ export default function Post(props:any)
                 FILES
             </div>
             <div>
-                <AddPost userId={user.id} postId={id}/>
+                <AddPost userId={user.id} postId={id} page={true}/>
             </div>
             <div>
                 {commentIds && commentIds.map((x:string) => <ShowPost id={x} page={false}/>)}
