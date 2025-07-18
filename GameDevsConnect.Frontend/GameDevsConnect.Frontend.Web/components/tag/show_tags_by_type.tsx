@@ -28,6 +28,8 @@ export default function ShowTagsByType(props:any)
     return (
         <div>
             <h3 className={styles.tags_title}>{type}</h3>
+            <div className={styles.tags}>
+
             { getTagsByType(type, tags).map((t:ITag) => 
                 <span className={styles.tag}
                 key={t.tag} 
@@ -38,6 +40,7 @@ export default function ShowTagsByType(props:any)
                         {t.tag}
                 </span>
             )}
+            </div>
         </div>
     )
 }
