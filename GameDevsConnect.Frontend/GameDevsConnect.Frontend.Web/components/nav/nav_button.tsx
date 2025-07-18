@@ -6,11 +6,21 @@ export default function NavButton(props:any)
 {
     const {icon, path} = props;
 
-    return (    
-        <Link href={path}>
-            <div className={styles.nav_item}>
-                <i className={icon}></i>
-            </div>
-        </Link>
+    return (
+        <>
+            {path ? (
+                <Link href={path}>
+                    <div className={styles.nav_item}>
+                        <i className={icon}></i>
+                    </div>
+                </Link>
+            )
+            :
+            (
+                <div className={styles.nav_item}>
+                    <i className={icon}></i>
+                </div>
+            )}
+        </>
     )
 }
