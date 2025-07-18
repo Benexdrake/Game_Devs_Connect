@@ -20,7 +20,7 @@ export default function SelectTags(props:any)
     }, [])
         
     return (
-        <div className={styles.tags}>
+        <div className={styles.main}>
             <ShowTagsByType type='Assets' tags={tags} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
             <ShowTagsByType type='Genres' tags={tags} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
         </div>       
