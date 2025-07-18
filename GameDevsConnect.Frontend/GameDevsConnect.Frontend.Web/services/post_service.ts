@@ -1,5 +1,6 @@
 import { IUpsertPostRequest } from "@/interfaces/requests/post/api_add_post_request"
 import { IAPIResponse } from "@/interfaces/responses/api_response"
+import { IAPIPostAddResponse } from "@/interfaces/responses/post/api_post_add_response"
 import { IAPIPostIdsResponse } from "@/interfaces/responses/post/api_post_ids_response"
 import { IAPIPostResponse } from "@/interfaces/responses/post/api_post_response"
 import { url } from "@/lib/api"
@@ -27,7 +28,7 @@ export const getPostIdsByUserIdAsync = async (id:string='') =>
 
 export const addPostAsync = async (addPost:IUpsertPostRequest) =>
 {
-    return await axios.post<IAPIResponse>(`${postUrl}/add`, addPost).then(x => x.data)
+    return await axios.post<IAPIPostAddResponse>(`${postUrl}/add`, addPost).then(x => x.data)
 }
 
 export const updatePost = async (updatePost:IUpsertPostRequest) =>
