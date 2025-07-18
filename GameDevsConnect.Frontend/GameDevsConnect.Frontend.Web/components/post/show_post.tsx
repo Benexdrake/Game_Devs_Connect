@@ -36,7 +36,7 @@ export default function ShowPost(props: any)
         e.stopPropagation();
         router.push(`/profile/${response?.owner.id}`)
     };
-
+    
     return (
         <div className={styles.main} style={{ backgroundColor: `${response?.post.hasQuest ? response.post.completed ? 'var(--color3)' : '#FFD700' : 'var(--color1)'}` }}>
             {response && (
@@ -93,6 +93,11 @@ export default function ShowPost(props: any)
                 </div>
                 <div className={styles.info_bar}>
                     <div className={styles.buttons}>
+                        {response.post.hasQuest && (
+                            <div className={styles.button}>
+                                <i className="fa-solid fa-clipboard-question"></i> {response.questCount}
+                            </div>
+                        )}
                         {response.post.parentId === '' && (
                             <div className={styles.button}><i className="fa-solid fa-comment"></i> {response?.comments}</div>
                         )}
