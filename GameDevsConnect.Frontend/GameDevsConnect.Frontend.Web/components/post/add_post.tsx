@@ -8,17 +8,31 @@ import { IUpsertPostRequest } from '@/interfaces/requests/post/api_add_post_requ
 import { addPostAsync } from '@/services/post_service';
 import { addFileAsync } from '@/services/file_service';
 import { IFile } from '@/interfaces/file';
+import ShowElement from '../show_element';
+import Modal from '../modal/modal';
+import AddQuest from '../quest/add_quest';
+import { IQuest } from '@/interfaces/quest';
+import PreviewQuest from '../quest/preview_quest';
+import { addQuestAsync } from '@/services/quest_service';
 
 export default function AddPost(props: any) {
     const { userId, postId, page } = props;
     const [selectedTags, setSelectedTags] = useState<ITag[]>([])
-    const [showtags, setShowTags] = useState<boolean>(false)
+
+    const [quests, setQuests] = useState<IQuest[]>([])
+
     const [message, setMessage] = useState<string>('');
 
     const [addFile, setAddFile] = useState<boolean>(false);
 
     const router = useRouter();
 
+    const onQuestDeleteHandler = (quest:IQuest) =>
+    {
+        const filteredQuests = quests.filter(x => x !== quest)
+        
+        setQuests(filteredQuests)
+    }
 
     // Quests - Falls Quest Post
 
@@ -33,7 +47,8 @@ export default function AddPost(props: any) {
 
         // Add File
         let fileId = '';
-        if (addFile) {
+        if (addFile) 
+        {
             const file: IFile = { id: '', url: 'https://fantasyanime.com/finalfantasy/ff/maps/Final-Fantasy-1-GBA-World-Map-Labeled.png', size: 1000, type: 'image', ownerId: userId, created: null }
             const fileResponse = await addFileAsync(file)
 
@@ -41,11 +56,8 @@ export default function AddPost(props: any) {
                 fileId = fileResponse.id;
         }
 
-
-
-        const post: IPost = { id: '', parentId: postId, hasQuest: false, message, created: null, projectId: '', ownerId: userId, fileId, isDeleted: false, completed: false }
+        const post: IPost = { id: '', parentId: postId, hasQuest: quests.length > 0, message, created: null, projectId: '', ownerId: userId, fileId, isDeleted: false, completed: false }
         const addPost: IUpsertPostRequest = { post, tags: selectedTags }
-        console.log(addPost);
 
         // Validation
         // Message min x Zeichen
@@ -54,6 +66,19 @@ export default function AddPost(props: any) {
         //
 
         const response = await addPostAsync(addPost)
+
+        console.log(response);
+
+        for(const quest of [...quests])
+        {
+            quest.postId = response.id
+            const responseQuest = await addQuestAsync(quest);
+            console.log(responseQuest);
+            
+        }
+
+
+        
 
         if(postId)
             router.reload();
@@ -97,26 +122,13 @@ export default function AddPost(props: any) {
             </div>
             {!page && (
                 <>
-                    <div onClick={() => setShowTags(!showtags)}>
-                        {!showtags ?
-                            (
-                                <div className={styles.show_tags_button}>
-                                    <p>Show Tags <i className="fa-solid fa-square-caret-down"></i></p>
-                                </div>
-                            )
-                            :
-                            (
-                                <div className={styles.show_tags_button}>
-                                    <p>Close Tags <i className="fa-solid fa-square-minus"></i></p>
-                                </div>
-                            )
-                        }
-                    </div>
-
+                    <AddQuest ownerId={userId} setQuests={setQuests}/>
+                    {quests.map((x,index) => <PreviewQuest quest={x} preview={false} onQuestDeleteHandler={onQuestDeleteHandler} key={index+x.title+index}/>)}
+                    <br />
                     <div className={styles.tags}>
-                        {showtags && (
+                        <ShowElement title='Tags'>
                             <SelectTags setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
-                        )}
+                        </ShowElement>
                     </div>
                 </>
             )}
