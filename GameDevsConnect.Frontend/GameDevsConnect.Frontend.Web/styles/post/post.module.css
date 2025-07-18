@@ -1,7 +1,6 @@
 .main {
     border: var(--color-text) solid 2px;
     border-radius: 12px;
-    margin: 8px 0;
 }
 
 .main article {
