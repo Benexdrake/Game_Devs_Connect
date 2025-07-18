@@ -1,0 +1,66 @@
+.main {
+    background-color: var(--color1);
+    border: var(--color-text) solid 1px;
+    border-radius: 8px;
+}
+
+.main_content {
+    display: grid;
+    grid-template-columns: 10% 90%;
+    align-items: center;
+    color: var(--color-text);
+}
+
+.icon {
+    display: flex;
+    margin-left: 16px;
+}
+
+.icon i {
+    font-size: 3rem;
+}
+
+.icon p {
+    position: relative;
+    left: -35px;
+    font-size: 2rem;
+    color: var(--color1);
+    align-self: center;
+}
+
+.content {
+    display: grid;
+    padding: 16px 0;
+    margin: 0 16px 0 8px;
+    
+    text-align: center;
+}
+
+.content_title {
+    padding-bottom: 8px;
+    
+}
+
+.content_message {
+    background-color: var(--color2);
+    padding: 8px 16px;
+    text-align: justify;
+    border: var(--color-text) solid 1px;
+}
+
+.buttons {
+    display: grid;
+    position: relative;
+    left: 83%;
+    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    width: 50px;
+    padding: 0px 16px 16px 0;
+}
+
+.button {
+    background-color: var(--color2);
+    padding: 8px 8px;
+    border: var(--color3) solid 1px;
+    border-radius: 8px;
+}

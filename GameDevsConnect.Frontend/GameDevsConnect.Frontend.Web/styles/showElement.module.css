@@ -1,0 +1,16 @@
+.main {
+
+}
+
+.button {
+    background-color: var(--color-text);
+    color: var(--color1);
+    /* max-height: 30px; */
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    display: grid;
+    padding: 8px;
+    border-bottom: var(--color3) solid 4px;
+    border-radius: 8px 8px 0 0;
+}
