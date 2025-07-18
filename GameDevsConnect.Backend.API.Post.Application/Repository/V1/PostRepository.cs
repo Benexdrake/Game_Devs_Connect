@@ -4,7 +4,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(UpsertPost addPost, CancellationToken token)
+    public async Task<AddResponse> AddAsync(UpsertPost addPost, CancellationToken token)
     {
         try
         {
@@ -24,7 +24,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
                     errors.Add(error.ErrorMessage);
 
                 Log.Error(Message.VALIDATIONERROR(addPost.Post!.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(addPost.Post!.Id), false, [.. errors]);
+                return new AddResponse(Message.VALIDATIONERROR(addPost.Post!.Id), false, "", [.. errors]);
             }
 
             await _context.Posts.AddAsync(addPost.Post!, token);
@@ -37,12 +37,12 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(addPost.Post!.Id));
-            return new ApiResponse(Message.ADD(addPost.Post.Id), true);
+            return new AddResponse(Message.ADD(addPost.Post.Id), true, addPost.Post.Id, null!);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return new AddResponse(ex.Message, false, "", null!);
         }
     }
 
@@ -176,17 +176,17 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             if (postDb is null)
             {
                 Log.Error(Message.NOTFOUND(id));
-                return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!, null!, null!, null!, null!, 0, 0);
+                return new GetFullResponse(Message.NOTFOUND(id), false, null!, 0, null!, null!, null!, null!, 0, 0);
             }
 
             var postTags = await _context.PostTags.Where(rt => rt.PostId!.Equals(id)).ToArrayAsync(token);
 
             var tags = new List<TagDTO>();
-            var quests = new List<string>();
+            var questsCount = 0;
 
             if (postDb.HasQuest)
             {
-                quests = await _context.Quests.Where(x => x.PostId!.Equals(id)).Select(x => x.Id!).ToListAsync(token);
+                questsCount = await _context.Quests.Where(x => x.PostId!.Equals(id)).CountAsync(token);
             }
 
             foreach (var rt in postTags)
@@ -208,12 +208,12 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var tagsArray = tags.ToArray();
 
-            return new GetFullResponse(null!, true, postDb, [.. quests], tagsArray, projectTitle!, owner, file, commentsCount, likes);
+            return new GetFullResponse(null!, true, postDb, questsCount, tagsArray, projectTitle!, owner, file, commentsCount, likes);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetFullResponse(ex.Message, false, null!, null!, null!, null!, null!, null!, 0, 0);
+            return new GetFullResponse(ex.Message, false, null!, 0, null!, null!, null!, null!, 0, 0);
         }
     }
 
