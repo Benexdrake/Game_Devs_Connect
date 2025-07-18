@@ -20,7 +20,7 @@ public class Validator : AbstractValidator<QuestDTO>
 
             RuleFor(x => x.Id)
                 .MustAsync(ValidateExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .WithMessage(x => $"Quest mit ID '{x.Id}' existiert nicht in der Datenbank.");
         }
         RuleFor(x => x.OwnerId)
             .NotEmpty()
