@@ -5,6 +5,8 @@ import { getPostIdsAsync } from "@/services/post_service";
 import AddPost from "@/components/post/add_post";
 import ShowPost from "@/components/post/show_post";
 import { useRouter } from "next/router";
+import Modal from "@/components/modal/modal";
+import { useState } from "react";
 
 export default function Home(props:any) 
 {
@@ -13,15 +15,16 @@ export default function Home(props:any)
   const router = useRouter();
   const ids = props.ids as string[];
 
+  
+
   return (
     <>
     { session && (
       <>
-        <AddPost userId={user.id} postId='' page={false}/>
         { 
           ids && ids.map(x => {
             return (
-              <div onClick={() =>router.push(`/post/${x}`)}>
+              <div onClick={() =>router.push(`/post/${x}`)} style={{margin:'8px 0'}}>
                 <ShowPost id={x} page={false} key={x}/>
               </div>
         )
