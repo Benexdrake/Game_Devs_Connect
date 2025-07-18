@@ -7,7 +7,7 @@ import { IPost } from "@/interfaces/post";
 export interface IAPIPostResponse extends IAPIResponse
 {
     post:IPost;
-    questUds:string[] | null;
+    questCount:number;
     tags: ITag[] | null;
     projectTitle:string;
     owner:IUser;
