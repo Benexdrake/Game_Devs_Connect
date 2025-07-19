@@ -3,11 +3,11 @@ import styles from '@/styles/showElement.module.css'
 
 export default function ShowElement(props:any)
 {
-    const {title, children} = props
-    const [show, setShow] = useState<boolean>(false);
-    const [load, setLoad] = useState<boolean>(false);
+    const {title, children, show, setShow} = props
+    // const [show, setShow] = useState<boolean>(false);
+    const [load, setLoad] = useState<boolean>(true);
 
-        const showHandler = () =>
+    const showHandler = () =>
     {
         setShow(!show)
         if(!load)
@@ -20,11 +20,7 @@ export default function ShowElement(props:any)
                 <p>{show? 'Close':'Open'} {title} <i className={show? 'fa-solid fa-square-minus':'fa-solid fa-square-caret-down'}></i></p>
             </div>
             <div style={{visibility:show?'visible':'hidden', height:show?'fit-content':'0px'}}>
-                {load && (
-                    <div>
-                        {children}
-                    </div>
-                )}
+                {children}
             </div>
         </div>
     )
