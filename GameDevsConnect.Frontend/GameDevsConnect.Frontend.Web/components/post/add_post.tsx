@@ -123,7 +123,7 @@ export default function AddPost(props: any) {
             {!page && (
                 <>
                     <AddQuest ownerId={userId} setQuests={setQuests}/>
-                    {quests.map((x,index) => <PreviewQuest quest={x} preview={false} onQuestDeleteHandler={onQuestDeleteHandler} key={index+x.title+index}/>)}
+                    {quests.map((x,index) => <PreviewQuest quest={x} preview={true} onQuestDeleteHandler={onQuestDeleteHandler} key={index+x.title+index}/>)}
                     <br />
                     <div className={styles.tags}>
                         <ShowElement title='Tags'>
