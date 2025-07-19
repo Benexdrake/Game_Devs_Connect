@@ -8,11 +8,10 @@ import styles from '@/styles/profile/profile.module.css'
 import { getPostIdsByUserIdAsync } from "@/services/post_service";
 import ShowPost from "@/components/post/show_post";
 import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
+import { IAPIProfileFullResponse } from "@/interfaces/responses/profile/api_profile_full_response";
 
-export default function Profile(props:any)
+export default function Profile({response, postIds}:{response:IAPIProfileFullResponse, postIds:string[]})
 {
-    const {response, postIds} = props;
-
     const user = response.user as IUser;
     const profile = response.profile as IProfile;
     const {followerCount, followingCount} = response;

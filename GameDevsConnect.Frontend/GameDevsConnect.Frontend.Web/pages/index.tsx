@@ -3,10 +3,9 @@ import { useSession, getSession } from "next-auth/react";
 import { getPostIdsAsync } from "@/services/post_service";
 import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
 
-export default function Home(props:any) 
+export default function Home({ids}: {ids:string[]}) 
 {
   const {data:session} = useSession();
-  const ids = props.ids as string[];
 
   return (
     <>
