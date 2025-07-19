@@ -1,3 +1,56 @@
 .main {
+    display: grid;
+}
+
+.title {
+    border: var(--color-text) solid 1px;
+    border-radius: 4px;
+    padding: 4px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.title input {
+    outline: none;
+    border: var(--color-text) solid 1px;
     background-color: var(--color2);
+    color: var(--color-text);
+    padding: 4px;
+    width: 450px;
+    height: 100%;
+}
+
+.title select {
+    background-color: var(--color2);
+    color: var(--color-text);
+    outline: none;
+    border: var(--color-text) solid 1px;
+    padding: 4px;
+}
+
+.message {
+    padding: 4px;
+    border: var(--color-text) solid 1px;
+    border-radius: 8px;
+}
+
+.message > textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    max-height: 100px;
+    resize: none;
+    color: var(--color-text);
+    background-color: var(--color2);
+    border: var(--color-text) solid 1px;
+    border-radius: 4px;
+    outline: none;
+    padding: 8px;
+}
+
+.button {
+    background-color: var(--color3);
+    width: fit-content;
+    padding: 8px 16px;
+    border: var(--color-text) solid 1px;
 }
