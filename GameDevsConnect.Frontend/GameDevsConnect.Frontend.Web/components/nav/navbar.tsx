@@ -4,21 +4,27 @@ import { signOut, useSession } from 'next-auth/react';
 import { IUser } from '@/interfaces/user';
 import NavButtonUser from './nav_button_user';
 import { useState } from 'react';
-import Modal from '../modal/modal';
-import AddPost from '../post/add_post';
+import AddPostModal from '../modal/add_post_modal';
 
 export default function Navbar() 
 {
-  const {data:session} = useSession();
-  const user = session?.user as IUser;
+    const {data:session} = useSession();
+    const user = session?.user as IUser;
 
-  const [openModal, setOpenModal] = useState<boolean>();
+    const [openModal, setOpenModal] = useState<boolean>();
+
+    const [showTags, setShowTags] = useState<boolean>(false);
+    const [showQuest, setShowQuest] = useState<boolean>(false);
+
+        const onCloseHandler = () => 
+    {
+        setShowQuest(false);
+        setShowTags(false);
+    }
 
     return (
         <div className={styles.main}>
-            <Modal openModal={openModal} setOpenModal={setOpenModal}>
-                <AddPost userId={user.id} postId='' page={false}/>
-            </Modal>
+            <AddPostModal close={onCloseHandler} openModal={openModal} setOpenModal={setOpenModal} userId={user.id}/>
             <div className={styles.nav}>
                 <NavButton icon="fa-solid fa-house" path="/" />
                 <NavButton icon="fa-solid fa-bell" path="/" />
