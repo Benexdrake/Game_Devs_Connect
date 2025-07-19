@@ -7,6 +7,7 @@ import { getSession } from "next-auth/react";
 import styles from '@/styles/profile/profile.module.css'
 import { getPostIdsByUserIdAsync } from "@/services/post_service";
 import ShowPost from "@/components/post/show_post";
+import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
 
 export default function Profile(props:any)
 {
@@ -76,7 +77,7 @@ export default function Profile(props:any)
                             <div className={styles.menu_button}>Projects</div>
                         </div>
                         
-                        {postIds && postIds.map((x:string) => (<ShowPost id={x}/>))}
+                        {postIds && <InfiniteScrollPosts initialIds={postIds} search="" parentId=""/>}
                 </div>
             )}
         </div>

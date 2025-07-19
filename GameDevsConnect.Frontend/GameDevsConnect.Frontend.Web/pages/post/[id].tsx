@@ -7,6 +7,8 @@ import { getPostIdsAsync } from "@/services/post_service";
 import { getQuestIdsByPostIdAsync } from "@/services/quest_service";
 import ShowQuest from "@/components/quest/show_quest";
 import ShowElement from "@/components/show_element";
+import { useState } from "react";
+import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
 
 export default function Post(props:any)
 {
@@ -14,6 +16,8 @@ export default function Post(props:any)
 
     const {data:session} = useSession();
     const user = session?.user as IUser;
+    const [showQuest, setShowQuest] = useState<boolean>(false);
+    const [showComments, setShowComments] = useState<boolean>(false);
 
     if(session)
     return (
@@ -25,11 +29,11 @@ export default function Post(props:any)
             )}
             { questIds && questIds.length > 0 && 
                 (
-                    <ShowElement title='Quests'>{ 
+                    <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}> 
                         <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>
                             {questIds.map((x:string) => <ShowQuest id={x} key={x}/>)} 
                         </div>
-                    }</ShowElement>
+                    </ShowElement>
                 )
             }
             { fileIds && fileIds.length > 0 && 
@@ -39,9 +43,9 @@ export default function Post(props:any)
             }
             <AddPost userId={user.id} postId={id} page={true}/>
             {commentIds && commentIds.length > 0 && (
-                <ShowElement title='Comments'>
+                <ShowElement title='Comments' show={showComments} setShow={setShowComments}>
                     <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>
-                        {commentIds.map((x:string) => <ShowPost id={x} page={false} key={x}/>)}
+                        <InfiniteScrollPosts initialIds={commentIds} search="" parentId={id}/>
                     </div> 
                 </ShowElement>
             )}
