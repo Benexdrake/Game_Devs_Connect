@@ -4,9 +4,8 @@ import styles from '@/styles/tag/tag.module.css'
 import { ITag } from "@/interfaces/tag";
 import { getTags } from "@/services/tag_service";
 
-export default function SelectTags(props:any)
+export default function SelectTags({setSelectedTags, selectedTags}: {setSelectedTags:Function, selectedTags:ITag[]})
 {
-    const {setSelectedTags, selectedTags} = props;
     const [tags, setTags] = useState<ITag[]>([]);
 
     useEffect(() => {

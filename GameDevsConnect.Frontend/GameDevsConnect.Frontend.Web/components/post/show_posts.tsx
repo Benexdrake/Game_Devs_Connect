@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
 import ShowPost from "./show_post";
+import { IPost } from "@/interfaces/post";
 
-export default function ShowPosts(props:any)
+export default function ShowPosts({ids, comment}: {ids:string[], comment:boolean})
 {
-    const ids = props.ids as string[];
-    const comment = props.comment;
-
     const router = useRouter();
 
     const onClickHandler = (id:string) =>

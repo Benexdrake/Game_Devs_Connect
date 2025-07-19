@@ -2,10 +2,8 @@ import { ITag } from '@/interfaces/tag';
 import { getTagsByType } from '@/lib/tag';
 import styles from '@/styles/tag/tag.module.css'
 
-export default function ShowTagsByType(props:any)
+export default function ShowTagsByType({type, tags, setSelectedTags, selectedTags}:{type:string, tags:ITag[], setSelectedTags:Function, selectedTags:ITag[]})
 {
-    const {type, tags, setSelectedTags, selectedTags} = props;
-    
     const changeTagHandler = (tag:ITag) =>
     {
         const findTag = selectedTags.find((x:ITag) => x.tag === tag.tag)

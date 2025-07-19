@@ -1,15 +1,14 @@
+import { IFile } from '@/interfaces/file';
 import styles from '@/styles/post/post.module.css'
 
-export default function PostContent(props:any)
+export default function PostContent({file}: {file:IFile})
 {
-    const {file} = props;
-
     switch(file.type)
     {
         case 'image':
             return (
                 <div>
-                    <img src={file.url} alt={file.name} className={styles.file}/>
+                    <img src={file.url} alt={file.type} className={styles.file}/>
                 </div>
             )
         case 'video':

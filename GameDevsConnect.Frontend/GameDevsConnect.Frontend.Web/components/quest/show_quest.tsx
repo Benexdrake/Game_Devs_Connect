@@ -4,13 +4,9 @@ import styles from '@/styles/quest/quest.module.css'
 import { useEffect, useState } from 'react';
 import PreviewQuest from './preview_quest';
 
-export default function ShowQuest(props:any)
+export default function ShowQuest({id, onQuestDeleteHandler}:{id:string, onQuestDeleteHandler:Function | null})
 {
-    const {id} = props;
-
     const [quest, setQuest] = useState<IQuest>()
-
-    const lorem = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorem quos distinctio, voluptate aliquid laboriosam reprehenderit magni quae velit? Cupiditate repellat saepe, veritatis magnam dolorem ex perferendis sed aperiam. Quibusdam, corrupti.';
 
     useEffect(() => {
         const get = async () =>
@@ -23,7 +19,10 @@ export default function ShowQuest(props:any)
         get();
     },[])
 
-    return (
-        <PreviewQuest quest={quest} preview={false}/>
-    )
+    if(quest)
+        return (
+            <PreviewQuest quest={quest} preview={false} onQuestDeleteHandler={null}/>
+        )
+    else
+        return <div>LOADING...</div>
 }

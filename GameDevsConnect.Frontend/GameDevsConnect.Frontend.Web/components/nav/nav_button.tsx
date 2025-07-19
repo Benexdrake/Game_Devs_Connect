@@ -2,13 +2,11 @@ import Link from "next/link";
 import styles from '@/styles/navbar/navbar.module.css'
 
 
-export default function NavButton(props:any)
+export default function NavButton({icon, path}:{icon:string, path:string})
 {
-    const {icon, path} = props;
-
     return (
         <>
-            {path ? (
+            {path !== '' ? (
                 <Link href={path}>
                     <div className={styles.nav_item}>
                         <i className={icon}></i>

@@ -1,7 +1,7 @@
 import ShowPost from "@/components/post/show_post";
 import { GetServerSidePropsContext } from "next";
 import { getSession, useSession } from "next-auth/react";
-import AddPost from "@/components/post/add_post";
+import AddComment from "@/components/post/add_comment";
 import { IUser } from "@/interfaces/user";
 import { getPostIdsAsync } from "@/services/post_service";
 import { getQuestIdsByPostIdAsync } from "@/services/quest_service";
@@ -9,15 +9,15 @@ import ShowQuest from "@/components/quest/show_quest";
 import ShowElement from "@/components/show_element";
 import { useState } from "react";
 import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
+import { IQuest } from "@/interfaces/quest";
 
-export default function Post(props:any)
+export default function Post({id, commentIds, questIds, fileIds}:{id:string, commentIds:string[], questIds:string[], fileIds:string[]})
 {
-    const {id, commentIds, questIds, fileIds} = props;
-
     const {data:session} = useSession();
     const user = session?.user as IUser;
     const [showQuest, setShowQuest] = useState<boolean>(false);
     const [showComments, setShowComments] = useState<boolean>(false);
+    const [showFiles, setShowFiles] = useState<boolean>(false);
 
     if(session)
     return (
@@ -31,17 +31,19 @@ export default function Post(props:any)
                 (
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}> 
                         <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>
-                            {questIds.map((x:string) => <ShowQuest id={x} key={x}/>)} 
+                            {questIds.map((x:string) => <ShowQuest id={x} onQuestDeleteHandler={null} key={x}/>)} 
                         </div>
                     </ShowElement>
                 )
             }
             { fileIds && fileIds.length > 0 && 
                 (
-                    <ShowElement title='Files'>{ fileIds.map((x:string) => <>Show Files</>) }</ShowElement>
+                    <ShowElement title='Files' show={showFiles} setShow={setShowFiles}>
+                        { fileIds.map((x:string) => <>Show Files</>) }
+                    </ShowElement>
                 )
             }
-            <AddPost userId={user.id} postId={id} page={true}/>
+            <AddComment userId={user.id} postId={id}/>
             {commentIds && commentIds.length > 0 && (
                 <ShowElement title='Comments' show={showComments} setShow={setShowComments}>
                     <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>

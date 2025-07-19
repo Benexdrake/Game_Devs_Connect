@@ -15,10 +15,9 @@ import AddQuest from '../quest/add_quest';
 import SelectTags from '../tag/select_tags';
 import PreviewQuest from '../quest/preview_quest';
 
-export default function AddPostModal(props:any)
+export default function AddPostModal({setOpenModal, openModal, postId, userId} : 
+                            {setOpenModal:Function, openModal:boolean, postId:string, userId:string})
 {
-    const {setOpenModal, openModal, postId, userId, close} = props;
-
     const [selectedTags, setSelectedTags] = useState<ITag[]>([])
 
     const [quests, setQuests] = useState<IQuest[]>([])
@@ -78,9 +77,7 @@ export default function AddPostModal(props:any)
             // File nicht nötig.
             //
     
-            const response = await addPostAsync(addPost)
-    
-            console.log(response);
+            const response = await addPostAsync(addPost);
     
             for(const quest of [...quests])
             {
@@ -97,7 +94,7 @@ export default function AddPostModal(props:any)
             <div className={stylesModal.modal} onClick={innerElementHandler}>
                         <div className={styles.main}>
             <div className={styles.message}>
-                <textarea name="message" id="message" value={message} onChange={(text) => setMessage(text.target.value)} placeholder='Add Message here...'></textarea>
+                <textarea name="message" id="message" value={message} onChange={(text) => setMessage(text.target.value)} placeholder='Add Message here...'/>
             </div>
             <div className={styles.buttons}>
                 <div className={styles.button} onClick={() => setAddFile(!addFile)}>

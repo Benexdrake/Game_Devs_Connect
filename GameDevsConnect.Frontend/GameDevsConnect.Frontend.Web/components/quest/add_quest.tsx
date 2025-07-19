@@ -2,10 +2,8 @@ import { IQuest } from '@/interfaces/quest';
 import styles from '@/styles/quest/add_quest.module.css'
 import { useState } from 'react';
 
-export default function AddQuest(props:any)
+export default function AddQuest({ownerId, setQuests}:{ownerId:string, setQuests:Function})
 {
-    const {ownerId, setQuests} = props;
-
     const [title, setTitle] = useState<string>('')
     const [difficulty, setDifficulty] = useState<number>(1)
     const [description, setDescription] = useState<string>('')

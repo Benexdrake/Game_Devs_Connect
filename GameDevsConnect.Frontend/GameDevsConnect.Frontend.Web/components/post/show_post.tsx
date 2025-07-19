@@ -6,10 +6,8 @@ import { useEffect, useState } from 'react';
 import { IAPIPostResponse } from '@/interfaces/responses/post/api_post_response';
 import { getPostAsync } from '@/services/post_service';
 
-export default function ShowPost(props: any) 
+export default function ShowPost({ id, page }:{ id:string, page:boolean }) 
 {
-    const { id, page } = props;
-    
     const [response, setResponse] = useState<IAPIPostResponse>();
     
     const router = useRouter();

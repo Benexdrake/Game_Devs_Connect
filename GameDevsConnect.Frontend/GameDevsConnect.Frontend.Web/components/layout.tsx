@@ -3,10 +3,8 @@ import Navbar from "./nav/navbar";
 import { useSession } from 'next-auth/react';
 import { IUser } from '@/interfaces/user';
 
-export default function Layout(props:any)
+export default function Layout({children}:{children:any})
 {
-    const {children} = props;
-
     const {data:session} = useSession();
 
     const user = session?.user as IUser;

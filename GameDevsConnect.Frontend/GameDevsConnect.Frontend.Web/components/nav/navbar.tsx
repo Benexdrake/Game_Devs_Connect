@@ -11,7 +11,7 @@ export default function Navbar()
     const {data:session} = useSession();
     const user = session?.user as IUser;
 
-    const [openModal, setOpenModal] = useState<boolean>();
+    const [openModal, setOpenModal] = useState<boolean>(false);
 
     const [showTags, setShowTags] = useState<boolean>(false);
     const [showQuest, setShowQuest] = useState<boolean>(false);
@@ -24,7 +24,7 @@ export default function Navbar()
 
     return (
         <div className={styles.main}>
-            <AddPostModal close={onCloseHandler} openModal={openModal} setOpenModal={setOpenModal} userId={user.id}/>
+            <AddPostModal openModal={openModal} setOpenModal={setOpenModal} userId={user.id} postId=''/>
             <div className={styles.nav}>
                 <NavButton icon="fa-solid fa-house" path="/" />
                 <NavButton icon="fa-solid fa-bell" path="/" />
@@ -32,7 +32,7 @@ export default function Navbar()
                 <NavButton icon="fa-solid fa-shield" path="/quests" />
                 <NavButton icon="fa-solid fa-envelope" path="/" />
                 <div onClick={() => setOpenModal(prev => !prev)}>
-                    <NavButton icon="fa-solid fa-plus"/>
+                    <NavButton icon="fa-solid fa-plus" path=''/>
                 </div>
                 <NavButtonUser user={user}/>
                 <button onClick={() => signOut()}>Logout</button>    

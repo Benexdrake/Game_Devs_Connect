@@ -1,10 +1,8 @@
 import { useState } from "react";
 import styles from '@/styles/showElement.module.css'
 
-export default function ShowElement(props:any)
+export default function ShowElement({title, children, show, setShow}:{title:string, children:any, show:boolean, setShow:Function})
 {
-    const {title, children, show, setShow} = props
-    // const [show, setShow] = useState<boolean>(false);
     const [load, setLoad] = useState<boolean>(true);
 
     const showHandler = () =>

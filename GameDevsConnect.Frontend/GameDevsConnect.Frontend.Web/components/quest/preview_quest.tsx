@@ -1,9 +1,8 @@
+import { IQuest } from '@/interfaces/quest'
 import styles from '@/styles/quest/quest.module.css'
 
-export default function PreviewQuest(props:any)
+export default function PreviewQuest({quest, onQuestDeleteHandler, preview}:{quest:IQuest, onQuestDeleteHandler:Function | null, preview:boolean})
 {
-    const {quest, onQuestDeleteHandler, preview} = props;
-
     return (
         <div className={styles.main}>
 
@@ -23,7 +22,7 @@ export default function PreviewQuest(props:any)
                 </div>
             </div>
         </div>
-        {preview && (
+        {preview &&  onQuestDeleteHandler && (
             <div className={styles.buttons}>
                 <div className={styles.button} ><i className="fa-solid fa-pen"></i></div>
                 <div className={styles.button} onClick={() => onQuestDeleteHandler(quest)}><i className="fa-solid fa-trash-can"></i></div>
