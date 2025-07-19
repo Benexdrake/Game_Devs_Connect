@@ -35,18 +35,21 @@ export default function AddQuest(props:any)
 
     return (
         <div className={styles.main}>
-            <div>
-                <input type="text" value={title} onChange={onTitleValueChangeHandler}/>
+            <div className={styles.title}>
+                <div>
+                    <input type="text" value={title} onChange={onTitleValueChangeHandler} placeholder='Quest Title'/>
+                </div>
                 <select value={difficulty} onChange={onDifficultyValueChangeHandler}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
+                <div className={styles.button} onClick={() => onSendHandler()}>ADD</div>
             </div>
-            <div>
-                <textarea value={description} onChange={onDescriptionValueChangeHandler}></textarea>
+            <div className={styles.message}>
+                <textarea value={description} onChange={onDescriptionValueChangeHandler} placeholder='Quest Description'></textarea>
             </div>
-            <div onClick={() => onSendHandler()}>ADD</div>
+            
         </div>
     )
 }
