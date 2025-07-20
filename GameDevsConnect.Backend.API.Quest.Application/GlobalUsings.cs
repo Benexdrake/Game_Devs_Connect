@@ -6,3 +6,5 @@ global using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
 global using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
 global using Microsoft.EntityFrameworkCore;
 global using Serilog;
+
+global using GameDevsConnect.Backend.API.Quest.Contract.Requests;
