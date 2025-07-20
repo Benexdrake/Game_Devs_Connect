@@ -1,27 +1,32 @@
-import { IQuest } from '@/interfaces/quest';
 import { getQuestAsync } from '@/services/quest_service';
-import styles from '@/styles/quest/quest.module.css'
 import { useEffect, useState } from 'react';
 import PreviewQuest from './preview_quest';
+import { IAPIQuestResponse } from '@/interfaces/responses/quest/api_quest_response';
+import { useSession } from 'next-auth/react';
+import { IUser } from '@/interfaces/user';
 
-export default function ShowQuest({id, onQuestDeleteHandler}:{id:string, onQuestDeleteHandler:Function | null})
+export default function ShowQuest({id, index}:{id:string, index:number})
 {
-    const [quest, setQuest] = useState<IQuest>()
+    const [response, setResponse] = useState<IAPIQuestResponse>(null!)
+
+        const {data:session} = useSession();
+        const user = session?.user as IUser;
 
     useEffect(() => {
         const get = async () =>
         {
-            const response = await getQuestAsync(id)
-            if(response.status)
-                setQuest(response.quest)
+            const r = await getQuestAsync(id, user.id)
+            
+            if(r.status)
+                setResponse(r)
         }
 
         get();
     },[])
 
-    if(quest)
+    if(response)
         return (
-            <PreviewQuest quest={quest} preview={false} onQuestDeleteHandler={null}/>
+            <PreviewQuest quest={response.quest} favorited={response.favoritedQuest} preview={false} onQuestDeleteHandler={null} index={index}/>
         )
     else
         return <div>LOADING...</div>
