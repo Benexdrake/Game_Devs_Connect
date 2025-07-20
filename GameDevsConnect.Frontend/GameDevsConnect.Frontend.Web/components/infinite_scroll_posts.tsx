@@ -13,10 +13,11 @@ export default function InfiniteScrollPosts({initialIds, search, parentId}: {ini
     {
         const next = page + 1;
         const response = await getPostIdsAsync(next, 5, search, parentId);
+        
         if(response.status && response.ids.length > 0)
         {
             setPage(next)
-            setIds(prev => [...prev.concat(response.ids)])
+            setIds(prev => [...[...new Set([...prev, ...response.ids])]])
         }
     }
 
