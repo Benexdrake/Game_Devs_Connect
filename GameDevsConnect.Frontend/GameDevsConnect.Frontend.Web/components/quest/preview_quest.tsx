@@ -1,6 +1,6 @@
 import { IQuest } from '@/interfaces/quest'
 import { IUser } from '@/interfaces/user';
-import { upsertLikeQuestAsync } from '@/services/quest_service';
+import { upsertFavoriteQuestAsync } from '@/services/quest_service';
 import styles from '@/styles/quest/quest.module.css'
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -33,7 +33,7 @@ export default function PreviewQuest({quest, favorited, onQuestDeleteHandler, pr
         console.log(!favorite);
         
 
-        const response = await upsertLikeQuestAsync({questId:quest.id, userId:user.id})
+        const response = await upsertFavoriteQuestAsync({questId:quest.id, userId:user.id})
         console.log(response);   
     }
 
