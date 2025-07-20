@@ -8,4 +8,7 @@ internal static class Message
     internal static string UPDATE(string id) => $"Quest: '{id}' Updated";
     internal static string DELETE(string id) => $"Quest: '{id}' Deleted";
     internal static string VALIDATIONERROR(string id) => $"Quest: '{id}' ValidationError";
+    internal static string Favorite(string questId, string userId) => $"Quest: '{questId}' - User: '{userId}' Update Favorite";
+
+
 }
