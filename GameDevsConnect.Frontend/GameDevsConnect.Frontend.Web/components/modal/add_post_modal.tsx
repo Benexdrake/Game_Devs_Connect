@@ -38,7 +38,6 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
 
     const onCloseHandler = () =>
     {
-        close();
         setQuests([]);
         setMessage('');
         setSelectedTags([]);
