@@ -21,6 +21,11 @@ export const getQuestIdsByPostIdAsync = async (id:string) =>
     return await axios.get<IAPIQuestIdsResponse>(`${getUrl}/post/${id}`).then(x => x.data)
 }
 
+export const getFavoritedQuestIdsAsync = async (userId:string, page:number=1, pageSize:number=10, searchTerm:string='') =>
+{
+    return await axios.get<IAPIQuestIdsResponse>(`${getUrl}/favorites?page=${page}&pageSize=${pageSize}&userId=${userId}&searchTerm=${searchTerm}`).then(x => x.data)
+}
+
 export const addQuestAsync = async (quest:IQuest) =>
 {
     return await axios.post<IAPIResponse>(`${postUrl}/add`, quest).then(x => x.data)

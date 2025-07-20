@@ -150,6 +150,7 @@ public static class ApiEndpointsV1
     {
         public const string Group = $"{Base}/{nameof(Quest)}";
         public const string Get = $"{{id}}";
+        public const string GetFavorites = $"/favorites";
         public const string GetIdsByPostId = $"post/{{id}}";
         public const string Create = "add";
         public const string Update = "update";
@@ -160,6 +161,7 @@ public static class ApiEndpointsV1
         public static class MetaData
         {
             public const string Get = "GetQuest";
+            public const string GetFavorites = "GetFavoriteQuests";
             public const string GetIdsByPostId = "GetPostIds";
             public const string Create = "CreateQuest";
             public const string Update = "UpdateQuest";

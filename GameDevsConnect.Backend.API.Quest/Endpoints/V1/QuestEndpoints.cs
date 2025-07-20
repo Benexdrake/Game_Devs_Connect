@@ -24,6 +24,13 @@ public static class QuestEndpoints
         .WithName(ApiEndpointsV1.Quest.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
 
+        group.MapGet(ApiEndpointsV1.Quest.GetFavorites, async ([FromServices] IQuestRepository repo, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchTerm = "", [FromQuery] string userId = "", CancellationToken token = default) =>
+        {
+            return await repo.GetFavoritesAsync(page, pageSize, searchTerm, userId, token);
+        })
+        .WithName(ApiEndpointsV1.Quest.MetaData.GetFavorites)
+        .Produces(StatusCodes.Status200OK);
+
         group.MapPost(ApiEndpointsV1.Quest.Create, async ([FromServices] IQuestRepository repo, [FromBody] QuestDTO quest, CancellationToken token) =>
         {
             return await repo.AddAsync(quest, token);

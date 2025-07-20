@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
+﻿using Azure.Core;
+using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
+
+namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
 public class QuestRepository(GDCDbContext context) : IQuestRepository
 {
     private readonly GDCDbContext _context = context;
@@ -10,6 +13,7 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
             var validator = new Validator(_context, ValidationMode.Add);
 
             var valid = await validator.ValidateAsync(quest, token);
+            quest.Id = Guid.NewGuid().ToString();
 
             if (!valid.IsValid)
             {
@@ -19,10 +23,8 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
                     errors.Add(error.ErrorMessage);
 
                 Log.Error(Message.VALIDATIONERROR(quest.Id!));
-                return new ApiResponse(Message.VALIDATIONERROR(quest.Id), false, [.. errors]);
+                return new ApiResponse(Message.VALIDATIONERROR(quest.Id!), false, [.. errors]);
             }
-
-            quest.Id = Guid.NewGuid().ToString();
 
             await _context.Quests.AddAsync(quest, token);
             await _context.SaveChangesAsync(token);
@@ -97,6 +99,30 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
         {
             var ids = await _context.Quests.Where(x => x.PostId!.Equals(postId)).Select(x => x.Id).ToArrayAsync(token);
 
+            return new GetIdsResponse(null!, true, ids!);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return new GetIdsResponse(ex.Message, false, null!);
+        }
+    }
+
+    public async Task<GetIdsResponse> GetFavoritesAsync(int page, int pageSize, string searchTerm, string userId, CancellationToken token)
+    {
+        try
+        {
+            IQueryable<FavoriteQuestDTO> favoriteQuestsQuery = _context.FavoriteQuests;
+
+            var ids = await favoriteQuestsQuery.Where(x => x.UserId.Equals(userId))
+            
+            .Skip(((page - 1) * pageSize))
+            .Take(pageSize)
+            .Select(x => x.QuestId)
+            .ToArrayAsync(token);
+
+            // Später filtern durch searchTerm und Quests um passende Ids zu bekommen
+
             return new GetIdsResponse(null!, true, ids);
         }
         catch (Exception ex)
@@ -147,7 +173,7 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
             if(favoriteDb is not null)
                 _context.FavoriteQuests.Remove(favoriteDb);
             else
-                await _context.FavoriteQuests.AddAsync(new FavoriteQuestDTO { QuestId = favoriteQuestResponse.QuestId, UserId = favoriteQuestResponse.UserId });
+                await _context.FavoriteQuests.AddAsync(new FavoriteQuestDTO { QuestId = favoriteQuestResponse.QuestId, UserId = favoriteQuestResponse.UserId }, token);
 
             await _context.SaveChangesAsync(token);
 
