@@ -17,9 +17,9 @@ public static class QuestEndpoints
         .WithDescription("HELLO")
         .Produces(StatusCodes.Status200OK);
 
-        group.MapGet(ApiEndpointsV1.Quest.Get, async ([FromServices] IQuestRepository repo, [FromRoute] string id, CancellationToken token) =>
+        group.MapGet(ApiEndpointsV1.Quest.Get, async ([FromServices] IQuestRepository repo, [FromRoute] string id, [FromQuery] string userId, CancellationToken token) =>
         {
-            return await repo.GetAsync(id, token);
+            return await repo.GetAsync(id, userId, token);
         })
         .WithName(ApiEndpointsV1.Quest.MetaData.Get)
         .Produces(StatusCodes.Status200OK);
@@ -43,6 +43,13 @@ public static class QuestEndpoints
             return await repo.DeleteAsync(id, token);
         })
         .WithName(ApiEndpointsV1.Quest.MetaData.Delete)
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapPost(ApiEndpointsV1.Quest.Favorite, async ([FromServices] IQuestRepository repo, [FromBody] FavoriteQuestResponse favoriteQuestResponse, CancellationToken token) =>
+        {
+            return await repo.UpsertFavoriteQuestAsync(favoriteQuestResponse, token);
+        })
+        .WithName(ApiEndpointsV1.Quest.MetaData.Favorite)
         .Produces(StatusCodes.Status200OK);
     }
 }
