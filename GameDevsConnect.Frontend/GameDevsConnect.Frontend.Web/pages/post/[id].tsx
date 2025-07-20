@@ -9,7 +9,6 @@ import ShowQuest from "@/components/quest/show_quest";
 import ShowElement from "@/components/show_element";
 import { useState } from "react";
 import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
-import { IQuest } from "@/interfaces/quest";
 
 export default function Post({id, commentIds, questIds, fileIds}:{id:string, commentIds:string[], questIds:string[], fileIds:string[]})
 {
@@ -31,7 +30,7 @@ export default function Post({id, commentIds, questIds, fileIds}:{id:string, com
                 (
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}> 
                         <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>
-                            {questIds.map((x:string) => <ShowQuest id={x} onQuestDeleteHandler={null} key={x}/>)} 
+                            {questIds.map((x:string, index) => <ShowQuest id={x} index={index + 1} key={x}/>)} 
                         </div>
                     </ShowElement>
                 )
@@ -78,7 +77,6 @@ export async function getServerSideProps(context:GetServerSidePropsContext)
             }
         }
     
-
     const responseComments = await getPostIdsAsync(1,10,'',id as string);
     const responseQuestIds = await getQuestIdsByPostIdAsync(id as string);
     

@@ -3,10 +3,8 @@ import { IUser } from "@/interfaces/user";
 import { getFullProfileAsync } from "@/services/profile_service";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
-
 import styles from '@/styles/profile/profile.module.css'
 import { getPostIdsByUserIdAsync } from "@/services/post_service";
-import ShowPost from "@/components/post/show_post";
 import InfiniteScrollPosts from "@/components/infinite_scroll_posts";
 import { IAPIProfileFullResponse } from "@/interfaces/responses/profile/api_profile_full_response";
 
