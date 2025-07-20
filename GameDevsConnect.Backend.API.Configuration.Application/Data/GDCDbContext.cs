@@ -13,9 +13,18 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     public virtual DbSet<NotificationDTO> Notifications { get; set; }
     public virtual DbSet<FileDTO> Files { get; set; }
     public virtual DbSet<PostTagDTO> PostTags { get; set; }
+    public virtual DbSet<FavoriteQuestDTO> FavoriteQuests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<FavoriteQuestDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.QuestId, e.UserId }).HasName("Favorite_Quest");
+
+            entity.Property(e => e.QuestId).HasColumnName("quest_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+        });
+
         modelBuilder.Entity<FileDTO>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Files");
