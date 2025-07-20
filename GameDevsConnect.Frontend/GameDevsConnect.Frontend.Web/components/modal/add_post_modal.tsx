@@ -44,6 +44,8 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
         setSelectedTags([]);
         setAddFile(false);
         setOpenModal(false)
+        setShowQuest(false);
+        setShowTags(false);
     }
 
         const onQuestDeleteHandler = (quest:IQuest) =>
@@ -125,7 +127,9 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
             
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}>
                         <AddQuest ownerId={userId} setQuests={setQuests}/>
-                        {quests.map((x,index) => <PreviewQuest quest={x} preview={true} onQuestDeleteHandler={onQuestDeleteHandler} key={index+x.title+index}/>)}
+                        <div style={{display:'grid', gap:'8px', marginTop:'8px'}}>
+                            {quests.map((x,index) => <PreviewQuest quest={x} favorited={false} preview={true} index={index + 1} onQuestDeleteHandler={onQuestDeleteHandler} key={index+x.title+index}/>)}
+                        </div>
                     </ShowElement>
                     <br />
                     <div className={styles.tags}>
