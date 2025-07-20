@@ -102,7 +102,6 @@ export async function getServerSideProps(context:GetServerSidePropsContext)
             }
         }
 
-    // get user
     const response = await getFullProfileAsync(id as string)
 
     const postsResponse = await getPostIdsByUserIdAsync(id as string);
