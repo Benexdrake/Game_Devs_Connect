@@ -29,7 +29,7 @@ export default function Navbar()
                 <NavButton icon="fa-solid fa-house" path="/" />
                 <NavButton icon="fa-solid fa-bell" path="/" />
                 <NavButton icon="fa-solid fa-magnifying-glass" path="/" />
-                <NavButton icon="fa-solid fa-shield" path="/quests" />
+                <NavButton icon="fa-solid fa-shield" path="/quest" />
                 <NavButton icon="fa-solid fa-envelope" path="/" />
                 <div onClick={() => setOpenModal(prev => !prev)}>
                     <NavButton icon="fa-solid fa-plus" path=''/>
