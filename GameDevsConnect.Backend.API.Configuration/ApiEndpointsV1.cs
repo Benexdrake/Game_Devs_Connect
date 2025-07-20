@@ -154,14 +154,17 @@ public static class ApiEndpointsV1
         public const string Create = "add";
         public const string Update = "update";
         public const string Delete = $"delete/{{id}}";
+        public const string Favorite = $"favorite";
+
 
         public static class MetaData
         {
             public const string Get = "GetQuest";
             public const string GetIdsByPostId = "GetPostIds";
-            public const string Create = "CreatePost";
-            public const string Update = "UpdatePost";
-            public const string Delete = "DeletePost";
+            public const string Create = "CreateQuest";
+            public const string Update = "UpdateQuest";
+            public const string Delete = "DeleteQuest";
+            public const string Favorite = $"FavoriteQuest";
         }
     }
 
