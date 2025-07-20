@@ -1,4 +1,5 @@
 import { IQuest } from "@/interfaces/quest";
+import { IAPIUpsertFavoriteRequest } from "@/interfaces/requests/quest/api_upsert_favorite_request";
 import { IAPIResponse } from "@/interfaces/responses/api_response";
 import { IAPIQuestIdsResponse } from "@/interfaces/responses/quest/api_quest_ids_response";
 import { IAPIQuestResponse } from "@/interfaces/responses/quest/api_quest_response";
@@ -10,9 +11,9 @@ const postUrl = url('post','quest')
 const putUrl = url('put','quest')
 const deleteUrl = url('delete','quest')
 
-export const getQuestAsync = async (id:string) =>
+export const getQuestAsync = async (id:string, userId:string='') =>
 {
-    return await axios.get<IAPIQuestResponse>(`${getUrl}/${id}`).then(x => x.data)
+    return await axios.get<IAPIQuestResponse>(`${getUrl}/${id}?userId=${userId}`).then(x => x.data)
 }
 
 export const getQuestIdsByPostIdAsync = async (id:string) =>
@@ -33,4 +34,9 @@ export const updateQuestAsync = async (quest:IQuest) =>
 export const deleteQuestAsync = async (id:string) =>
 {
     return await axios.delete<IAPIResponse>(`${deleteUrl}/delete/${id}`).then(x => x.data)
+}
+
+export const upsertFavoriteQuestAsync = async (upsertFavorite:IAPIUpsertFavoriteRequest) =>
+{
+    return await axios.post<IAPIResponse>(`${postUrl}/favorite`, upsertFavorite).then(x => x.data)
 }
