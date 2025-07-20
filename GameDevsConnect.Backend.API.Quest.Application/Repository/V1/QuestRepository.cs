@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
 public class QuestRepository(GDCDbContext context) : IQuestRepository
 {
     private readonly GDCDbContext _context = context;
@@ -66,7 +63,7 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
         }
     }
 
-    public async Task<GetResponse> GetAsync(string id, CancellationToken token = default)
+    public async Task<GetResponse> GetAsync(string id, string userId, CancellationToken token = default)
     {
         try
         {
@@ -75,15 +72,22 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
             if (quest is null)
             {
                 Log.Error(Message.NOTFOUND(id));
-                return new GetResponse(Message.NOTFOUND(id), false, null!);
+                return new GetResponse(Message.NOTFOUND(id), false, null!, false);
             }
 
-            return new GetResponse(null!, true, quest!);
+            bool favorite_quest = false;
+
+            if(!userId.Equals(string.Empty))
+            {
+                favorite_quest = await _context.FavoriteQuests.AnyAsync(x => x.QuestId.Equals(id) && x.UserId.Equals(userId) , token);
+            }
+
+            return new GetResponse(null!, true, quest!, favorite_quest);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetResponse(ex.Message, false, null!);
+            return new GetResponse(ex.Message, false, null!, false);
         }
     }
 
@@ -131,6 +135,29 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
         {
             Log.Error(ex.Message);
             return new ApiResponse(ex.Message, false);
+        }
+    }
+
+    public async Task<ApiResponse> UpsertFavoriteQuestAsync(FavoriteQuestResponse favoriteQuestResponse, CancellationToken token)
+    {
+        try
+        {
+            var favoriteDb = await _context.FavoriteQuests.AsNoTracking().FirstOrDefaultAsync(x => x.QuestId.Equals(favoriteQuestResponse.QuestId) && x.UserId.Equals(favoriteQuestResponse.UserId), token);
+
+            if(favoriteDb is not null)
+                _context.FavoriteQuests.Remove(favoriteDb);
+            else
+                await _context.FavoriteQuests.AddAsync(new FavoriteQuestDTO { QuestId = favoriteQuestResponse.QuestId, UserId = favoriteQuestResponse.UserId });
+
+            await _context.SaveChangesAsync(token);
+
+            Log.Information(Message.Favorite(favoriteQuestResponse.QuestId, favoriteQuestResponse.UserId));
+            return new ApiResponse(Message.Favorite(favoriteQuestResponse.QuestId, favoriteQuestResponse.UserId), true, null!);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return new ApiResponse(ex.Message, false, null!);
         }
     }
 }
