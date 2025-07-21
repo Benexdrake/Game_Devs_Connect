@@ -4,13 +4,15 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 {
     private readonly GDCDbContext _context = context;
 
-    public async Task<ApiResponse> AddAsync(UserDTO user, CancellationToken token = default)
+    public async Task<GetUserIdResponse> AddAsync(UserDTO user, CancellationToken token = default)
     {
         try
         {
             var validator = new Validator(_context, ValidationMode.Add);
 
             var valid = await validator.ValidateAsync(user, token);
+
+            user.Id = Guid.NewGuid().ToString();
 
             if (!valid.IsValid)
             {
@@ -20,7 +22,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
                     errors.Add(error.ErrorMessage);
 
                 Log.Error(Message.VALIDATIONERROR(user.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(user.Id), false, [.. errors]);
+                return new GetUserIdResponse(Message.VALIDATIONERROR(user.Id), false, "", [.. errors]);
             }
 
             await _context.Users.AddAsync(user, token);
@@ -28,12 +30,12 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(user.Id));
-            return new ApiResponse(Message.ADD(user.Id), true);
+            return new GetUserIdResponse(Message.ADD(user.Id), true, user.Id, null!);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return new GetUserIdResponse(ex.Message, false, null!, null!);
         }
     }
 
@@ -84,21 +86,21 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         }
     }
 
-    public async Task<GetUserByIdResponse> GetExistAsync(string id, CancellationToken token = default)
+    public async Task<GetUserIdResponse> GetExistAsync(string id, CancellationToken token = default)
     {
         try
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, token);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.LoginId.Equals(id), token);
 
             if (user is null)
-                return new GetUserByIdResponse(null!, false, null!);
+                return new GetUserIdResponse(null!, false, null!, null!);
 
-            return new GetUserByIdResponse(null!, true, null!);
+            return new GetUserIdResponse(null!, true, user.Id, null!);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetUserByIdResponse(ex.Message, false, null!);
+            return new GetUserIdResponse(ex.Message, false, null!, null!);
         }
     }
 
