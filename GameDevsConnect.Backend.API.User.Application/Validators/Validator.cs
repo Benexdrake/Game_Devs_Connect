@@ -12,7 +12,7 @@ public class Validator : AbstractValidator<UserDTO>
 
         if (mode == ValidationMode.Add)
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.LoginId)
                 .MustAsync(async (id, token) => !await ValidateExist(id, token))
                 .WithMessage(x => $"User mit ID '{x.Id}' existiert bereits in der Datenbank.");   
         }
@@ -24,9 +24,9 @@ public class Validator : AbstractValidator<UserDTO>
                 .MinimumLength(8)
                 .WithMessage(x => $"ID '{x.Id}' muss mindestens 8 Zeichen lang sein.");
 
-            RuleFor(x => x.Id)
+            RuleFor(x => x.LoginId)
                 .MustAsync(ValidateExist)
-                .WithMessage(x => $"User mit ID '{x.Id}' existiert nicht in der Datenbank.");
+                .WithMessage(x => $"User mit ID '{x.LoginId}' existiert nicht in der Datenbank.");
         }
 
         RuleFor(x => x.Username)
@@ -44,7 +44,7 @@ public class Validator : AbstractValidator<UserDTO>
 
     private async Task<bool> ValidateExist(string id, CancellationToken token)
     {
-        return await _context.Users.AnyAsync(x => x.Id == id, token);
+        return await _context.Users.AnyAsync(x => x.LoginId == id, token);
     }
 
 }
