@@ -4,7 +4,7 @@ import { IAPIFileGetResponse } from "@/interfaces/responses/file/api_file_get_re
 import { getUrl } from "@/lib/api"
 import axios from "axios"
 
-const url = getUrl('json','post')
+const url = getUrl('json','file')
 
 export const getFileByIdAsync = async (fileId:string) =>
 {
