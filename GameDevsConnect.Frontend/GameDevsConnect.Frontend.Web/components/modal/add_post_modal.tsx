@@ -24,7 +24,7 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
 
     const [message, setMessage] = useState<string>('');
 
-    const [addFile, setAddFile] = useState<boolean>(false);
+    const [images, setImages] = useState<File[]>([])
 
     const [showTags, setShowTags] = useState<boolean>(false);
     const [showQuest, setShowQuest] = useState<boolean>(false);
@@ -41,54 +41,101 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
         setQuests([]);
         setMessage('');
         setSelectedTags([]);
-        setAddFile(false);
+        setImages([]);
         setOpenModal(false)
         setShowQuest(false);
         setShowTags(false);
     }
 
-        const onQuestDeleteHandler = (quest:IQuest) =>
+    const onQuestDeleteHandler = (quest:IQuest) =>
     {
-        const filteredQuests = quests.filter(x => x !== quest)
-        
+        const filteredQuests = quests.filter(x => x !== quest)    
         setQuests(filteredQuests)
     }
 
-        const sendHandler = async () => 
+    const onAddImage = (e:React.ChangeEvent<HTMLInputElement>) =>
+    {
+            if (e.target.files?.[0])
+            {
+                const file = e.target.files[0];
+
+                if(images.length < 4 && file)
+                    setImages(prev => [...prev, file]);
+            }
+    }
+
+    const sendHandler = async () => 
+    {
+        let fileId = '';
+        // if (addFile) 
+        // {
+        //     const file: IFile = { id: '', url: 'https://fantasyanime.com/finalfantasy/ff/maps/Final-Fantasy-1-GBA-World-Map-Labeled.png', size: 1000, type: 'image', ownerId: userId, created: null, extension:'' }
+        //     const fileResponse = await addFileAsync(file)
+
+        //     if (fileResponse.status)
+        //         fileId = fileResponse.id;
+        // }
+
+        // File ID entfernen, POST_FILE Table erstellen, PostId, FileID.
+
+        // Get Post array fileIds
+        // Laden der Files und angepasst anzeigen, image, video, file
+
+        // Liste mit anzeigen der Files, bei Image, mini preview und delete button einbauen.
+
+        // In der File API die Url erstellen. base addresse / userid / fileId
+
+        // Quest Absolvieren einbauen, File übergabem, anzeigen der Datei unter Quest
+        // Quest_File Tabelle bauen questId, fileId
+
+        // Beim senden, for each schleife, images durchgehen und zusammen mit upload nach azure blob ausführen, vllt eine Methode dazu bauen.
+        // lib upload file
+
+        //   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        //     if (e.target.files?.[0]) {
+        //       setFile(e.target.files[0]);
+        //     }
+        //   };
+        
+        //   const handleUpload = async () =>
+        //   {
+        //     if(!file) return;
+        
+        //     console.log(file);
+            
+        //     const responseFile = await addFileAsync({id:'', url:'', type:'', size:0, ownerId:user.id, created:null, extension:''})
+        
+        //     const requestJson = {
+        //       FileName: `${user.id}/${responseFile.id}`,
+        //       ContainerName:process.env.NEXT_PUBLIC_AZURE_STORAGE_CONTAINERNAME
+        //     }
+        
+        //     const request = JSON.stringify(requestJson)
+        
+        //     const azureResponse = await uploadFile(file, request)
+        //     console.log(azureResponse);
+        //   }
+
+        const post: IPost = { id: '', parentId: postId, hasQuest: quests.length > 0, message, created: null, projectId: '', ownerId: userId, fileId, isDeleted: false, completed: false }
+        const addPost: IUpsertPostRequest = { post, tags: selectedTags }
+
+        // Validation
+        // Message min x Zeichen
+        // Tags min 1 Tag
+        // File nicht nötig.
+        //
+
+        const response = await addPostAsync(addPost);
+
+        for(const quest of [...quests])
         {
-            // Upload File and get Url
-    
-            // Add File
-            let fileId = '';
-            if (addFile) 
-            {
-                const file: IFile = { id: '', url: 'https://fantasyanime.com/finalfantasy/ff/maps/Final-Fantasy-1-GBA-World-Map-Labeled.png', size: 1000, type: 'image', ownerId: userId, created: null }
-                const fileResponse = await addFileAsync(file)
-    
-                if (fileResponse.status)
-                    fileId = fileResponse.id;
-            }
-    
-            const post: IPost = { id: '', parentId: postId, hasQuest: quests.length > 0, message, created: null, projectId: '', ownerId: userId, fileId, isDeleted: false, completed: false }
-            const addPost: IUpsertPostRequest = { post, tags: selectedTags }
-    
-            // Validation
-            // Message min x Zeichen
-            // Tags min 1 Tag
-            // File nicht nötig.
-            //
-    
-            const response = await addPostAsync(addPost);
-    
-            for(const quest of [...quests])
-            {
-                quest.postId = response.id
-                await addQuestAsync(quest);
-            }
-    
-            onCloseHandler();
-            router.push('/')
+            quest.postId = response.id
+            await addQuestAsync(quest);
         }
+
+        onCloseHandler();
+        router.push('/')
+    }
 
     return (
         <div className={stylesModal.main} style={{visibility:openModal ? 'visible':'hidden'}} onClick={() => onCloseHandler()}>
@@ -98,8 +145,11 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
                 <textarea name="message" id="message" value={message} onChange={(text) => setMessage(text.target.value)} placeholder='Add Message here...'/>
             </div>
             <div className={styles.buttons}>
-                <div className={styles.button} onClick={() => setAddFile(!addFile)}>
-                    <i className="fa-regular fa-image"></i>
+                <div className={styles.button}>
+                    <label htmlFor="imageUpload">
+                        <i className="fa-regular fa-image"></i>
+                    </label>
+                    <input type="file" name="imageUpload" id="imageUpload" style={{display:'none'}} onChange={onAddImage}/>
                 </div>
                 <div className={styles.button}>
                     <i className="fa-solid fa-video"></i>
@@ -115,13 +165,20 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
                 </div>
             </div>
             <div className={styles.show_files}>
-                {addFile && (
+                {images.map(x => (
+                    <div className={styles.show_file}>
+                        <div className={styles.show_file__type}><i className="fa-regular fa-image"></i></div>
+                        <div className={styles.show_file__name}><p>{x.name}</p></div>
+                        <div className={styles.show_file__delete}><i className="fa-solid fa-xmark"></i></div>
+                    </div>
+                ))}
+                {/* {addFile && (
                     <div className={styles.show_file}>
                         <div className={styles.show_file__type}><i className="fa-regular fa-image"></i></div>
                         <div className={styles.show_file__name}><p>gamedevsconnect.png</p></div>
                         <div className={styles.show_file__delete}><i className="fa-solid fa-xmark"></i></div>
                     </div>
-                )}
+                )} */}
             </div>
             
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}>
