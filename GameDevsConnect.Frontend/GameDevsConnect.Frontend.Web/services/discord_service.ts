@@ -19,7 +19,7 @@ export async function getDiscordUser(token:any)
         if(!username)
             username = d.username;
     
-        const user:IUser = {id:d.id, username, avatar, accountType:'discord'}
+        const user:IUser = {id:'', loginId:d.id, username, avatar, accountType:'discord'}
         
         return user;
     } 
