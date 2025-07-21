@@ -34,8 +34,6 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
             memoryStream.Position = 0;
             var blob = container.GetBlobClient(blobName);
 
-
-
             var contentType = !string.IsNullOrWhiteSpace(formFile.ContentType)
                 ? formFile.ContentType
                 : GetContentTypeFromExtension(Path.GetExtension(formFile.FileName));
@@ -44,7 +42,6 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
             {
                 ContentType = contentType
             };
-
 
             await blob.UploadAsync(memoryStream, new BlobUploadOptions
             {
