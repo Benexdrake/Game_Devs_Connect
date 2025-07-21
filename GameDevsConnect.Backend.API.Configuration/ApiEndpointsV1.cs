@@ -17,9 +17,9 @@ public static class ApiEndpointsV1
     public static class Azure
     {
         public const string GroupBlob = $"{Base}/{nameof(Azure)}/blob";
-        public const string Get = $"{{fileName}}/{{containerName}}";
-        public const string Upload = $"upload/{{fileName}}/{{containerName}}";
-        public const string Delete = $"delete/{{fileName}}/{{containerName}}";
+        public const string Get = $"/";
+        public const string Upload = $"upload";
+        public const string Delete = $"delete";
 
         public static class MetaData
         {
