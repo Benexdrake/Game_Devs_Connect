@@ -12,7 +12,7 @@ public static class BlobEndpoints
         var group = app.MapGroup(ApiEndpointsV1.Azure.GroupBlob)
                        .WithApiVersionSet(apiVersionSet);
 
-        group.MapPost(ApiEndpointsV1.Azure.Get, async ([FromServices] IBlobRepository rep, [FromBody] UploadRequest request) =>
+        group.MapPost(ApiEndpointsV1.Azure.Get, async ([FromServices] IBlobRepository rep, [FromBody] BlobRequest request) =>
         {
             return await rep.GetBlobUrl(request.FileName, request.ContainerName);
         })
@@ -26,7 +26,7 @@ public static class BlobEndpoints
             var file = form.Files.GetFile("formFile");
             var metadataJson = form["request"];
 
-            var metadata = JsonSerializer.Deserialize<UploadRequest>(metadataJson!);
+            var metadata = JsonSerializer.Deserialize<BlobRequest>(metadataJson!);
             return await rep.UploadBlob(file, metadata.ContainerName, metadata!.FileName);
         })
         .WithName(ApiEndpointsV1.Azure.MetaData.Upload)
@@ -34,7 +34,7 @@ public static class BlobEndpoints
         .Accepts<UploadForm>("multipart/form-data")
         .Produces(StatusCodes.Status200OK);
 
-        group.MapDelete(ApiEndpointsV1.Azure.Delete, async ([FromServices] IBlobRepository rep, [FromBody] UploadRequest request) =>
+        group.MapDelete(ApiEndpointsV1.Azure.Delete, async ([FromServices] IBlobRepository rep, [FromBody] BlobRequest request) =>
         {
             return await rep.RemoveBlob(request.FileName, request.ContainerName);
         })
