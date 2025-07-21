@@ -1,4 +1,5 @@
 import { IAPIResponse } from "@/interfaces/responses/api_response";
+import { IAPIUserIdResponse } from "@/interfaces/responses/user/api_user_id_response";
 import { IAPIUserResponse } from "@/interfaces/responses/user/api_user_response";
 import { IUser } from "@/interfaces/user";
 import { url } from "@/lib/api";
@@ -16,7 +17,7 @@ export const getUserAsync = async (id:string) =>
 
 export const addUserAsync = async (user:IUser) =>
 {
-    return await axios.post<IAPIResponse>(`${postUrl}/add`, user).then(x => x.data)
+    return await axios.post<IAPIUserIdResponse>(`${postUrl}/add`, user).then(x => x.data)
 }
 
 export const updateUserAsync = async (user:IUser) =>
@@ -31,5 +32,5 @@ export const deleteUserAsync = async (id:string) =>
 
 export const existUser = async (id:string) =>
 {
-    return await axios.get<IAPIResponse>(`${getUrl}/exist/${id}`).then(x => x.data)
+    return await axios.get<IAPIUserIdResponse>(`${getUrl}/exist/${id}`).then(x => x.data)
 }
