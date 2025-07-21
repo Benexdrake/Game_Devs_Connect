@@ -1,6 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 string sqlPW = builder.Configuration["SQL"]!;
+string azureSCS = builder.Configuration["AZURE_STORAGE_CONNECTION_STRING"]!;
 
 int replicas = 1;
 
@@ -91,6 +92,7 @@ var azure = builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("game
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
        .WithEnvironment("X-Access-Key", accessKey)
+       .WithEnvironment("AZURE_BLOB_CONNECTION_STRING", azureSCS)
        .WaitFor(sql);
 
 builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnect-backend-api-gateway")
