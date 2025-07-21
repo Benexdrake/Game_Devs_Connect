@@ -22,3 +22,4 @@ acr_token
 acr.sh
 backend_config.tfvars
 /GameDevsConnect.Backend.Shared/appsettings.aspire.json
+/GameDevsConnect.Backend.AppHost/appsettings.json
