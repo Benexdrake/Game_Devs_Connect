@@ -19,18 +19,18 @@ export const authOptions =
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.expiresAt = account.expires_at;
-        token.id = user?.id;
-
+        
         const u = await getDiscordUser(token);
 
-        const responseExist = await existUser(u.id);
+        const responseExist = await existUser(u.loginId);
+        token.id = responseExist.id;
 
         if(!responseExist.status)
         {
           try
           { 
             const response = await addUserAsync(u);
-            console.log(response); 
+            token.id = response.id; 
           }
           catch(error)
           {
