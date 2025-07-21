@@ -29,17 +29,12 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
         {
             entity.HasKey(e => e.Id).HasName("PK__Files");
 
-            entity.Property(e => e.Id)
-                .HasMaxLength(64)
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Url).HasColumnName("url");
-            entity.Property(e => e.Created)
-                .HasMaxLength(128)
-                .HasColumnName("created");
+            entity.Property(e => e.Created).HasColumnName("created");
             entity.Property(e => e.Type).HasColumnName("type");
-            entity.Property(e => e.OwnerId)
-                .HasMaxLength(64)
-                .HasColumnName("owner_id");
+            entity.Property(e => e.Extension).HasColumnName("extension");
+            entity.Property(e => e.OwnerId).HasColumnName("owner_id");
             entity.Property(e => e.Size).HasColumnName("size");
         });
 
@@ -205,18 +200,11 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
         {
             entity.HasKey(e => e.Id).HasName("PK__Users");
 
-            entity.Property(e => e.Id)
-                .HasMaxLength(64)
-                .HasColumnName("id");
-            entity.Property(e => e.Accounttype)
-                .HasMaxLength(64)
-                .HasColumnName("accounttype");
-            entity.Property(e => e.Avatar)
-                .HasMaxLength(128)
-                .HasColumnName("avatar");
-            entity.Property(e => e.Username)
-                .HasMaxLength(128)
-                .HasColumnName("username");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.LoginId).HasColumnName("login_id");
+            entity.Property(e => e.Accounttype).HasColumnName("accounttype");
+            entity.Property(e => e.Avatar).HasColumnName("avatar");
+            entity.Property(e => e.Username).HasColumnName("username");
         });
 
         modelBuilder.Entity<UserFollowDTO>(entity =>
