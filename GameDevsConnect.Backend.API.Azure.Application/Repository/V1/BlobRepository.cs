@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
 public class BlobRepository(IBlobStorageService service) : IBlobRepository
 {
     private readonly IBlobStorageService _service = service;
