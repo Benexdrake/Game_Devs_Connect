@@ -7,6 +7,7 @@ public partial class FileDTO
     public string? Url { get; set; }
 
     public string? Type { get; set; }
+    public string? Extension { get; set; }
 
     public int? Size { get; set; }
 
