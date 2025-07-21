@@ -3,6 +3,7 @@
 public partial class UserDTO
 {
     public string Id { get; set; } = null!;
+    public string LoginId { get; set; } = null!;
 
     public string? Username { get; set; }
 
