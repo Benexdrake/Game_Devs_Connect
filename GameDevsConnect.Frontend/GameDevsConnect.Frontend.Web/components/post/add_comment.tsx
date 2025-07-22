@@ -12,9 +12,8 @@ export default function AddComment({userId, postId}:{userId:string, postId:strin
 
     const sendHandler = async () => 
     {
-        const post: IPost = { id: '', parentId: postId, hasQuest: false, message, created: null, projectId: '', ownerId: userId, fileId:'', isDeleted: false, completed: false }
-        const addPost: IUpsertPostRequest = { post, tags: [] }
-
+        const post: IPost = { id: '', parentId: postId, hasQuest: false, message, created: null, projectId: '', ownerId: userId, isDeleted: false, completed: false }
+        const addPost: IUpsertPostRequest = { post, tags: [], fileIds:[] }
 
         const response = await addPostAsync(addPost)
         router.reload();
