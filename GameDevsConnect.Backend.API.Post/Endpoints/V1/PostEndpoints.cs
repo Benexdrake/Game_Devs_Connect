@@ -13,56 +13,56 @@ public static class PostEndpoints
         {
             return await repo.GetIdsAsync(new GetPostIdsRequest(page, pageSize, searchTerm, parentId), token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.Get)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.Get)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.Post.GetById, async ([FromServices] IPostRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.GetByIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.GetById)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.GetById)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.Post.GetFull, async ([FromServices] IPostRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.GetFullByIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.GetFull)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.GetFull)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.Post.GetByUserId, async ([FromServices] IPostRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.GetByUserIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.GetByUserId)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.GetByUserId)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.Post.GetCommentByParentId, async ([FromServices] IPostRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.GetCommentIdsAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.GetCommentByParentId)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.GetCommentByParentId)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.Post.Create, async ([FromServices] IPostRepository repo, [FromBody] UpsertPost add, CancellationToken token) =>
         {
             return await repo.AddAsync(add, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.Create)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.Create)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPut(ApiEndpointsV1.Post.Update, async ([FromServices] IPostRepository repo, [FromBody] UpsertPost updatePost, CancellationToken token) =>
         {
             return await repo.UpdateAsync(updatePost, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.Update)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.Update)
         .Produces(StatusCodes.Status200OK);
 
         group.MapDelete(ApiEndpointsV1.Post.Delete, async ([FromServices] IPostRepository repo, [FromRoute] string id, CancellationToken token) =>
         {
             return await repo.DeleteAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Post.MetaData.Delete)
+        .WithName(ApiEndpointsV1.Post.MetaData.Name.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

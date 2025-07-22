@@ -13,35 +13,35 @@ public static class FileEndpoints
         {
             return await rep.GetIdsByOwnerIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.GetByOwnerId)
+        .WithName(ApiEndpointsV1.File.MetaData.Name.GetByOwnerId)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.File.Get, async ([FromServices] IFileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
             return await rep.GetByIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.Get)
+        .WithName(ApiEndpointsV1.File.MetaData.Name.Get)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File, CancellationToken token) =>
         {
             return await rep.AddAsync(File, token);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.Create)
+        .WithName(ApiEndpointsV1.File.MetaData.Name.Create)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPut(ApiEndpointsV1.File.Update, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File, CancellationToken token) =>
         {
             return await rep.UpdateAsync(File, token);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.Update)
+        .WithName(ApiEndpointsV1.File.MetaData.Name.Update)
         .Produces(StatusCodes.Status200OK);
 
         group.MapDelete(ApiEndpointsV1.File.Delete, async ([FromServices] IFileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
             return await rep.DeleteAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.File.MetaData.Delete)
+        .WithName(ApiEndpointsV1.File.MetaData.Name.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

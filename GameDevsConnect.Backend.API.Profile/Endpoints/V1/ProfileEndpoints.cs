@@ -12,35 +12,35 @@ public static class ProfileEndpoints
         {
             return await rep.GetAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Profile.MetaData.Get)
+        .WithName(ApiEndpointsV1.Profile.MetaData.Name.Get)
         .Produces(StatusCodes.Status200OK);
 
         group.MapGet(ApiEndpointsV1.Profile.GetFull, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
             return await rep.GetFullAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Profile.MetaData.GetFull)
+        .WithName(ApiEndpointsV1.Profile.MetaData.Name.GetFull)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.Profile.Create, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
             return await rep.AddAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Profile.MetaData.Create)
+        .WithName(ApiEndpointsV1.Profile.MetaData.Name.Create)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPut(ApiEndpointsV1.Profile.Update, async ([FromServices] IProfileRepository rep, [FromBody] ProfileDTO profile, CancellationToken token) =>
         {
             return await rep.UpdateAsync(profile, token);
         })
-        .WithName(ApiEndpointsV1.Profile.MetaData.Update)
+        .WithName(ApiEndpointsV1.Profile.MetaData.Name.Update)
         .Produces(StatusCodes.Status200OK);
 
         group.MapDelete(ApiEndpointsV1.Profile.Delete, async ([FromServices] IProfileRepository rep, [FromRoute] string id, CancellationToken token) =>
         {
             return await rep.DeleteAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Profile.MetaData.Delete)
+        .WithName(ApiEndpointsV1.Profile.MetaData.Name.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

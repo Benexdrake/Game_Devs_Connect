@@ -14,7 +14,7 @@ public static class NotificationEndpoints
         {
             return await rep.GetUnseenCountAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.GetCount)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.GetCount)
         .Produces(StatusCodes.Status200OK);
 
         // Get Notifications by Request Id
@@ -22,7 +22,7 @@ public static class NotificationEndpoints
         {
             return await rep.GetByIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.Get)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.Get)
         .Produces(StatusCodes.Status200OK);
 
         // Get Notifications by Request Id
@@ -30,7 +30,7 @@ public static class NotificationEndpoints
         {
             return await rep.GetIdsByUserIdAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.GetByUserId)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.GetByUserId)
         .Produces(StatusCodes.Status200OK);
 
         // Add a Notification
@@ -38,7 +38,7 @@ public static class NotificationEndpoints
         {
             return await rep.AddAsync(notification, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.Create)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.Create)
         .Produces(StatusCodes.Status200OK);
 
         // Update a Notification
@@ -46,7 +46,7 @@ public static class NotificationEndpoints
         {
             return await rep.UpdateAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.Update)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.Update)
         .Produces(StatusCodes.Status200OK);
 
         // Delete a Notification
@@ -54,7 +54,7 @@ public static class NotificationEndpoints
         {
             return await rep.DeleteAsync(id, token);
         })
-        .WithName(ApiEndpointsV1.Notification.MetaData.Delete)
+        .WithName(ApiEndpointsV1.Notification.MetaData.Name.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

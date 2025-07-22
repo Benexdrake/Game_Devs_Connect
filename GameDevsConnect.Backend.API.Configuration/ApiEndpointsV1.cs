@@ -23,9 +23,19 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = "GetFileUrl";
-            public const string Upload = "UploadFile";
-            public const string Delete = "DeleteFile";
+            public static class Name
+            {
+                public const string Get = "GetFileUrl";
+                public const string Upload = "UploadFile";
+                public const string Delete = "DeleteFile";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetFileUrl";
+                public const string Upload = "UploadFile";
+                public const string Delete = "DeleteFile";
+            }
         }
     }
 
@@ -41,24 +51,43 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = "GetFile";
-            public const string GetByOwnerId = "GetFileIdsByOwnerId";
-            public const string GetByPostParentId = "GetFileIdsByPostParentId";
-            public const string Create = "AddFile";
-            public const string Update = "UpdateFile";
-            public const string Delete = "DeleteFile";
+            public static class Name
+            {
+                public const string Get = "GetFile";
+                public const string GetByOwnerId = "GetFileIdsByOwnerId";
+                public const string GetByPostParentId = "GetFileIdsByPostParentId";
+                public const string Create = "AddFile";
+                public const string Update = "UpdateFile";
+                public const string Delete = "DeleteFile";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetFile";
+                public const string GetByOwnerId = "GetFileIdsByOwnerId";
+                public const string GetByPostParentId = "GetFileIdsByPostParentId";
+                public const string Create = "AddFile";
+                public const string Update = "UpdateFile";
+                public const string Delete = "DeleteFile";
+            }
         }
     }
 
     public static class Gateway
     {
         public const string Login = "/login";
-        public const string Logout = "/logout";
 
         public static class MetaData
         {
-            public const string Login = "Login";
-            public const string Logout = "Logout";
+            public static class Name
+            {
+                public const string Login = "Login";
+            }
+
+            public static class Description
+            {
+                public const string Login = "Login";
+            }
         }
     }
 
@@ -74,12 +103,25 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string GetCount = $"GetNotificationsCountById";
-            public const string Get = $"GetNotification";
-            public const string GetByUserId = $"GetNotificationsByUserId";
-            public const string Create = "CreateNotification";
-            public const string Update = "UpdateNotification";
-            public const string Delete = "DeleteNotification";
+            public static class Name
+            {
+                public const string GetCount = $"GetNotificationsCountById";
+                public const string Get = $"GetNotification";
+                public const string GetByUserId = $"GetNotificationsByUserId";
+                public const string Create = "CreateNotification";
+                public const string Update = "UpdateNotification";
+                public const string Delete = "DeleteNotification";
+            }
+
+            public static class Description
+            {
+                public const string GetCount = $"GetNotificationsCountById";
+                public const string Get = $"GetNotification";
+                public const string GetByUserId = $"GetNotificationsByUserId";
+                public const string Create = "CreateNotification";
+                public const string Update = "UpdateNotification";
+                public const string Delete = "DeleteNotification";
+            }
         }
     }
 
@@ -97,14 +139,29 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = "GetPostIds";
-            public const string GetById = "GetPostById";
-            public const string GetFull = "GetFullPost";
-            public const string GetByUserId = "GetPostIdsByUserId";
-            public const string GetCommentByParentId = "GetCommentByParentId";
-            public const string Create = "CreatePost";
-            public const string Update = "UpdatePost";
-            public const string Delete = "DeletePost";
+            public static class Name
+            {
+                public const string Get = "GetPostIds";
+                public const string GetById = "GetPostById";
+                public const string GetFull = "GetFullPost";
+                public const string GetByUserId = "GetPostIdsByUserId";
+                public const string GetCommentByParentId = "GetCommentByParentId";
+                public const string Create = "CreatePost";
+                public const string Update = "UpdatePost";
+                public const string Delete = "DeletePost";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetPostIds";
+                public const string GetById = "GetPostById";
+                public const string GetFull = "GetFullPost";
+                public const string GetByUserId = "GetPostIdsByUserId";
+                public const string GetCommentByParentId = "GetCommentByParentId";
+                public const string Create = "CreatePost";
+                public const string Update = "UpdatePost";
+                public const string Delete = "DeletePost";
+            }
         }
     }
 
@@ -119,11 +176,23 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = "GetProfileById";
-            public const string GetFull = "GetFullProfile";
-            public const string Create = "CreateProfile";
-            public const string Update = "UpdateProfile";
-            public const string Delete = "DeleteProfile";
+            public static class Name
+            {
+                public const string Get = "GetProfileById";
+                public const string GetFull = "GetFullProfile";
+                public const string Create = "CreateProfile";
+                public const string Update = "UpdateProfile";
+                public const string Delete = "DeleteProfile";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetProfileById";
+                public const string GetFull = "GetFullProfile";
+                public const string Create = "CreateProfile";
+                public const string Update = "UpdateProfile";
+                public const string Delete = "DeleteProfile";
+            }
         }
     }
 
@@ -138,11 +207,23 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = $"GetAllProjectIds";
-            public const string GetByRequestId = $"GetProjectByRequestId";
-            public const string Create = $"CreateProject";
-            public const string Update = $"UpdateProject";
-            public const string Delete = $"DeleteProject";
+            public static class Name
+            {
+                public const string Get = $"GetAllProjectIds";
+                public const string GetByRequestId = $"GetProjectByRequestId";
+                public const string Create = $"CreateProject";
+                public const string Update = $"UpdateProject";
+                public const string Delete = $"DeleteProject";
+            }
+
+            public static class Description
+            {
+                public const string Get = $"GetAllProjectIds";
+                public const string GetByRequestId = $"GetProjectByRequestId";
+                public const string Create = $"CreateProject";
+                public const string Update = $"UpdateProject";
+                public const string Delete = $"DeleteProject";
+            }
         }
     }
 
@@ -153,20 +234,36 @@ public static class ApiEndpointsV1
         public const string GetFavorites = $"/favorites";
         public const string GetIdsByPostId = $"post/{{id}}";
         public const string Create = "add";
+        public const string Complete = "complete";
         public const string Update = "update";
         public const string Delete = $"delete/{{id}}";
         public const string Favorite = $"favorite";
 
-
         public static class MetaData
         {
-            public const string Get = "GetQuest";
-            public const string GetFavorites = "GetFavoriteQuests";
-            public const string GetIdsByPostId = "GetPostIds";
-            public const string Create = "CreateQuest";
-            public const string Update = "UpdateQuest";
-            public const string Delete = "DeleteQuest";
-            public const string Favorite = $"FavoriteQuest";
+            public static class Name
+            {
+                public const string Get = "GetQuest";
+                public const string GetFavorites = "GetFavoriteQuests";
+                public const string GetIdsByPostId = "GetPostIds";
+                public const string Create = "CreateQuest";
+                public const string Complete = "CompleteQuest";
+                public const string Update = "UpdateQuest";
+                public const string Delete = "DeleteQuest";
+                public const string Favorite = $"FavoriteQuest";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetQuest";
+                public const string GetFavorites = "GetFavoriteQuests";
+                public const string GetIdsByPostId = "GetPostIds";
+                public const string Create = "CreateQuest";
+                public const string Complete = "CompleteQuest";
+                public const string Update = "UpdateQuest";
+                public const string Delete = "DeleteQuest";
+                public const string Favorite = $"FavoriteQuest";
+            }
         }
     }
 
@@ -183,13 +280,27 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string Get = "GetRequestIds";
-            public const string GetByRequestId = "GetRequestById";
-            public const string GetFull = "GetFullRequest";
-            public const string GetByUserId = "GetRequestIdsByUserId";
-            public const string Create = "CreateRequest";
-            public const string Update = "UpdateRequest";
-            public const string Delete = "DeleteRequest";
+            public static class Name
+            {
+                public const string Get = "GetRequestIds";
+                public const string GetByRequestId = "GetRequestById";
+                public const string GetFull = "GetFullRequest";
+                public const string GetByUserId = "GetRequestIdsByUserId";
+                public const string Create = "CreateRequest";
+                public const string Update = "UpdateRequest";
+                public const string Delete = "DeleteRequest";
+            }
+
+            public static class Description
+            {
+                public const string Get = "GetRequestIds";
+                public const string GetByRequestId = "GetRequestById";
+                public const string GetFull = "GetFullRequest";
+                public const string GetByUserId = "GetRequestIdsByUserId";
+                public const string Create = "CreateRequest";
+                public const string Update = "UpdateRequest";
+                public const string Delete = "DeleteRequest";
+            }
         }
     }
 
@@ -204,10 +315,21 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string GetAll = "GetAllTags";
-            public const string Create = "CreateTag";
-            public const string Update = "UpdateTag";
-            public const string Delete = "DeleteTag";
+            public static class Name
+            {
+                public const string GetAll = "GetAllTags";
+                public const string Create = "CreateTag";
+                public const string Update = "UpdateTag";
+                public const string Delete = "DeleteTag";
+            }
+
+            public static class Description
+            {
+                public const string GetAll = "GetAllTags";
+                public const string Create = "CreateTag";
+                public const string Update = "UpdateTag";
+                public const string Delete = "DeleteTag";
+            }
         }
     }
 
@@ -231,17 +353,35 @@ public static class ApiEndpointsV1
 
         public static class MetaData
         {
-            public const string GetIds = $"GetAllUserIds";
-            public const string Get = $"GetUserById";
-            public const string GetFollower = $"GetFollowerIds";
-            public const string GetFollowing = $"GetFollowingIds";
-            public const string GetFollowerCount = $"GetFollowerCount";
-            public const string GetFollowingCount = $"GetFollwingCount";
-            public const string GetIdsByProjectId = $"GetIdsByProjectId";
-            public const string Exist = $"GetExistingUserById";
-            public const string Create = $"CreateUser";
-            public const string Update = $"UpdateUser";
-            public const string Delete = $"DeleteUser";
+            public static class Name
+            {
+                public const string GetIds = $"GetAllUserIds";
+                public const string Get = $"GetUserById";
+                public const string GetFollower = $"GetFollowerIds";
+                public const string GetFollowing = $"GetFollowingIds";
+                public const string GetFollowerCount = $"GetFollowerCount";
+                public const string GetFollowingCount = $"GetFollwingCount";
+                public const string GetIdsByProjectId = $"GetIdsByProjectId";
+                public const string Exist = $"GetExistingUserById";
+                public const string Create = $"CreateUser";
+                public const string Update = $"UpdateUser";
+                public const string Delete = $"DeleteUser";
+            }
+
+            public static class Description
+            {
+                public const string GetIds = $"Get All User Ids with Page, PageSize and Searchterm";
+                public const string Get = $"GetUserById";
+                public const string GetFollower = $"GetFollowerIds";
+                public const string GetFollowing = $"GetFollowingIds";
+                public const string GetFollowerCount = $"GetFollowerCount";
+                public const string GetFollowingCount = $"GetFollwingCount";
+                public const string GetIdsByProjectId = $"GetIdsByProjectId";
+                public const string Exist = $"GetExistingUserById";
+                public const string Create = $"CreateUser";
+                public const string Update = $"UpdateUser";
+                public const string Delete = $"DeleteUser";
+            }
         }
     }
 

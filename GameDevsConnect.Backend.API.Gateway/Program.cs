@@ -77,7 +77,7 @@ app.MapGet(ApiEndpointsV1.Gateway.Login, () =>
         ),
         authenticationScheme: BearerTokenDefaults.AuthenticationScheme
 ))
-.WithName(ApiEndpointsV1.Gateway.MetaData.Login)
+.WithName(ApiEndpointsV1.Gateway.MetaData.Name.Login)
 .Produces(StatusCodes.Status200OK);
 
 app.MapGet("/info", () =>
