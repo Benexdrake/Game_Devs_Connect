@@ -34,6 +34,12 @@ public class PostRepository(GDCDbContext context) : IPostRepository
                 await _context.PostTags.AddAsync(new PostTagDTO(addPost.Post!.Id, tag.Tag), token);
             }
 
+            // Add Post_file über Schleife
+            foreach (var fileId in addPost.FileIds)
+            {
+                await _context.PostFiles.AddAsync(new PostFileDTO { FileId = fileId, PostId = addPost.Post.Id });
+            }
+
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(addPost.Post!.Id));
@@ -176,7 +182,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
             if (postDb is null)
             {
                 Log.Error(Message.NOTFOUND(id));
-                return new GetFullResponse(Message.NOTFOUND(id), false, null!, 0, null!, null!, null!, null!, 0, 0);
+                return new GetFullResponse(Message.NOTFOUND(id), false, null!, null!, 0, null!, null!, null!, 0, 0);
             }
 
             var postTags = await _context.PostTags.Where(rt => rt.PostId!.Equals(id)).ToArrayAsync(token);
@@ -200,7 +206,17 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var owner = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(postDb.OwnerId), token);
 
-            var file = await _context.Files.FirstOrDefaultAsync(x => x.Id!.Equals(postDb.FileId), token);
+            var fileIds = await _context.PostFiles.Where(x => x.PostId.Equals(id)).Select(x => x.FileId).ToArrayAsync(token);
+
+            var files = new List<FileDTO>();
+
+            foreach (var fileId in fileIds)
+            {
+                var file = await _context.Files.FirstOrDefaultAsync(x => x.Id.Equals(fileId), token);
+                if(file is null) continue;
+
+                files.Add(file);
+            }
 
             var commentsCount = await _context.Posts.Where(x => x.ParentId.Equals(id)).CountAsync(token);
 
@@ -208,12 +224,12 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             var tagsArray = tags.ToArray();
 
-            return new GetFullResponse(null!, true, postDb, questsCount, tagsArray, projectTitle!, owner, file, commentsCount, likes);
+            return new GetFullResponse(null!, true, postDb, [..files], questsCount, tagsArray, projectTitle!, owner, commentsCount, likes);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetFullResponse(ex.Message, false, null!, 0, null!, null!, null!, null!, 0, 0);
+            return new GetFullResponse(ex.Message, false, null!, null!, 0, null!, null!, null!, 0, 0);
         }
     }
 
