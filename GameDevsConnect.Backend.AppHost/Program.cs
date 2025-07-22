@@ -2,6 +2,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 string sqlPW = builder.Configuration["SQL"]!;
 string azureSCS = builder.Configuration["AZURE_STORAGE_CONNECTION_STRING"]!;
+string azureBaseUrl = builder.Configuration["AZURE_STORAGE_BASE_URL"]!;
 
 int replicas = 1;
 
@@ -82,6 +83,7 @@ var file = builder.AddProject<Projects.GameDevsConnect_Backend_API_File>("gamede
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("AZURE_STORAGE_BASE_URL", azureBaseUrl)
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
