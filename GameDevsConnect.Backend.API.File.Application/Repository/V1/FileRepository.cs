@@ -1,8 +1,11 @@
-﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿using Microsoft.Extensions.Configuration;
 
-public class FileRepository(GDCDbContext context) : IFileRepository
+namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+
+public class FileRepository(GDCDbContext context, IConfiguration config) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
+    private readonly IConfiguration _config = config;
 
     public async Task<AddResponse> AddAsync(FileDTO file, CancellationToken token)
     {
@@ -10,6 +13,14 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         {
             file.Id = Guid.NewGuid().ToString();
             file.Created = DateTime.UtcNow;
+
+            string type = "";
+
+            if(file.Type!.Split("/").Length > 1)
+                type = "."+file.Type.Split("/")[1];
+            
+            file.Url = $"{_config["AZURE_STORAGE_BASE_URL"]}/{file.OwnerId}/{file.Id}{type}";
+
 
             var validator = new Validator(_context, ValidationMode.Add);
 
@@ -91,20 +102,6 @@ public class FileRepository(GDCDbContext context) : IFileRepository
         {
             var ids = await _context.Files.Where(x => x.OwnerId!.Equals(ownerID)).Select(x => x.Id).ToArrayAsync(token);
             return new GetIdsbyId("", true, ids!);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex.Message);
-            return new GetIdsbyId(ex.Message, false, null!);
-        }
-    }
-
-    public async Task<GetIdsbyId> GetByPostParentIdAsync(string parentId, CancellationToken token)
-    {
-        try
-        {
-            var fileIds = await _context.Posts.Where(x => x.ParentId.Equals(parentId)).Select(x => x.FileId).ToArrayAsync(token);
-            return new GetIdsbyId("", true, fileIds!);
         }
         catch (Exception ex)
         {
