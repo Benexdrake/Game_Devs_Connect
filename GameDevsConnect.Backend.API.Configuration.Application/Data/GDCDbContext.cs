@@ -13,6 +13,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     public virtual DbSet<NotificationDTO> Notifications { get; set; }
     public virtual DbSet<FileDTO> Files { get; set; }
     public virtual DbSet<PostTagDTO> PostTags { get; set; }
+    public virtual DbSet<PostFileDTO> PostFiles { get; set; }
     public virtual DbSet<FavoriteQuestDTO> FavoriteQuests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +34,6 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Url).HasColumnName("url");
             entity.Property(e => e.Created).HasColumnName("created");
             entity.Property(e => e.Type).HasColumnName("type");
-            entity.Property(e => e.Extension).HasColumnName("extension");
             entity.Property(e => e.OwnerId).HasColumnName("owner_id");
             entity.Property(e => e.Size).HasColumnName("size");
         });
@@ -136,9 +136,6 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
                 .HasMaxLength(128)
                 .HasColumnName("created");
             entity.Property(e => e.Message).HasColumnName("message");
-            entity.Property(e => e.FileId)
-                .HasMaxLength(64)
-                .HasColumnName("file_id");
             entity.Property(e => e.OwnerId)
                 .HasMaxLength(64)
                 .HasColumnName("owner_id");
@@ -151,6 +148,14 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.HasQuest).HasColumnName("has_quest");
             entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
             entity.Property(e => e.Completed).HasColumnName("completed");
+        });
+
+        modelBuilder.Entity<PostFileDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.PostId, e.FileId }).HasName("Post_File");
+
+            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.FileId).HasColumnName("file_id");
         });
 
         modelBuilder.Entity<PostLikeDTO>(entity =>
