@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
-
-namespace GameDevsConnect.Backend.API.File.Endpoints.V1;
+﻿namespace GameDevsConnect.Backend.API.File.Endpoints.V1;
 
 public static class FileEndpoints
 {
@@ -23,13 +21,6 @@ public static class FileEndpoints
             return await rep.GetByIdAsync(id, token);
         })
         .WithName(ApiEndpointsV1.File.MetaData.Get)
-        .Produces(StatusCodes.Status200OK);
-
-        group.MapGet(ApiEndpointsV1.File.GetByPostParentId, async ([FromServices] IFileRepository rep, [FromRoute] string id, CancellationToken token) =>
-        {
-            return await rep.GetByPostParentIdAsync(id, token);
-        })
-        .WithName(ApiEndpointsV1.File.MetaData.GetByPostParentId)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.File.Create, async ([FromServices] IFileRepository rep, [FromBody] FileDTO File, CancellationToken token) =>
