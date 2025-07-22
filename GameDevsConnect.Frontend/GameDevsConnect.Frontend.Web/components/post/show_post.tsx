@@ -35,6 +35,7 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
         router.push(`/profile/${response?.owner.id}`)
     };
     
+    
     return (
         <div className={styles.main} style={{ backgroundColor: `${response?.post.hasQuest ? response.post.completed ? 'var(--color3)' : '#FFD700' : 'var(--color1)'}` }}>
             {response && (
@@ -79,12 +80,19 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
                         </p>
                     </div>
                     </div>
-                    {response?.file &&
+                    <div>
+                        {response.files.map(x => (
+                            <div onClick={stopClick}>
+                                <PostContent file={x} />
+                            </div>
+                        ))}
+                    </div>
+                    {/* {response?.file &&
                         (
                             <div onClick={stopClick}>
                                 <PostContent file={response.file} />
                             </div>
-                        )}
+                        )} */}
                     <div className={styles.tags}>
                         {response?.tags?.map((x: ITag) => { return <span key={x.tag + response.post.id} className={styles.tag} onClick={stopClick}>{x.tag}</span> })}
                     </div>
@@ -100,10 +108,13 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
                             <div className={styles.button}><i className="fa-solid fa-comment"></i> {response?.comments}</div>
                         )}
                         <div className={styles.button}><i className="fa-solid fa-heart"></i> {response?.likes}</div>
-                        {response?.file?.type === 'image' && (
+                        {/* 
+                            Download Button for Rar/Zip File
+                        {response?.files && (
                             <div className={styles.button}><i className="fa-solid fa-cloud-arrow-down"></i></div>
                         )}
-                    </div>
+                        */}
+                    </div> 
                 </div>
             </article>
               )}
