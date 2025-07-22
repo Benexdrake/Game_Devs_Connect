@@ -15,9 +15,6 @@ public partial class PostDTO
     public string? ProjectId { get; set; }
 
     public string? OwnerId { get; set; }
-
-    public string? FileId { get; set; }
-
     public bool IsDeleted { get; set; }
     public bool Completed { get; set; }
 }
