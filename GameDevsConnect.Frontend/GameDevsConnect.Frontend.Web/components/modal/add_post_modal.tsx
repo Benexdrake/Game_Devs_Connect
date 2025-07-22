@@ -105,7 +105,7 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
             console.log(image.type);
             
             // return;
-            const responseAddImageFile = await addFileAsync({id:'', url:'', type:image.type, size:image.size, ownerId:userId, created:null, extension:''})
+            const responseAddImageFile = await addFileAsync({id:'', url:'', type:image.type, size:image.size, ownerId:userId, created:null})
             if(!responseAddImageFile.status)
                 continue;    
             const fileId = responseAddImageFile.id   
