@@ -14,6 +14,8 @@ import ShowElement from '../show_element';
 import AddQuest from '../quest/add_quest';
 import SelectTags from '../tag/select_tags';
 import PreviewQuest from '../quest/preview_quest';
+import Image from 'next/image';
+import { uploadFile } from '@/services/azure_service';
 
 export default function AddPostModal({setOpenModal, openModal, postId, userId} : 
                             {setOpenModal:Function, openModal:boolean, postId:string, userId:string})
@@ -60,26 +62,25 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
                 const file = e.target.files[0];
 
                 if(images.length < 4 && file)
+                {
+                    const findFile = images.find(x => x.name === file.name && x.size === file.size)
+
+                    if(findFile)
+                        return;
+
                     setImages(prev => [...prev, file]);
+                }
             }
     }
 
     const sendHandler = async () => 
     {
-        let fileId = '';
-        // if (addFile) 
-        // {
-        //     const file: IFile = { id: '', url: 'https://fantasyanime.com/finalfantasy/ff/maps/Final-Fantasy-1-GBA-World-Map-Labeled.png', size: 1000, type: 'image', ownerId: userId, created: null, extension:'' }
-        //     const fileResponse = await addFileAsync(file)
 
-        //     if (fileResponse.status)
-        //         fileId = fileResponse.id;
-        // }
 
-        // File ID entfernen, POST_FILE Table erstellen, PostId, FileID.
 
-        // Get Post array fileIds
-        // Laden der Files und angepasst anzeigen, image, video, file
+        // Laden der Files und angepasst anzeigen, image, file
+
+        // Falls doch Video, kein Azure, nur url und type youtube oder video oder video/youtube
 
         // Liste mit anzeigen der Files, bei Image, mini preview und delete button einbauen.
 
@@ -91,37 +92,43 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
         // Beim senden, for each schleife, images durchgehen und zusammen mit upload nach azure blob ausführen, vllt eine Methode dazu bauen.
         // lib upload file
 
-        //   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //     if (e.target.files?.[0]) {
-        //       setFile(e.target.files[0]);
-        //     }
-        //   };
-        
-        //   const handleUpload = async () =>
-        //   {
-        //     if(!file) return;
-        
-        //     console.log(file);
-            
-        //     const responseFile = await addFileAsync({id:'', url:'', type:'', size:0, ownerId:user.id, created:null, extension:''})
-        
-        //     const requestJson = {
-        //       FileName: `${user.id}/${responseFile.id}`,
-        //       ContainerName:process.env.NEXT_PUBLIC_AZURE_STORAGE_CONTAINERNAME
-        //     }
-        
-        //     const request = JSON.stringify(requestJson)
-        
-        //     const azureResponse = await uploadFile(file, request)
-        //     console.log(azureResponse);
-        //   }
 
-        const post: IPost = { id: '', parentId: postId, hasQuest: quests.length > 0, message, created: null, projectId: '', ownerId: userId, fileId, isDeleted: false, completed: false }
-        const addPost: IUpsertPostRequest = { post, tags: selectedTags }
+
+
+        const fileIds:string[] = [];
+
+        console.log();
+        
+
+        for(const image of images)
+        {
+            console.log(image.type);
+            
+            // return;
+            const responseAddImageFile = await addFileAsync({id:'', url:'', type:image.type, size:image.size, ownerId:userId, created:null, extension:''})
+            if(!responseAddImageFile.status)
+                continue;    
+            const fileId = responseAddImageFile.id   
+
+            fileIds.push(fileId)
+
+            const requestJson = {
+              FileName: `${userId}/${fileId}.${image.type.replaceAll('image/','')}`,
+              ContainerName:process.env.NEXT_PUBLIC_AZURE_STORAGE_CONTAINERNAME
+            }
+        
+            const request = JSON.stringify(requestJson)
+
+            const responseUploadImage = await uploadFile(image, request)
+
+            console.log(responseUploadImage);
+        }
+
+        const post: IPost = { id: '', parentId: postId, hasQuest: quests.length > 0, message, created: null, projectId: '', ownerId: userId, isDeleted: false, completed: false }
+        const addPost: IUpsertPostRequest = { post, tags: selectedTags, fileIds }
 
         // Validation
         // Message min x Zeichen
-        // Tags min 1 Tag
         // File nicht nötig.
         //
 
@@ -167,18 +174,12 @@ export default function AddPostModal({setOpenModal, openModal, postId, userId} :
             <div className={styles.show_files}>
                 {images.map(x => (
                     <div className={styles.show_file}>
-                        <div className={styles.show_file__type}><i className="fa-regular fa-image"></i></div>
-                        <div className={styles.show_file__name}><p>{x.name}</p></div>
+                        <div>
+                            <Image src={URL.createObjectURL(x)} alt="" width={0} height={0} style={{height:'50px', maxWidth:'100px', width:'fit-content'}}/>
+                        </div>
                         <div className={styles.show_file__delete}><i className="fa-solid fa-xmark"></i></div>
                     </div>
                 ))}
-                {/* {addFile && (
-                    <div className={styles.show_file}>
-                        <div className={styles.show_file__type}><i className="fa-regular fa-image"></i></div>
-                        <div className={styles.show_file__name}><p>gamedevsconnect.png</p></div>
-                        <div className={styles.show_file__delete}><i className="fa-solid fa-xmark"></i></div>
-                    </div>
-                )} */}
             </div>
             
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}>
