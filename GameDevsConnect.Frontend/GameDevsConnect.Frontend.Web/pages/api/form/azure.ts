@@ -21,7 +21,8 @@ function parseForm(req: NextApiRequest): Promise<{ fields: formidable.Fields; fi
   });
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) 
+{
   try 
   {
     let url = `${process.env.BACKEND_URL}/api/v1/azure/blob/upload`
@@ -40,10 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       Request: JSON.stringify(requestJson),
     }).then(r => r.data);
 
-    fs.unlink(file.filepath, () =>
-    {
-
-    })
+    fs.unlink(file.filepath, () =>{})
 
     return res.status(200).json(response);
   } 
@@ -53,37 +51,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Fehler beim Upload', detail: (err as Error).message });
   }
 }
-
-
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) 
-// {
-//     let url = `${process.env.BACKEND_URL}/api/v1/azure/blob/upload`
-    
-
-//     const form = formidable({
-//         uploadDir: './uploads',
-//         keepExtensions: true,
-//         maxFileSize: 200 * 1024 * 1024
-//     });
-
-//     form.parse(req, async (err, fields, files) => 
-//     {
-//         if (err) 
-//         {
-//             console.error('Upload-Fehler:', err);
-//             return res.status(500).json({ error: 'Fehler beim Upload', detail: err });
-//         }
-
-//         const requests = fields.request as string[]; 
-//         const requestJson = JSON.parse(requests[0]);
-//         let fileStream;
-
-//         const file = Array.isArray(files.file) ? files.file[0] : files.file;
-//         if(file)
-//           fileStream = fs.createReadStream(file.filepath);
-        
-//         const response =  await (await getAxiosInstance()).postForm(url, {FormFile:fileStream, Request:JSON.stringify(requestJson)}).then(x => x.data)
-
-//        return res.status(200).json(response); 
-//     });
-// }
