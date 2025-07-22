@@ -5,4 +5,5 @@ export interface IUpsertPostRequest
 {
     post:IPost;
     tags:ITag[];
+    fileIds:string[]
 }
