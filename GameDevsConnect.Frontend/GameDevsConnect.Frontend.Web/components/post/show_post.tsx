@@ -5,10 +5,13 @@ import { ITag } from '@/interfaces/tag';
 import { useEffect, useState } from 'react';
 import { IAPIPostResponse } from '@/interfaces/responses/post/api_post_response';
 import { getPostAsync } from '@/services/post_service';
+import { IFile } from '@/interfaces/file';
 
 export default function ShowPost({ id, page }:{ id:string, page:boolean }) 
 {
     const [response, setResponse] = useState<IAPIPostResponse>();
+    const [images, setImages] = useState<IFile[]>([])
+    const [file, setFile] = useState<IFile>();
     
     const router = useRouter();
 
@@ -17,8 +20,13 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
         const get = async () =>
         {
             const r = await getPostAsync(id);
-            if(r.status)
-                setResponse(r)
+            if(!r.status)
+                return;
+
+            setImages(r.files.filter(x => x.type.includes('image')))
+            setFile(r.files.find(x => x.type.includes('file')))
+
+            setResponse(r)
         }
 
         get();
@@ -81,18 +89,12 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
                     </div>
                     </div>
                     <div>
-                        {response.files.map(x => (
+                        {images.map(x => (
                             <div onClick={stopClick}>
                                 <PostContent file={x} />
                             </div>
                         ))}
                     </div>
-                    {/* {response?.file &&
-                        (
-                            <div onClick={stopClick}>
-                                <PostContent file={response.file} />
-                            </div>
-                        )} */}
                     <div className={styles.tags}>
                         {response?.tags?.map((x: ITag) => { return <span key={x.tag + response.post.id} className={styles.tag} onClick={stopClick}>{x.tag}</span> })}
                     </div>
@@ -108,12 +110,10 @@ export default function ShowPost({ id, page }:{ id:string, page:boolean })
                             <div className={styles.button}><i className="fa-solid fa-comment"></i> {response?.comments}</div>
                         )}
                         <div className={styles.button}><i className="fa-solid fa-heart"></i> {response?.likes}</div>
-                        {/* 
-                            Download Button for Rar/Zip File
-                        {response?.files && (
+                        { file && (
                             <div className={styles.button}><i className="fa-solid fa-cloud-arrow-down"></i></div>
                         )}
-                        */}
+                       
                     </div> 
                 </div>
             </article>
