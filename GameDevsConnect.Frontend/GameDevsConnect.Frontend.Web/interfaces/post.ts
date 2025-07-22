@@ -7,7 +7,6 @@ export interface IPost
     created:string | null;
     projectId:string;
     ownerId:string;
-    fileId:string;
     isDeleted:boolean;
     completed:boolean;
 }
