@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
+﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
 
 namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
 public class QuestRepository(GDCDbContext context) : IQuestRepository
@@ -30,12 +29,36 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(quest.Id));
-            return new ApiResponse(Message.ADD(quest.Id), true);
+            return new ApiResponse(null!, true);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
             return new ApiResponse(ex.Message, false);
+        }
+    }
+
+    public async Task<ApiResponse> CompleteAsync(CompleteQuestRequest complete, CancellationToken token)
+    {
+        try
+        {
+            var completedDb = await _context.QuestFiles.FirstOrDefaultAsync(x => x.OwnerId.Equals(complete.OwnerId) && x.QuestId.Equals(complete.QuestId) && x.FileId.Equals(complete.FileId) , token);
+
+            if (completedDb is not null)
+            {
+                Log.Error("Completed Quest exists already");
+                return new ApiResponse("Completed Quest exists already", false);
+            }
+
+            await _context.QuestFiles.AddAsync(new QuestFileDTO { FileId = complete.FileId, Message = complete.Message, OwnerId = complete.OwnerId, QuestId = complete.QuestId }, token);
+            await _context.SaveChangesAsync(token);
+
+            return new ApiResponse(null!, true);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            return new ApiResponse(ex.Message,false);
         }
     }
 

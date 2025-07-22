@@ -15,6 +15,7 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
     public virtual DbSet<PostTagDTO> PostTags { get; set; }
     public virtual DbSet<PostFileDTO> PostFiles { get; set; }
     public virtual DbSet<FavoriteQuestDTO> FavoriteQuests { get; set; }
+    public virtual DbSet<QuestFileDTO> QuestFiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -191,6 +192,15 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.Difficulty).HasColumnName("difficulty");
             entity.Property(e => e.Title).HasColumnName("title");
             entity.Property(e => e.Description).HasColumnName("description");
+        });
+
+        modelBuilder.Entity<QuestFileDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.QuestId, e.FileId }).HasName("Quest_File");
+
+            entity.Property(e => e.QuestId).HasColumnName("quest_id");
+            entity.Property(e => e.FileId).HasColumnName("file_id");
+            entity.Property(e => e.OwnerId).HasColumnName("owner_id");
         });
 
         modelBuilder.Entity<TagDTO>(entity =>
