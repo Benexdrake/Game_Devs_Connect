@@ -34,19 +34,7 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
             memoryStream.Position = 0;
             var blob = container.GetBlobClient(blobName);
 
-            var contentType = !string.IsNullOrWhiteSpace(formFile.ContentType)
-                ? formFile.ContentType
-                : GetContentTypeFromExtension(Path.GetExtension(formFile.FileName));
-
-            var headers = new BlobHttpHeaders
-            {
-                ContentType = contentType
-            };
-
-            await blob.UploadAsync(memoryStream, new BlobUploadOptions
-            {
-                HttpHeaders = headers
-            });
+            await blob.UploadAsync(memoryStream);
             return (blobName, true);
         }
         catch (Exception ex)
@@ -110,16 +98,4 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
     {
         throw new NotImplementedException();
     }
-
-
-    private string GetContentTypeFromExtension(string ext) => ext.ToLowerInvariant() switch
-    {
-        ".png" => "image/png",
-        ".jpg" or ".jpeg" => "image/jpeg",
-        ".gif" => "image/gif",
-        ".svg" => "image/svg+xml",
-        ".webp" => "image/webp",
-        _ => "application/octet-stream"
-    };
-
 }
