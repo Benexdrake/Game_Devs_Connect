@@ -369,17 +369,17 @@ public static class ApiEndpointsV1
 
             public static class Description
             {
-                public const string GetIds = $"Get All User Ids with Page, PageSize and Searchterm";
-                public const string Get = $"GetUserById";
-                public const string GetFollower = $"GetFollowerIds";
-                public const string GetFollowing = $"GetFollowingIds";
-                public const string GetFollowerCount = $"GetFollowerCount";
-                public const string GetFollowingCount = $"GetFollwingCount";
-                public const string GetIdsByProjectId = $"GetIdsByProjectId";
-                public const string Exist = $"GetExistingUserById";
-                public const string Create = $"CreateUser";
-                public const string Update = $"UpdateUser";
-                public const string Delete = $"DeleteUser";
+                public const string GetIds = "Get All User Ids with Page, PageSize and Searchterm";
+                public const string Get = "Get User by ID";
+                public const string GetFollower = "Get all Follower Ids from User by User ID";
+                public const string GetFollowing = $"Get all Following Ids from User by User ID";
+                public const string GetFollowerCount = $"Get Followers Count";
+                public const string GetFollowingCount = $"Get Following Count";
+                public const string GetIdsByProjectId = $"Get User Ids by Project Id";
+                public const string Exist = $"Get a bool if User exists";
+                public const string Create = $"Add new User";
+                public const string Update = $"Update a User";
+                public const string Delete = $"Delete a User by User Id";
             }
         }
     }
