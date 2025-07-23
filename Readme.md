@@ -1,4 +1,4 @@
-# Tutorial: Game Devs Connect
+# Game Devs Connect
 
 `Game Devs Connect` is an innovative social platform designed for game developers to **connect and collaborate**. It features a user-friendly *frontend application* built with Next.js, allowing users to browse and create posts, manage profiles, and participate in engaging quests. The platform's powerful functionalities are driven by a set of *independent backend microservices*, ensuring scalability and efficient management of user data, content, and challenges. The entire system's development and deployment processes are highly *automated* for reliability and speed.
 
