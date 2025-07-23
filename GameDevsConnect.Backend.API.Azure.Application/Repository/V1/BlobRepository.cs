@@ -1,4 +1,7 @@
-﻿namespace GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Azure.Contract.Requests;
+using System.Text.Json;
+
+namespace GameDevsConnect.Backend.API.Azure.Application.Repository.V1;
 public class BlobRepository(IBlobStorageService service) : IBlobRepository
 {
     private readonly IBlobStorageService _service = service;
@@ -24,11 +27,18 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
         }
     }
 
-    public async Task<ApiResponse> UploadBlob(IFormFile formFile, string containerName, string fileName)
+    public async Task<ApiResponse> UploadBlob(HttpRequest request)
     {
         try
         {
-            var (result, status) = await _service.UploadBlob(formFile, containerName, fileName);
+            var blobRequest = await GetRequest(request);
+            if(blobRequest is null)
+            {
+                Log.Error("Something was missing");
+                return new ApiResponse(null!, false, null!);
+            }
+
+            var (result, status) = await _service.UploadBlob(blobRequest.FormFile, blobRequest.ContainerName, blobRequest.FileName);
 
             if (!status)
             {
@@ -66,24 +76,18 @@ public class BlobRepository(IBlobStorageService service) : IBlobRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateBlob(IFormFile formFile, string containerName, string fileName)
+    private async Task<BlobRequest> GetRequest(HttpRequest request)
     {
-        try
-        {
-            var (result, status) = await _service.UpdateBlob(formFile, containerName, fileName);
+        var form = await request.ReadFormAsync();
 
-            if (!status)
-            {
-                Log.Error(result);
-                return new ApiResponse(result, false);
-            }
+        var file = form.Files.GetFile("formFile");
 
-            return new ApiResponse(null!, true);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
-        }
+        var metadataJson = form["request"];
+
+        var metadata = JsonSerializer.Deserialize<BlobRequest>(metadataJson!);
+
+        if (metadata is not null)
+            return new BlobRequest() {FormFile= file, ContainerName = metadata.ContainerName, FileName = metadata.FileName };
+        return null!;
     }
 }

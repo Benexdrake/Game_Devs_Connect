@@ -22,18 +22,12 @@ public static class BlobEndpoints
 
         group.MapPost(ApiEndpointsV1.Azure.Upload, async (HttpRequest request, [FromServices] IBlobRepository rep) =>
         {
-            var form = await request.ReadFormAsync();
-
-            var file = form.Files.GetFile("formFile");
-            var metadataJson = form["request"];
-
-            var metadata = JsonSerializer.Deserialize<BlobRequest>(metadataJson!);
-            return await rep.UploadBlob(file, metadata.ContainerName, metadata!.FileName);
+            return await rep.UploadBlob(request);
         })
         .WithName(ApiEndpointsV1.Azure.MetaData.Name.Upload)
         .WithDescription(ApiEndpointsV1.Azure.MetaData.Description.Upload)
         .DisableAntiforgery()
-        .Accepts<UploadForm>("multipart/form-data")
+        .Accepts<UploadFormRequest>("multipart/form-data")
         .Produces(StatusCodes.Status200OK);
 
         group.MapDelete(ApiEndpointsV1.Azure.Delete, async ([FromServices] IBlobRepository rep, [FromBody] BlobRequest request) =>
@@ -44,14 +38,4 @@ public static class BlobEndpoints
         .WithDescription(ApiEndpointsV1.Azure.MetaData.Description.Delete)
         .Produces(StatusCodes.Status200OK);
     }
-}
-
-
-public class UploadForm
-{
-    [Required]
-    public IFormFile FormFile { get; set; }
-
-    [Required]
-    public string Request { get; set; }
 }

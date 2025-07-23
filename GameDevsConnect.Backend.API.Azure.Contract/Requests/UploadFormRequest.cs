@@ -2,9 +2,9 @@
 
 namespace GameDevsConnect.Backend.API.Azure.Contract.Requests;
 
-public class BlobRequest
+public class UploadFormRequest
 {
     public IFormFile? FormFile { get; set; }
-    public string FileName { get; set; } = string.Empty;
-    public string ContainerName { get; set; } = string.Empty;
+
+    public string Request { get; set; } = string.Empty;
 }
