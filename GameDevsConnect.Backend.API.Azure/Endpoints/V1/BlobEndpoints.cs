@@ -17,6 +17,7 @@ public static class BlobEndpoints
             return await rep.GetBlobUrl(request.FileName, request.ContainerName);
         })
         .WithName(ApiEndpointsV1.Azure.MetaData.Name.Get)
+        .WithDescription(ApiEndpointsV1.Azure.MetaData.Description.Get)
         .Produces(StatusCodes.Status200OK);
 
         group.MapPost(ApiEndpointsV1.Azure.Upload, async (HttpRequest request, [FromServices] IBlobRepository rep) =>
@@ -30,6 +31,7 @@ public static class BlobEndpoints
             return await rep.UploadBlob(file, metadata.ContainerName, metadata!.FileName);
         })
         .WithName(ApiEndpointsV1.Azure.MetaData.Name.Upload)
+        .WithDescription(ApiEndpointsV1.Azure.MetaData.Description.Upload)
         .DisableAntiforgery()
         .Accepts<UploadForm>("multipart/form-data")
         .Produces(StatusCodes.Status200OK);
@@ -39,6 +41,7 @@ public static class BlobEndpoints
             return await rep.RemoveBlob(request.FileName, request.ContainerName);
         })
         .WithName(ApiEndpointsV1.Azure.MetaData.Name.Delete)
+        .WithDescription(ApiEndpointsV1.Azure.MetaData.Description.Delete)
         .Produces(StatusCodes.Status200OK);
     }
 }

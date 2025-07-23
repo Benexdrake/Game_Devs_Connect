@@ -345,7 +345,6 @@ public static class ApiEndpointsV1
         public const string GetFollowingCount = $"following/count/{{id}}";
         public const string GetIdsByProjectId = $"project/{{id}}";
 
-
         public const string Exist = $"exist/{{id}}";
         public const string Create = $"add";
         public const string Update = $"update";
