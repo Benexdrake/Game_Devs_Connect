@@ -18,6 +18,7 @@ secrets.tfvars
 errored.tfstate
 backend_config.tfvars
 !terraform.tfvars
+.config.tfvars
 
 .ssh
 acr_token
@@ -72,3 +73,4 @@ next-env.d.ts
 certificates
 
 uploads
+Terraform/.Config/env/dev/config.tfvars
