@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"deploy_apis","Source":"./4. Deploy/APIs","Dir":"4. Deploy/APIs"},{"Key":"main","Source":"./1. Main","Dir":"1. Main"},{"Key":"network","Source":"./2. Network","Dir":"2. Network"},{"Key":"sql_server","Source":"./3. SQL_Server","Dir":"3. SQL_Server"},{"Key":"variables","Source":"./.Config/env/dev","Dir":".Config/env/dev"}]}

@@ -15,7 +15,6 @@ resource "azurerm_subnet" "public_container" {
     delegation {
     name = "delegation"
     service_delegation {
-      # name = "Microsoft.ContainerInstance/containerGroups"
       name = "Microsoft.App/environments"
   
       actions = [

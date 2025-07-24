@@ -21,3 +21,8 @@ data "terraform_remote_state" "sql" {
    key                  = "gamedevsconnect.sql.tfstate"
   }
 }
+
+data "azurerm_public_ip" "frontend" {
+  name = "pip-${var.application_name}-${var.environment_name}-frontend"
+  resource_group_name = data.azurerm_resource_group.main.name
+}

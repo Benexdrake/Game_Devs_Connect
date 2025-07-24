@@ -1,0 +1,5 @@
+locals {
+    DISCORD_ID = "1141793617959207083"
+    DISCORD_SECRET = "PqJAtK57mlXpj0K8ApsGBzHA9gfjydD0"
+    NEXTAUTH_SECRET = "cbcf9219-b99f-4fda-90fc-cd58fae3f83c"
+}

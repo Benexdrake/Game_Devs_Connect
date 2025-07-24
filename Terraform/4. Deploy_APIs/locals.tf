@@ -66,6 +66,17 @@ locals {
             memory = "1.0Gi"
         }
     },
+    "quest" = {
+        name = "quest",
+        container_app_environment_id = data.azurerm_container_app_environment.public.id,
+        target_port = 8080,
+        template = {
+            name = "apiquest",
+            image = "benexdrake012/gamedevsconnect_backend_api_quest",
+            cpu = 0.5,
+            memory = "1.0Gi"
+        }
+    },
     "tag" = {
         name = "tag",
         container_app_environment_id = data.azurerm_container_app_environment.public.id,
@@ -89,6 +100,6 @@ locals {
         }
     }
   }
-    access_key = random_password.access_key.result
+    
     administrator_login_password = data.terraform_remote_state.db.outputs.mssql_admin_password
 }

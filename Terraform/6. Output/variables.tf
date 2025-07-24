@@ -9,3 +9,11 @@ variable "storage_account_name" {
 variable "container_name" {
   type = string
 }
+
+variable "application_name" {
+  type = string
+}
+
+variable "environment_name" {
+  type = string
+}

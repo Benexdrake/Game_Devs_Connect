@@ -24,7 +24,7 @@ resource "azurerm_container_app" "azure" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -45,15 +45,15 @@ resource "azurerm_container_app" "azure" {
 
 // Comment
 
-resource "azurerm_container_app" "comment" {
-  name                         = "api-${local.containers["comment"].name}-container"
+resource "azurerm_container_app" "quest" {
+  name                         = "api-${local.containers["quest"].name}-container"
   resource_group_name          = data.azurerm_resource_group.main.name
-  container_app_environment_id = local.containers["comment"].container_app_environment_id
+  container_app_environment_id = local.containers["quest"].container_app_environment_id
   revision_mode = "Single"
 
   ingress {
     external_enabled = true
-    target_port      = local.containers["comment"].target_port
+    target_port      = local.containers["quest"].target_port
     transport        = "auto"
     traffic_weight {
       percentage = 100
@@ -63,14 +63,14 @@ resource "azurerm_container_app" "comment" {
 
   template {
     container {
-      name   = local.containers["comment"].template.name
-      image  = local.containers["comment"].template.image
-      cpu    = local.containers["comment"].template.cpu
-      memory = local.containers["comment"].template.memory
+      name   = local.containers["quest"].template.name
+      image  = local.containers["quest"].template.image
+      cpu    = local.containers["quest"].template.cpu
+      memory = local.containers["quest"].template.memory
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -116,7 +116,7 @@ resource "azurerm_container_app" "file" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -161,7 +161,7 @@ resource "azurerm_container_app" "notification" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -207,7 +207,7 @@ resource "azurerm_container_app" "profile" {
     
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -252,7 +252,7 @@ resource "azurerm_container_app" "project" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -297,7 +297,7 @@ resource "azurerm_container_app" "post" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -342,7 +342,7 @@ resource "azurerm_container_app" "tag" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"
@@ -387,7 +387,7 @@ resource "azurerm_container_app" "user" {
 
       env {
         name = "X-Access-Key"
-        value = local.access_key
+        value = var.X_ACCESS_KEY
       }
       env {
         name = "SQL_URL"

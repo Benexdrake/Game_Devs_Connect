@@ -12,10 +12,12 @@ Backend/auth.db
 /GameDevsConnect.Backend.Shared/appsettings.json
 
 .terraform
+terraform.*
+.terraform.*
 secrets.tfvars
 errored.tfstate
 backend_config.tfvars
-
+!terraform.tfvars
 
 .ssh
 acr_token

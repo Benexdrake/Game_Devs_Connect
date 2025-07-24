@@ -22,6 +22,10 @@ variable "container_name" {
   type = string
 }
 
+variable "X_ACCESS_KEY" {
+  type = string
+}
+
 variable "tags" {
   type = map(string)
   default = {

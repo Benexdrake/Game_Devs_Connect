@@ -4,7 +4,7 @@ resource "azurerm_mssql_server" "main" {
   location                     = data.azurerm_resource_group.main.location
   version                      = "12.0"
   administrator_login          = var.administrator_login
-  administrator_login_password = random_password.sql_password.result
+  administrator_login_password = "P@ssword1"
   public_network_access_enabled = true
   tags = var.tags
 }
