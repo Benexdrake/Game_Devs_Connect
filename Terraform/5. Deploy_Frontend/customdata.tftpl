@@ -1,0 +1,65 @@
+#!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
+set -e
+sudo apt-get update 
+sudo apt-get upgrade -y
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common nginx certbot python3-certbot-nginx -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce -y
+
+sudo certbot --nginx \
+  -d gamedevsconnect.ddns.net \
+  --non-interactive \
+  --agree-tos \
+  --email deine@email.de \
+  --redirect
+
+sudo cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80;
+    listen [::]:80;
+    server_name gamedevsconnect.ddns.net;
+
+    return 301 https://\$host\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name gamedevsconnect.ddns.net;
+
+    ssl_certificate /etc/letsencrypt/live/gamedevsconnect.ddns.net/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/gamedevsconnect.ddns.net/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+EOF
+
+
+sudo docker run -d \
+  --network host \
+  -p 3000:3000 \
+  -e BACKEND_URL="https://${BACKEND_URL}" \
+  -e NEXT_PUBLIC_URL='https://gamedevsconnect.ddns.net' \
+  -e NEXTAUTH_URL='https://gamedevsconnect.ddns.net/api/auth' \
+  -e NEXTAUTH_SECRET='cbcf9219-b99f-4fda-90fc-cd58fae3f83c' \
+  -e DISCORD_ID="${DISCORD_ID}" \
+  -e DISCORD_SECRET="${DISCORD_SECRET}" \
+  -e X_ACCESS_KEY="${X_ACCESS_KEY}" \
+  --name frontend_container \
+  benexdrake012/gamedevsconnect_frontend:latest
+
+sudo systemctl restart nginx
+
+echo "Done" > "/var/log/setup_done.log"
