@@ -10,7 +10,10 @@ function getAxiosConfig()
     });
 
     const axiosConfig = axios.create({
-        httpsAgent
+        httpsAgent,
+        headers: {
+            'X-Access-Key' : process.env.X_ACCESS_KEY
+        }
     });
     return axiosConfig;
 }
@@ -22,6 +25,5 @@ export async function getAxiosInstance()
     let login = await axiosInstance.get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
 
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
-
     return axiosInstance;
 }

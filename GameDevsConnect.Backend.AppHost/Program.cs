@@ -6,7 +6,7 @@ string azureBaseUrl = builder.Configuration["AZURE_STORAGE_BASE_URL"]!;
 
 int replicas = 1;
 
-var accessKey = Guid.NewGuid().ToString();
+var accessKey = "123456";
 
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
