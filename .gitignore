@@ -18,7 +18,7 @@ secrets.tfvars
 errored.tfstate
 backend_config.tfvars
 !terraform.tfvars
-.config.tfvars
+config.tfvars
 
 .ssh
 acr_token
