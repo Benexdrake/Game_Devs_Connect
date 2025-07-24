@@ -12,7 +12,7 @@ function getAxiosConfig()
     const axiosConfig = axios.create({
         httpsAgent,
         headers: {
-            'X-Access-Key' : process.env.X_ACCESS_KEY
+            "X-Access-Key" : process.env.X_ACCESS_KEY
         }
     });
     return axiosConfig;

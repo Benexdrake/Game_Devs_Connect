@@ -78,7 +78,7 @@ public class Startup(string name, bool gateway = false)
 
         app.UseResponseCaching();
 
-        if(gateway)
+        //if(gateway)
             app.Use(async (context, next) =>
             {
                 if (app.Environment.IsDevelopment())
