@@ -6,5 +6,7 @@ import axios from "axios";
 export const getTags = async () =>
 {
     const url = getUrl('json','tag')
+    console.log('URL', url);
+    
     return await axios.get<IAPITagsResponse>(`${url}`).then(x => x.data)
 }
