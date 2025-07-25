@@ -25,16 +25,13 @@ export async function getAxiosInstance()
     let axiosInstance = getAxiosConfig();
     try
     {
-        let login = await getAxiosConfig().get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
-
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log(login)
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         console.log(process.env.X_ACCESS_KEY);
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        let login = await getAxiosConfig().get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
+
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(login)
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
