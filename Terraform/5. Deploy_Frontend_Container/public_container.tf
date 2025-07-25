@@ -28,7 +28,7 @@ resource "azurerm_container_app" "frontend" {
       }
 
       env {  
-        name = "X-Access-Key"
+        name = "X_ACCESS_KEY"
         value = var.X_ACCESS_KEY
       }
 
