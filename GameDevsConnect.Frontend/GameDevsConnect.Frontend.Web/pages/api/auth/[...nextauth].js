@@ -23,7 +23,7 @@ export const authOptions =
         const u = await getDiscordUser(token);
 
         const responseExist = await existUser(u.loginId);
-        token.id = responseExist.id;
+        
 
         if(!responseExist.status)
         {
@@ -36,6 +36,10 @@ export const authOptions =
           {
             console.log(error);
           }
+        }
+        else
+        {
+          token.id = responseExist.id;
         }
 
       }
