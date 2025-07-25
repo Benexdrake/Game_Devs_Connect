@@ -12,16 +12,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).send('Wrong path');
         return;
     }
+
+    if(!process.env.BACKEND_URL)
+    {
+        res.status(400).send('Missing Backend Url');
+        return;
+    }
     
-    console.log(process.env.BACKEND_URL);
-    console.log(process.env.BACKEND_URL);
-    console.log(process.env.BACKEND_URL);
-    console.log(process.env.BACKEND_URL);
-    console.log(process.env.BACKEND_URL);
-    console.log(process.env.BACKEND_URL);
+    console.log("BACKEND URL",process.env.BACKEND_URL);
     
 
     let url = `${process.env.BACKEND_URL}/${paths.join('/')}`
+
+    console.log("URL",url);
+    
         
     let response = undefined;
 
