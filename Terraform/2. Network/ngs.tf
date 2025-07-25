@@ -17,6 +17,18 @@ resource "azurerm_network_security_group" "public_nsg" {
   }
 
   security_rule {
+  name                       = "AllowAppGatewayInboundHighPorts"
+  priority                   = 200
+  direction                  = "Inbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_ranges    = ["65200-65535"]
+  source_address_prefix      = "*"
+  destination_address_prefix = "*"
+}
+
+  security_rule {
     name                       = "AllowOutboundAll"
     priority                   = 100
     direction                  = "Outbound"
@@ -53,7 +65,7 @@ resource "azurerm_network_security_group" "private_sql_nsg" {
 
 // Combine Subnet with NSG
 resource "azurerm_subnet_network_security_group_association" "public_nsg_subnet" {
-  subnet_id                 = azurerm_subnet.public.id
+  subnet_id                 = azurerm_subnet.appgw_subnet.id
   network_security_group_id = azurerm_network_security_group.public_nsg.id
 }
 

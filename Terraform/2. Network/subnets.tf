@@ -5,6 +5,13 @@ resource "azurerm_subnet" "public" {
   address_prefixes      = [local.public_address_space]
 }
 
+resource "azurerm_subnet" "appgw_subnet" {
+  name                 = "subnet-appgw"
+  resource_group_name  = data.azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [local.gateway_address_space]  # Stelle sicher, dass dies im VNet-Bereich liegt
+}
+
 // Container Subnets
 resource "azurerm_subnet" "public_container" {
   name                  = "subnet-public-container"

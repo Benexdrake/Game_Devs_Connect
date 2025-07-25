@@ -7,7 +7,7 @@ locals {
     admin_ssh = {
       username = "ubuntu"
     }
-    size = "Standard_A1_v2"
+    size = "Standard_A2_v2"
     os_disk = {
       caching               = "ReadWrite"
       storage_account_type  = "Standard_LRS"

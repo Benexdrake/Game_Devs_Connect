@@ -26,6 +26,22 @@ variable "X_ACCESS_KEY" {
   type = string
 }
 
+variable "DISCORD_ID" {
+  type = string
+}
+
+variable "DISCORD_SECRET" {
+  type = string
+}
+
+variable "NEXTAUTH_SECRET" {
+  type = string
+}
+
+variable "DOMAIN" {
+  type = string
+}
+
 variable "tags" {
   type = map(string)
   default = {

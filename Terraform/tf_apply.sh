@@ -14,10 +14,10 @@ cd ../4.\ Deploy_APIs
 echo ">>>>> Deploy APIs..."
 ./tf.sh apply -auto-approve
 
-cd ../5.\ Deploy_Frontend
-echo ">>>>> Creating Frontend VM and Deploy..."
-./tf.sh apply -auto-approve
+# cd ../5.\ Deploy_Frontend
+# echo ">>>>> Creating Frontend VM and Deploy..."
+# ./tf.sh apply -auto-approve
 
-cd ../6.\ Output
-echo ">>>>> Creating Output..."
-./tf.sh apply -auto-approve
+# cd ../6.\ Output
+# echo ">>>>> Creating Output..."
+# ./tf.sh apply -auto-approve

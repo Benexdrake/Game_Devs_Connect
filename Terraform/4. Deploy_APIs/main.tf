@@ -17,6 +17,16 @@ data "azurerm_mssql_server" "main" {
   resource_group_name = data.azurerm_resource_group.main.name
 }
 
+data "azurerm_public_ip" "public" {
+  name = "pip-${var.application_name}-${var.environment_name}-frontend"
+  resource_group_name = data.azurerm_resource_group.main.name
+}
+
+data "azurerm_subnet" "public" {
+  name = "subnet-appgw"
+  resource_group_name = data.azurerm_resource_group.main.name
+  virtual_network_name = data.azurerm_virtual_network.main.name
+}
 
 data "terraform_remote_state" "db" {
   backend = "azurerm"
