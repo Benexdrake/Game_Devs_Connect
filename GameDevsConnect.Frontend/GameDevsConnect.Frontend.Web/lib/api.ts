@@ -1,6 +1,8 @@
+import { PUBLIC_API_URL } from "./constant";
+
 export const getUrl = (methode:string, endpoint:string) => 
 {
-    console.log("NEXTJS BACKEND URL",`${process.env.NEXT_PUBLIC_URL}/api/${methode}/api/v1/${endpoint}`);
+    console.log("NEXTJS BACKEND URL",`${PUBLIC_API_URL}/api/${methode}/api/v1/${endpoint}`);
     
-    return `/api/${methode}/api/v1/${endpoint}`
+    return `${PUBLIC_API_URL}/api/${methode}/api/v1/${endpoint}`;
 };
