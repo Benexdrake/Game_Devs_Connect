@@ -82,3 +82,5 @@ jobs:
           file: ./${{env.APP_NAME}}.${{matrix.path}}/Dockerfile
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/${{env.APP_NAME_LOWER}}_${{matrix.tag}}:latest
+          build-args: |
+            NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}
