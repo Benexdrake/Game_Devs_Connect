@@ -12,7 +12,7 @@ export default function Login()
         <title>GDC - Login</title>
       </Head>
       <h1>Please log in to get access</h1>
-      <h1>Test if Apply realy update container</h1>
+      <h1>{process.env.PUBLIC_NEXT_URL}</h1>
       <br />
       <button onClick={() => signIn()}>Login</button>
     </div>

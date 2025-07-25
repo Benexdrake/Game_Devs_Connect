@@ -13,6 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
     
+    console.log(process.env.BACKEND_URL);
+    console.log(process.env.BACKEND_URL);
+    console.log(process.env.BACKEND_URL);
+    console.log(process.env.BACKEND_URL);
+    console.log(process.env.BACKEND_URL);
+    console.log(process.env.BACKEND_URL);
+    
+
     let url = `${process.env.BACKEND_URL}/${paths.join('/')}`
         
     let response = undefined;
