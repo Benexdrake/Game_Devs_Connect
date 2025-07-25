@@ -20,6 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     console.log("BACKEND URL",process.env.NEXT_PUBLIC_GATEWAY_URL);
+    console.log("PUBLIC URL",process.env.NEXT_PUBLIC_URL);
     
 
     let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`
