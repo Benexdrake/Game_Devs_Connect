@@ -24,7 +24,7 @@ export async function getAxiosInstance()
     let axiosInstance = getAxiosConfig();
     try
     {
-        let login = await getAxiosConfig().get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
+        let login = await getAxiosConfig().get(`${process.env.NEXT_PUBLIC_GATEWAY_URL}/login`).then(x => x.data)
 
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
     }
