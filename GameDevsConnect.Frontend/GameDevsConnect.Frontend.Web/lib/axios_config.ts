@@ -1,6 +1,6 @@
 "use server";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import https from 'https';
 
 function getAxiosConfig()
@@ -21,9 +21,36 @@ function getAxiosConfig()
 export async function getAxiosInstance()
 {
     let axiosInstance = getAxiosConfig();
+    try
+    {
+        let login = await axiosInstance.get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
 
-    let login = await axiosInstance.get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
+    }
+    catch(error)
+    {
+        console.error("ERROR:",error)
+    }
 
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
+    axiosInstance.interceptors.response.use( response => 
+        { return response; },
+        (error: AxiosError) => {
+            if (axios.isAxiosError(error)) 
+            {
+                console.error('[Axios Error]', 
+                {
+                    url: error.config?.url,
+                    method: error.config?.method,
+                    status: error.response?.status,
+                    data: error.response?.data,
+                });
+            } 
+            else 
+            {
+                console.error('[Unbekannter Fehler]', error);
+            }
+            return Promise.reject(error);
+        });
+    
     return axiosInstance;
 }
