@@ -6,7 +6,7 @@ import https from 'https';
 function getAxiosConfig()
 {
     const httpsAgent = new https.Agent({  
-        rejectUnauthorized: process.env.NODE_ENV === 'development' ? false : true
+        rejectUnauthorized: false
     });
 
     const axiosConfig = axios.create({
@@ -16,7 +16,6 @@ function getAxiosConfig()
         }
     });
     
-
     return axiosConfig;
 }
 
