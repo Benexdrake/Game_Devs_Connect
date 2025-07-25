@@ -6,6 +6,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
 
     let paths = req.query.path as string[];
+
+    console.log("PATHS", paths);
+    
     
     if(paths.length < 3)
     {
