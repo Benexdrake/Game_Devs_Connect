@@ -23,7 +23,7 @@ resource "azurerm_container_app" "frontend" {
       memory = "4.0Gi"
 
       env {
-       name = "BACKEND_URL" 
+       name = "NEXT_PUBLIC_GATEWAY_URL" 
        value = "https://${data.azurerm_container_app.gateway.latest_revision_fqdn}"
       }
 

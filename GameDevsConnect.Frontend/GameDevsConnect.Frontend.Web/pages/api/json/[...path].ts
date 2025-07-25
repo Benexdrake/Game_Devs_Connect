@@ -13,16 +13,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
 
-    if(!process.env.BACKEND_URL)
+    if(!process.env.NEXT_PUBLIC_GATEWAY_URL)
     {
         res.status(400).send('Missing Backend Url');
         return;
     }
     
-    console.log("BACKEND URL",process.env.BACKEND_URL);
+    console.log("BACKEND URL",process.env.NEXT_PUBLIC_GATEWAY_URL);
     
 
-    let url = `${process.env.BACKEND_URL}/${paths.join('/')}`
+    let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`
 
     console.log("URL",url);
     
