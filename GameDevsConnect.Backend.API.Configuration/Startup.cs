@@ -81,7 +81,7 @@ public class Startup(string name, bool gateway = false)
         //if(gateway)
             app.Use(async (context, next) =>
             {
-                if(context.Request.Path.Equals("/"))
+                if(context.Request.Path.Value.Equals("/") || context.Request.Path.Value.ToLower().Contains("swagger"))
                 {
                     await next();
                     return;
