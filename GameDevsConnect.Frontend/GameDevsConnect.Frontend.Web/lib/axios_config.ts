@@ -15,6 +15,8 @@ function getAxiosConfig()
             "X-Access-Key" : process.env.X_ACCESS_KEY
         }
     });
+    
+
     return axiosConfig;
 }
 
@@ -25,6 +27,16 @@ export async function getAxiosInstance()
     {
         let login = await axiosInstance.get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
 
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(login)
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(process.env.X_ACCESS_KEY);
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${login.accessToken}`
     }
     catch(error)

@@ -93,7 +93,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             var user = await _context.Users.FirstOrDefaultAsync(x => x.LoginId.Equals(id), token);
 
             if (user is null)
-                return new GetUserIdResponse(null!, false, null!, null!);
+                return new GetUserIdResponse(null!, false, "", null!);
 
             return new GetUserIdResponse(null!, true, user.Id, null!);
         }

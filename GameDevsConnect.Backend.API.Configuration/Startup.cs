@@ -81,7 +81,7 @@ public class Startup(string name, bool gateway = false)
         //if(gateway)
             app.Use(async (context, next) =>
             {
-                if (app.Environment.IsDevelopment())
+                if(context.Request.Path.Equals("/"))
                 {
                     await next();
                     return;
@@ -123,6 +123,8 @@ public class Startup(string name, bool gateway = false)
 
                 endPoints.Add(endpoint.DisplayName!);
             }
+
+            endPoints.Add($"X-Access-Key: {accessKey}");
             return endPoints;
         });
 
