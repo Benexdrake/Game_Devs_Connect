@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) 
 {
+    
+
     let paths = req.query.path as string[];
     
     if(paths.length < 3)
@@ -15,22 +17,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         
     let response = undefined;
 
+    const instance = await getAxiosInstance();
+
     switch(req.method)
     {
         case "GET":
-            response =  await (await getAxiosInstance()).get(url).then(x => x.data)
+            response =  await instance.get(url).then(x => x.data)
             break;
 
         case "POST":
-            response =  await (await getAxiosInstance()).post(url, req.body).then(x => x.data)
+            response =  await instance.post(url, req.body).then(x => x.data)
             break;
 
         case "PUT":
-            response =  await (await getAxiosInstance()).put(url, req.body).then(x => x.data)
+            response =  await instance.put(url, req.body).then(x => x.data)
             break;
 
         case "DELETE":
-            response =  await (await getAxiosInstance()).delete(url, req.body).then(x => x.data)
+            response =  await instance.delete(url, req.body).then(x => x.data)
             break;
 
         default:

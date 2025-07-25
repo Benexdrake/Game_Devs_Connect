@@ -25,7 +25,7 @@ export async function getAxiosInstance()
     let axiosInstance = getAxiosConfig();
     try
     {
-        let login = await axiosInstance.get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
+        let login = await getAxiosConfig().get(`${process.env.BACKEND_URL}/login`).then(x => x.data)
 
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
