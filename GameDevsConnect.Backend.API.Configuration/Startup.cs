@@ -77,6 +77,9 @@ public class Startup(string name)
 
         app.Use(async (context, next) =>
         {
+            await next();
+            return;
+
             if (context.Request.Path.Value is not null && (context.Request.Path.Value.Equals("/") || context.Request.Path.Value.ToLower().Contains("swagger")))
             {
                 await next();
