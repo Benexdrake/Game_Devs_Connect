@@ -16,8 +16,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).send('Missing Backend Url');
         return;
     }
+    const query = req.query.query as string || "";
 
-    let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`
+    let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`+query.replaceAll(';','&')
+    
+    
+    console.log("URL:", url);
+
+    console.log(paths);
+    
+    
         
     let response;
 
