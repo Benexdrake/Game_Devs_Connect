@@ -8,15 +8,15 @@ var accessKey = Environment.GetEnvironmentVariable("X-Access-Key") ?? "";
 var gatewayUrl = Environment.GetEnvironmentVariable("GATEWAY_URL") ?? "https://localhost:7000";
 
 var apiEndpoints = new APIEndpoint[] {
-    new("azure", Environment.GetEnvironmentVariable("AZURE_URL") ?? "http://localhost:7001"),
-    new("file", Environment.GetEnvironmentVariable("FILE_URL") ?? "http://localhost:7002"),
-    new("notification", Environment.GetEnvironmentVariable("NOTIFICATION_URL") ?? "http://localhost:7003"),
-    new("post", Environment.GetEnvironmentVariable("POST_URL") ?? "http://localhost:7004"),
-    new("project", Environment.GetEnvironmentVariable("PROJECT_URL") ?? "http://localhost:7005"),
-    new("profile", Environment.GetEnvironmentVariable("PROFILE_URL") ?? "http://localhost:7006"),
-    new("quest", Environment.GetEnvironmentVariable("QUEST_URL") ?? "http://localhost:7007"),
-    new("tag", Environment.GetEnvironmentVariable("TAG_URL") ?? "http://localhost:7008"),
-    new("user", Environment.GetEnvironmentVariable("USER_URL") ?? "http://localhost:7009")
+    new("azure", Environment.GetEnvironmentVariable("AZURE_URL")+"/swagger" ?? "http://localhost:7001"),
+    new("file", Environment.GetEnvironmentVariable("FILE_URL")+"/swagger" ?? "http://localhost:7002"),
+    new("notification", Environment.GetEnvironmentVariable("NOTIFICATION_URL")+"/swagger" ?? "http://localhost:7003"),
+    new("post", Environment.GetEnvironmentVariable("POST_URL")+"/swagger" ?? "http://localhost:7004"),
+    new("project", Environment.GetEnvironmentVariable("PROJECT_URL") + "/swagger" ?? "http://localhost:7005"),
+    new("profile", Environment.GetEnvironmentVariable("PROFILE_URL")+"/swagger" ?? "http://localhost:7006"),
+    new("quest", Environment.GetEnvironmentVariable("QUEST_URL")+"/swagger" ?? "http://localhost:7007"),
+    new("tag", Environment.GetEnvironmentVariable("TAG_URL")+"/swagger" ?? "http://localhost:7008"),
+    new("user", Environment.GetEnvironmentVariable("USER_URL")+"/swagger" ?? "http://localhost:7009")
 };
 
 var devModus = Environment.GetEnvironmentVariable("DEVMODUS") ?? "";
@@ -85,8 +85,7 @@ app.MapGet("/info", () =>
         sqlAdminUsername,
         sqlAdminPassword,
         accessKey,
-        routes = yarpConfiguration.Routes,
-        clusters = yarpConfiguration.Clusters
+        apiEndpoints
     };
 });
 
