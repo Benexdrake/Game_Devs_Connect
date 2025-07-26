@@ -9,8 +9,8 @@ import axios from "axios"
 const url = getUrl('json','post')
 
 export const getPostIdsAsync = async (page:number=1, pageSize:number=10, searchTerm:string='', parentId:string='') =>
-{   
-    return await axios.get<IAPIPostIdsResponse>(`${url}?page=${page}&pageSize=${pageSize}&parentId=${parentId}&searchTerm=${searchTerm}`).then(x => x.data)
+{   const query = `?page=${page};pageSize=${pageSize};parentId=${parentId};searchTerm=${searchTerm}`;
+    return await axios.get<IAPIPostIdsResponse>(`${url}?query=${query}`).then(x => x.data)
 }
 
 export const getPostAsync = async (id:string) =>
