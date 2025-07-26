@@ -17,7 +17,7 @@ public static class QuestEndpoints
         .WithDescription(ApiEndpointsV1.Quest.MetaData.Description.GetIdsByPostId)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapGet(ApiEndpointsV1.Quest.Get, async ([FromServices] IQuestRepository repo, [FromRoute] string id, [FromQuery] string userId, CancellationToken token) =>
+        group.MapGet(ApiEndpointsV1.Quest.Get, async ([FromServices] IQuestRepository repo, [FromRoute] string id, [FromQuery] string userId="", CancellationToken token = default) =>
         {
             return await repo.GetAsync(id, userId, token);
         })
