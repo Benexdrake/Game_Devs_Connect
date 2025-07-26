@@ -5,8 +5,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 {
     let paths = req.query.path as string[];
 
-    console.log("PATHS", paths);
-    
     if(paths.length < 3)
     {
         res.status(400).send('Wrong path');
@@ -18,17 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).send('Missing Backend Url');
         return;
     }
-    
-    console.log("BACKEND URL",process.env.NEXT_PUBLIC_GATEWAY_URL);
-    console.log("PUBLIC URL",process.env.NEXT_PUBLIC_URL);
-    
 
     let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`
-
-    console.log("URL",url);
-    
         
-    let response = undefined;
+    let response;
 
     const instance = await getAxiosInstance();
 

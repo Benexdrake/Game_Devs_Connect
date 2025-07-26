@@ -1,4 +1,4 @@
-﻿var start = new Startup("Gateway",true);
+﻿var start = new Startup("Gateway");
 var builder = start.Build(args);
 
 var sqlUrl = Environment.GetEnvironmentVariable("SQL_URL") ?? "localhost";
@@ -61,8 +61,6 @@ using (var scope = app.Services.CreateScope())
     catch (Exception)
     {
     }    
-
-
 }
 
 app.MapGet(ApiEndpointsV1.Gateway.Login, () =>

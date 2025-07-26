@@ -64,10 +64,10 @@ resource "azurerm_network_security_group" "private_sql_nsg" {
 
 
 // Combine Subnet with NSG
-resource "azurerm_subnet_network_security_group_association" "public_nsg_subnet" {
-  subnet_id                 = azurerm_subnet.appgw_subnet.id
-  network_security_group_id = azurerm_network_security_group.public_nsg.id
-}
+# resource "azurerm_subnet_network_security_group_association" "public_nsg_subnet" {
+#   subnet_id                 = azurerm_subnet.appgw_subnet.id
+#   network_security_group_id = azurerm_network_security_group.public_nsg.id
+# }
 
 resource "azurerm_subnet_network_security_group_association" "public_container_nsg_subnet" {
   subnet_id                 = azurerm_subnet.public_container.id

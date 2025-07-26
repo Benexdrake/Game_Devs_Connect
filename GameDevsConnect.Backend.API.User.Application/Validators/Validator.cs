@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-
-namespace GameDevsConnect.Backend.API.User.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.User.Application.Validators;
 
 public class Validator : AbstractValidator<UserDTO>
 {
@@ -46,5 +44,4 @@ public class Validator : AbstractValidator<UserDTO>
     {
         return await _context.Users.AnyAsync(x => x.LoginId == id, token);
     }
-
 }

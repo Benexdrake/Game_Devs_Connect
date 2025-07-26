@@ -1,14 +1,11 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Resources;
+﻿using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace GameDevsConnect.Backend.API.Configuration;
 
-public class Startup(string name, bool gateway = false)
+public class Startup(string name)
 {
     private readonly string _name = name;
-    private readonly bool gateway = gateway;
     private string accessKey = string.Empty;
     public int APIVersion { get; } = 1;
 
@@ -78,35 +75,37 @@ public class Startup(string name, bool gateway = false)
 
         app.UseResponseCaching();
 
-        //if(gateway)
-            app.Use(async (context, next) =>
+        app.Use(async (context, next) =>
+        {
+            await next();
+            return;
+
+            if (context.Request.Path.Value.Equals("/") || context.Request.Path.Value.ToLower().Contains("swagger"))
             {
-                if(context.Request.Path.Value.Equals("/") || context.Request.Path.Value.ToLower().Contains("swagger"))
-                {
-                    await next();
-                    return;
-                }
-
-
-                if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(accessKey))
-                {
-                    context.Request.Headers["X-Access-Key"] = "-";
-                    context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
-                    {
-                        Public = true,
-                        MaxAge = TimeSpan.FromSeconds(30)
-                    };
-
-                    context.Response.Headers[HeaderNames.Vary] = "User-Agent";
-
-                    await next();
-                    return;
-                }
-
-                context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                await context.Response.WriteAsync("Access denied.");
+                await next();
                 return;
-            });
+            }
+
+
+            if (context.Request.Headers.TryGetValue("X-Access-Key", out var value) && value.Equals(accessKey))
+            {
+                context.Request.Headers["X-Access-Key"] = "-";
+                context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+                {
+                    Public = true,
+                    MaxAge = TimeSpan.FromSeconds(30)
+                };
+
+                context.Response.Headers[HeaderNames.Vary] = "User-Agent";
+
+                await next();
+                return;
+            }
+
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsync("Access denied.");
+            return;
+        });
 
         app.MapGet("", () =>
         {
