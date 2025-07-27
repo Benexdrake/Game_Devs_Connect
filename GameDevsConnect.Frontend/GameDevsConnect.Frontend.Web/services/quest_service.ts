@@ -11,7 +11,8 @@ const url = getUrl('json','quest')
 
 export const getQuestAsync = async (id:string, userId:string='') =>
 {
-    return await axios.get<IAPIQuestResponse>(`${url}/${id}?userId=${userId}`).then(x => x.data)
+    const query = `?userId=${userId}`
+    return await axios.get<IAPIQuestResponse>(`${url}/${id}?query=${query}`).then(x => x.data)
 }
 
 export const getQuestIdsByPostIdAsync = async (id:string) =>
@@ -21,7 +22,8 @@ export const getQuestIdsByPostIdAsync = async (id:string) =>
 
 export const getFavoritedQuestIdsAsync = async (userId:string, page:number=1, pageSize:number=10, searchTerm:string='') =>
 {
-    return await axios.get<IAPIQuestIdsResponse>(`${url}/favorites?page=${page}&pageSize=${pageSize}&userId=${userId}&searchTerm=${searchTerm}`).then(x => x.data)
+    const query = `?page=${page};pageSize=${pageSize};userId=${userId};searchTerm=${searchTerm}`;
+    return await axios.get<IAPIQuestIdsResponse>(`${url}/favorites?query=${query}`).then(x => x.data)
 }
 
 export const addQuestAsync = async (quest:IQuest) =>
