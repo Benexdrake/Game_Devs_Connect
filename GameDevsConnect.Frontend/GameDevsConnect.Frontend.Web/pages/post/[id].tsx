@@ -30,7 +30,7 @@ export default function Post({id, commentIds, questIds, fileIds}:{id:string, com
                 (
                     <ShowElement title='Quests' show={showQuest} setShow={setShowQuest}> 
                         <div style={{display:"grid", gap:'8px', marginTop:'8px'}}>
-                            {questIds.map((x:string, index) => <ShowQuest id={x} index={index + 1} key={x}/>)} 
+                            {questIds.map((x:string, index) => <ShowQuest id={x} index={index + 1} key={x} userId={user.id}/>)} 
                         </div>
                     </ShowElement>
                 )
