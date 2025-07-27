@@ -5,17 +5,14 @@ import { IAPIQuestResponse } from '@/interfaces/responses/quest/api_quest_respon
 import { useSession } from 'next-auth/react';
 import { IUser } from '@/interfaces/user';
 
-export default function ShowQuest({id, index}:{id:string, index:number})
+export default function ShowQuest({id, index, userId=""}:{id:string, index:number, userId:string})
 {
     const [response, setResponse] = useState<IAPIQuestResponse>(null!)
-
-        const {data:session} = useSession();
-        const user = session?.user as IUser;
 
     useEffect(() => {
         const get = async () =>
         {
-            const r = await getQuestAsync(id, user.id)
+            const r = await getQuestAsync(id, userId)
             
             if(r.status)
                 setResponse(r)

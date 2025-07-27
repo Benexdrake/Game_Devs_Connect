@@ -28,7 +28,7 @@ export default function InfiniteScrollQuests({initialIds, search, userId}: {init
     
         return (
             <div>
-                <ShowQuests ids={ids} />
+                <ShowQuests ids={ids} userId={userId}/>
                 <div ref={ref}>
                     LOADING ...
                 </div>
