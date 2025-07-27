@@ -6,7 +6,6 @@ import { getSession } from "next-auth/react";
 
 export default function Quests({ids, userId}: {ids:string[], userId:string})
 {
-
     return (
         <div>
             <InfiniteScrollQuests initialIds={ids} userId={userId} search=""/>
@@ -31,9 +30,7 @@ export async function getServerSideProps(context:GetServerSidePropsContext)
       const user = session.user as IUser;
 
       const response = await getFavoritedQuestIdsAsync(user.id)
-      console.log(response);
       
-
       return {
         props: {
             ids: response.ids,

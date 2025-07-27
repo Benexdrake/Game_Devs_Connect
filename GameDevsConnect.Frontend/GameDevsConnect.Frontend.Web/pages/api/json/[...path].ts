@@ -20,13 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     let url = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/${paths.join('/')}`+query.replaceAll(';','&')
     
-    
-    console.log("URL:", url);
-
-    console.log(paths);
-    
-    
-        
     let response;
 
     const instance = await getAxiosInstance();
