@@ -65,11 +65,9 @@ public class Startup(string name)
         var app = build.Build();
         app.MapDefaultEndpoints();
 
-        if (app.Environment.IsDevelopment())
-        {
+      
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
 
         app.UseHttpsRedirection();
 
