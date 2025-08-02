@@ -109,7 +109,6 @@ public class Startup(string name)
         {
             var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
             var endPoints = new List<string>();
-            endPoints.Add("Testing Update Containers");
 
             foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
             {

@@ -7,8 +7,8 @@ locals {
         template = {
             name = "apiazure",
             image = "benexdrake012/gamedevsconnect_backend_api_azure",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "file" = {
@@ -18,8 +18,8 @@ locals {
         template = {
             name = "apifile",
             image = "benexdrake012/gamedevsconnect_backend_api_file",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "notification" = {
@@ -29,8 +29,8 @@ locals {
         template = {
             name = "apinotification",
             image = "benexdrake012/gamedevsconnect_backend_api_notification",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "profile" = {
@@ -40,8 +40,8 @@ locals {
         template = {
             name = "apiprofile",
             image = "benexdrake012/gamedevsconnect_backend_api_profile",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "project" = {
@@ -51,8 +51,8 @@ locals {
         template = {
             name = "apiproject",
             image = "benexdrake012/gamedevsconnect_backend_api_project",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "post" = {
@@ -62,8 +62,8 @@ locals {
         template = {
             name = "apipost",
             image = "benexdrake012/gamedevsconnect_backend_api_post",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "quest" = {
@@ -73,8 +73,8 @@ locals {
         template = {
             name = "apiquest",
             image = "benexdrake012/gamedevsconnect_backend_api_quest",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "tag" = {
@@ -84,8 +84,8 @@ locals {
         template = {
             name = "apitag",
             image = "benexdrake012/gamedevsconnect_backend_api_tag",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     },
     "user" = {
@@ -95,8 +95,8 @@ locals {
         template = {
             name = "apiuser",
             image = "benexdrake012/gamedevsconnect_backend_api_user",
-            cpu = 0.5,
-            memory = "1.0Gi"
+            cpu = 1,
+            memory = "2.0Gi"
         }
     }
   }

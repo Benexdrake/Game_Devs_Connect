@@ -29,8 +29,8 @@ resource "azurerm_container_app" "gateway" {
     container {
       name   = "gateway"
       image  = "benexdrake012/gamedevsconnect_backend_api_gateway"
-      cpu    = 0.5
-      memory = "1.0Gi"
+      cpu    = 2
+      memory = "4.0Gi"
 
       env {
        name = "AZURE_URL" 

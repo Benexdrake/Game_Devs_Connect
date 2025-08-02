@@ -19,8 +19,8 @@ resource "azurerm_container_app" "frontend" {
     container {
       name   = "frontend"
       image  = "benexdrake012/gamedevsconnect_frontend"
-      cpu    = 2
-      memory = "4.0Gi"
+      cpu    = 4
+      memory = "8.0Gi"
 
       env {
        name = "NEXT_PUBLIC_GATEWAY_URL" 
