@@ -29,6 +29,7 @@
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Project\GameDevsConnect.Backend.API.Project.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Quest\GameDevsConnect.Backend.API.Quest.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.Tag\GameDevsConnect.Backend.API.Tag.csproj" />
+    <ProjectReference Include="..\GameDevsConnect.Backend.API.User.gRPC\GameDevsConnect.Backend.API.User.gRPC.csproj" />
     <ProjectReference Include="..\GameDevsConnect.Backend.API.User\GameDevsConnect.Backend.API.User.csproj" />
   </ItemGroup>
 

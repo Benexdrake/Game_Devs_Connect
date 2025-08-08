@@ -126,6 +126,14 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
 
 
 
+builder.AddProject<Projects.GameDevsConnect_Backend_API_User_gRPC>("gamedevsconnect-backend-api-user-grpc")
+       .WithHttpEndpoint(port: 8001, name: "user")
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WaitFor(sql);
+
+
 var build = builder.Build();
 
 await build.RunAsync();

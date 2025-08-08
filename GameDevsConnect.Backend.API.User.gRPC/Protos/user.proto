@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option csharp_namespace = "GameDevsConnect.Backend.API.User.gRPC.Services";
+
+import "google/protobuf/empty.proto";
+
+package user;
+
+message User
+{
+	string id = 1;
+	string loginId = 2;
+	string username = 3;
+	string avatar = 4;
+	string accountType = 5;
+}
+
+message UserId
+{
+	string id = 1;
+}
+
+message GetUserIdsResponse
+{
+	repeated string ids = 1;
+}
+
+message Response
+{
+	bool status = 1;
+}
+
+message GetUserRequest
+{
+	string id = 1;
+}
+
+message CreateUserRequest
+{
+	User user = 1;
+}
+
+message UpdateUserRequest
+{
+	User user = 1;
+}
+
+message DeleteUserRequest
+{
+	string id = 1;
+}
+
+
+service UserProtoService
+{
+	rpc GetUserIds(google.protobuf.Empty) returns (GetUserIdsResponse);
+	rpc GetUser(GetUserRequest) returns (User);
+	rpc CreateUser(CreateUserRequest) returns (UserId);
+	rpc UpdateUser(UpdateUserRequest) returns (Response);
+	rpc DeleteUser(DeleteUserRequest) returns (Response);
+}
