@@ -1,18 +1,16 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.User.Application.Repository.V1;
 
 public interface IUserRepository
 {
-    Task<GetUserIdsResponse> GetIdsAsync(CancellationToken token = default);
-    Task<GetUserByIdResponse> GetAsync(string id, CancellationToken token = default);
-    Task<GetUserIdResponse> GetExistAsync(string id, CancellationToken token = default);
-    Task<GetCountResponse> GetFollowerCountAsync(string id, CancellationToken token = default);
-    Task<GetCountResponse> GetFollowingCountAsync(string id, CancellationToken token = default);
-    Task<GetUserIdsResponse> GetFollowerAsync(string id, CancellationToken token = default);
-    Task<GetUserIdsResponse> GetFollowingAsync(string id, CancellationToken token = default);
-    Task<GetUserIdsResponse> GetIdsByProjectIdAsync(string id, CancellationToken token = default);
-    Task<GetUserIdResponse> AddAsync(UserDTO user, CancellationToken token = default);
-    Task<ApiResponse> UpdateAsync(UserDTO user, CancellationToken token = default);
-    Task<ApiResponse> DeleteAsync(string id, CancellationToken token = default);
+    Task<string[]> GetIdsAsync(CancellationToken token = default);
+    Task<UserDTO?> GetAsync(string id, CancellationToken token = default);
+    Task<bool> GetExistAsync(string id, CancellationToken token = default);
+    Task<int> GetFollowerCountAsync(string id, CancellationToken token = default);
+    Task<int> GetFollowingCountAsync(string id, CancellationToken token = default);
+    Task<string[]> GetFollowerAsync(string id, CancellationToken token = default);
+    Task<string[]> GetFollowingAsync(string id, CancellationToken token = default);
+    Task<string[]> GetIdsByProjectIdAsync(string id, CancellationToken token = default);
+    Task<string> AddAsync(UserDTO user, CancellationToken token = default);
+    Task<bool> UpdateAsync(UserDTO user, CancellationToken token = default);
+    Task<bool> DeleteAsync(string id, CancellationToken token = default);
 }
