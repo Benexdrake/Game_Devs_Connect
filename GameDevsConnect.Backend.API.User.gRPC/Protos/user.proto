@@ -25,6 +25,11 @@ message GetUserIdsResponse
 	repeated string ids = 1;
 }
 
+message GetCountResponse
+{
+	int32 count = 1;
+}
+
 message Response
 {
 	bool status = 1;
@@ -45,17 +50,22 @@ message UpdateUserRequest
 	User user = 1;
 }
 
-message DeleteUserRequest
+message IdRequest
 {
 	string id = 1;
 }
 
-
 service UserProtoService
 {
-	rpc GetUserIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-	rpc GetUser(GetUserRequest) returns (User);
-	rpc CreateUser(CreateUserRequest) returns (UserId);
-	rpc UpdateUser(UpdateUserRequest) returns (Response);
-	rpc DeleteUser(DeleteUserRequest) returns (Response);
+	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
+	rpc GetExist(IdRequest) returns (Response);
+	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
+	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
+	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
+	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
+	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
+	rpc Get(GetUserRequest) returns (User);
+	rpc Create(CreateUserRequest) returns (UserId);
+	rpc Update(UpdateUserRequest) returns (Response);
+	rpc Delete(IdRequest) returns (Response);
 }

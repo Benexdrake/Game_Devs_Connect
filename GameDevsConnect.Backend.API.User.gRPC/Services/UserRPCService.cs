@@ -1,16 +1,11 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.User.Application.Validators;
-using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
-
-namespace GameDevsConnect.Backend.API.User.gRPC.Services;
+﻿namespace GameDevsConnect.Backend.API.User.gRPC.Services;
 
 public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
 {
     private readonly IUserRepository _repo = repo;
     private readonly GDCDbContext _context = context;
 
-    public override async Task<UserId> CreateUser(CreateUserRequest request, ServerCallContext context)
+    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
     {
         string id = "";
 
@@ -31,7 +26,7 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
         return new UserId() { Id = id};
     }
 
-    public override async Task<Response> UpdateUser(UpdateUserRequest request, ServerCallContext context)
+    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
     {
         var response = new Response();
         UserDTO user = new()
@@ -47,7 +42,7 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
         return response;
     }
 
-    public override async Task<Response> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
     {
         var response = new Response
         {
@@ -57,7 +52,7 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
         return response;
     }
 
-    public override async Task<GetUserIdsResponse> GetUserIds(Empty request, ServerCallContext context)
+    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
     {
         var response = new GetUserIdsResponse();
 
@@ -67,4 +62,74 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
 
         return response;
     }
+
+    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
+    {
+        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
+
+        return new User()
+        {
+            Id = user.Id,
+            LoginId = user.LoginId,
+            Avatar = user.Avatar,
+            AccountType = user.Accounttype,
+            Username = user.Username
+        };
+    }
+
+    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
+    {
+        return new Response()
+        {
+            Status = await _repo.GetExistAsync(request.Id)
+        };
+    }
+
+    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
+    {
+        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+
+        var response = new GetUserIdsResponse();
+        response.Ids.AddRange(ids);
+        return response;
+    }
+
+    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
+    {
+        var ids = await _repo.GetFollowerAsync(request.Id);
+
+        var response = new GetUserIdsResponse();
+        response.Ids.AddRange(ids);
+        return response;
+    }
+
+    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
+    {
+        var ids = await _repo.GetFollowingAsync(request.Id);
+
+        var response = new GetUserIdsResponse();
+        response.Ids.AddRange(ids);
+        return response;
+    }
+
+    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
+    {
+        var count = await _repo.GetFollowerCountAsync(request.Id);
+
+        return new GetCountResponse()
+        {
+            Count = count
+        };
+    }
+
+    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
+    {
+        var count = await _repo.GetFollowingCountAsync(request.Id);
+
+        return new GetCountResponse()
+        {
+            Count = count
+        };
+    }
+
 }
