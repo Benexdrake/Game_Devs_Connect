@@ -3,8 +3,92 @@ syntax = "proto3";
 option csharp_namespace = "GameDevsConnect.Backend.API.User.gRPC.Services";
 
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 
 package user;
+
+service UserProtoService
+{
+	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse)
+	{
+		option (google.api.http) = {
+			get: "/user"
+		};
+	}
+
+	rpc GetExist(IdRequest) returns (Response)
+	{
+		option (google.api.http) = {
+			get: "/user/exist/{id}"
+		};
+	}
+
+	rpc GetFollowerCount(IdRequest) returns (GetCountResponse)
+	{
+		option (google.api.http) = {
+			get: "/user/follower/count/{id}"
+		};
+	}
+
+	rpc GetFollowingCount(IdRequest) returns (GetCountResponse)
+	{
+		option (google.api.http) = {
+			get: "/user/following/count/{id}"
+		};
+	}
+
+	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse)
+	{
+		option (google.api.http) = {
+			get: "/user/follower/{id}"
+		};
+	}
+
+	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse)
+	{
+		option (google.api.http) = {
+			get: "/user/following/{id}"
+		};
+	}
+
+	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse)
+	{
+		option (google.api.http) = {
+			get: "/user/project/{id}"
+		};
+	}
+
+	rpc Get(GetUserRequest) returns (User)
+	{
+		option (google.api.http) = {
+			get: "/user/{id}"
+		};
+	}
+
+	rpc Create(CreateUserRequest) returns (UserId)
+	{
+		option (google.api.http) = {
+			post: "/user/add",
+			body: "*"
+		};
+	}
+
+	rpc Update(UpdateUserRequest) returns (Response)
+	{
+		option (google.api.http) = {
+			put: "/user/update",
+			body: "*"
+		};
+	}
+
+	rpc Delete(IdRequest) returns (Response)
+	{
+		option (google.api.http) = {
+			delete: "/user/delete/{id}"
+		};
+	}
+
+}
 
 message User
 {
@@ -53,19 +137,4 @@ message UpdateUserRequest
 message IdRequest
 {
 	string id = 1;
-}
-
-service UserProtoService
-{
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-	rpc GetExist(IdRequest) returns (Response);
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-	rpc Get(GetUserRequest) returns (User);
-	rpc Create(CreateUserRequest) returns (UserId);
-	rpc Update(UpdateUserRequest) returns (Response);
-	rpc Delete(IdRequest) returns (Response);
 }

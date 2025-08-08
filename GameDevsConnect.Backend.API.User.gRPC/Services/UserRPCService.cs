@@ -9,14 +9,13 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
     {
         string id = "";
 
-        UserDTO user = new()
-        {
-            Id = string.Empty,
-            LoginId = request.User.LoginId,
-            Avatar = request.User.Avatar,
-            Accounttype = request.User.AccountType,
-            Username = request.User.Username
-        };
+        UserDTO user = new (
+            id: string.Empty,
+            loginId: request.User.LoginId,
+            username: request.User.Username,
+            avatar: request.User.Avatar,
+            accounttype: request.User.AccountType
+            );
 
         var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
 
@@ -29,15 +28,18 @@ public class UserRPCService(IUserRepository repo, GDCDbContext context) : UserPr
     public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
     {
         var response = new Response();
-        UserDTO user = new()
-        {
-            Id = request.User.Id,
-            LoginId = request.User.LoginId,
-            Avatar = request.User.Avatar,
-            Accounttype = request.User.AccountType,
-            Username = request.User.Username
-        };
-        response.Status = await _repo.UpdateAsync(user);
+        UserDTO user = new ( 
+            request.User.Id,
+            request.User.LoginId,
+            request.User.Username,
+            request.User.Avatar,
+            request.User.AccountType
+            );
+
+        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+
+        if (validation.Length == 0)
+            response.Status = await _repo.UpdateAsync(user);
 
         return response;
     }
