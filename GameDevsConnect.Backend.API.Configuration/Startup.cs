@@ -16,7 +16,7 @@ public class Startup(string name)
         builder.AddServiceDefaults();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        builder.Services.AddGrpc();
 
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService($"API.Service.{_name}"))
