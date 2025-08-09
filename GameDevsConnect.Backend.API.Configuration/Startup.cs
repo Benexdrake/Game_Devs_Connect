@@ -1,22 +1,27 @@
-﻿using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-
-namespace GameDevsConnect.Backend.API.Configuration;
+﻿namespace GameDevsConnect.Backend.API.Configuration;
 
 public class Startup(string name)
 {
     private readonly string _name = name;
     private string accessKey = string.Empty;
+    private string modus = "0";
     public int APIVersion { get; } = 1;
 
     public WebApplicationBuilder Build(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        if (args.Length > 0)
+            modus = args[0];
+
         builder.AddServiceDefaults();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddGrpc();
+        if (modus.Equals("0") || modus.Equals("1"))
+        {
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+        }
+        if (modus.Equals("0") || modus.Equals("2"))
+            builder.Services.AddGrpc();
 
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService($"API.Service.{_name}"))
@@ -46,16 +51,19 @@ public class Startup(string name)
                 .MinimumLevel.Information()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"));
 
-        builder.Services.AddApiVersioning(o =>
+        if (modus.Equals("0") || modus.Equals("1"))
         {
-            o.DefaultApiVersion = new ApiVersion(APIVersion);
-            o.ApiVersionReader = new UrlSegmentApiVersionReader();
-        })
-        .AddApiExplorer(o =>
-        {
-            o.GroupNameFormat = "'v'V";
-            o.SubstituteApiVersionInUrl = true;
-        });
+            builder.Services.AddApiVersioning(o =>
+            {
+                o.DefaultApiVersion = new ApiVersion(APIVersion);
+                o.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddApiExplorer(o =>
+            {
+                o.GroupNameFormat = "'v'V";
+                o.SubstituteApiVersionInUrl = true;
+            });
+        }
 
         return builder;
     }
@@ -65,12 +73,13 @@ public class Startup(string name)
         var app = build.Build();
         app.MapDefaultEndpoints();
 
-      
+        if (modus.Equals("0") || modus.Equals("1"))
+        {
             app.UseSwagger();
             app.UseSwaggerUI();
+        }
 
         app.UseHttpsRedirection();
-
         app.UseResponseCaching();
 
         app.Use(async (context, next) =>
@@ -105,25 +114,28 @@ public class Startup(string name)
             return;
         });
 
-        app.MapGet("", () =>
+        if (modus.Equals("0") || modus.Equals("1"))
         {
-            var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
-            var endPoints = new List<string>();
-
-            foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
+            app.MapGet("", () =>
             {
-                var methodMetadata = endpoint.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
-                var methods = methodMetadata?.HttpMethods;
+                var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
+                var endPoints = new List<string>();
 
-                if (string.IsNullOrEmpty(endpoint.RoutePattern.RawText))
-                    continue;
+                foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
+                {
+                    var methodMetadata = endpoint.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
+                    var methods = methodMetadata?.HttpMethods;
 
-                endPoints.Add(endpoint.DisplayName!);
-            }
+                    if (string.IsNullOrEmpty(endpoint.RoutePattern.RawText))
+                        continue;
 
-            endPoints.Add($"X-Access-Key: {accessKey}");
-            return endPoints;
-        });
+                    endPoints.Add(endpoint.DisplayName!);
+                }
+
+                endPoints.Add($"X-Access-Key: {accessKey}");
+                return endPoints;
+            });
+        }
 
         return app;
     }

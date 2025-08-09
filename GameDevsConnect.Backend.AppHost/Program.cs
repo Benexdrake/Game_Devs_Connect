@@ -6,6 +6,9 @@ string azureBaseUrl = builder.Configuration["AZURE_STORAGE_BASE_URL"]!;
 
 int replicas = 1;
 
+// 0 = both, 1 = http, 2 = grcp
+string modus = "0";
+
 var accessKey = "123456";
 
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
@@ -19,6 +22,7 @@ var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, passwo
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")
        .WithHttpsEndpoint(port: 7009, name: "user")
        .WithReplicas(replicas)
+       .WithArgs([modus])
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)

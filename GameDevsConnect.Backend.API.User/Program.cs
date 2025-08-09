@@ -5,10 +5,17 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = start.Create(builder);
 
+string modus = "0";
+
+if(args.Length > 0)
+    modus = args[0];
+
 // HTTP1
-app.MapEndpointsV1();
+if(modus.Equals("0") || modus.Equals("1"))
+    app.MapEndpointsV1();
 
 // HTTP2
-app.MapGrpcService<UserRPCService>();
+if (modus.Equals("0") || modus.Equals("2"))
+    app.MapGrpcService<UserRPCService>();
 
 app.Run();

@@ -8,3 +8,4 @@ global using GameDevsConnect.Backend.API.User.Services;
 global using Microsoft.AspNetCore.Mvc;
 global using Google.Protobuf.WellKnownTypes;
 global using Grpc.Core;
+
