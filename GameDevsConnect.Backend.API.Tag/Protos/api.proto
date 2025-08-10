@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "GameDevsConnect.Backend.API.Tag.Services";
+
+import "google/protobuf/empty.proto";
+
+package tag;
+
+service TagProtoService
+{
+	rpc Get(google.protobuf.Empty) returns (TagResponse);
+	rpc Add(TagRequest) returns (Response);
+	rpc Update(TagRequest) returns (Response);
+	rpc Delete(TagDeleteRequest) returns (Response);
+}
+
+message Response
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+message TagRequest
+{
+	string tag = 1;
+	string type = 2;
+}
+
+message TagResponse
+{
+	Response response = 1;
+	repeated TagRequest tags = 2;
+}
+
+message TagDeleteRequest
+{
+	string tag = 1;
+}

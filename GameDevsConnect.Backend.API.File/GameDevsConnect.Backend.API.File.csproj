@@ -8,6 +8,9 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\api.proto" GrpcServices="Server" />
+	</ItemGroup>
 
 		<ItemGroup>
 			<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.14" />
@@ -26,6 +29,11 @@
 			</PackageReference>
 			<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
 			<PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
+			<PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
+			<PackageReference Include="Grpc.Tools" Version="2.72.0">
+				<PrivateAssets>all</PrivateAssets>
+				<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			</PackageReference>
 		</ItemGroup>
 
   <ItemGroup>

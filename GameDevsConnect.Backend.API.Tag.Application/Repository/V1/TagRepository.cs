@@ -2,39 +2,27 @@
 public class TagRepository(GDCDbContext context) : ITagRepository
 {
     private readonly GDCDbContext _context = context;
-    public async Task<ApiResponse> AddAsync(TagDTO tag, CancellationToken token)
+    public async Task<bool> AddAsync(TagDTO tag, CancellationToken token)
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Add);
-
-            var valid = await validator.ValidateAsync(tag, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(tag.Tag!));
-                return new ApiResponse(Message.VALIDATIONERROR(tag.Tag!), false, [.. errors]);
-            }
-
+            var valid = await new Validation().ValidateTag(_context, ValidationMode.Add, tag, token);
+            if (!valid)
+                return false;
+            
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.ADD(tag.Tag!));
-            return new ApiResponse(Message.ADD(tag.Tag!), true);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return false;
         }
     }
 
-    public async Task<ApiResponse> DeleteAsync(string tag, CancellationToken token)
+    public async Task<bool> DeleteAsync(string tag, CancellationToken token)
     {
         try
         {
@@ -43,66 +31,55 @@ public class TagRepository(GDCDbContext context) : ITagRepository
             if (tagsDb is null)
             {
                 Log.Error(Message.NOTFOUND(tag));
-                return new ApiResponse(Message.NOTFOUND(tag), false);
+                return false;
             }
 
             _context.Tags.Remove(tagsDb);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.DELETE(tag));
-            return new ApiResponse(Message.DELETE(tag), true);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return false;
         }
     }
 
-    public async Task<GetTagsResponse> GetAsync(CancellationToken token)
+    public async Task<TagDTO[]> GetAsync(CancellationToken token)
     {
         try
         {
             var tags = await _context.Tags.ToArrayAsync(token);
-
-            return new GetTagsResponse(null!, true, tags);
+            
+            return tags;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetTagsResponse(ex.Message, false, null!);
+            return [];
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(TagDTO tag, CancellationToken token)
+    public async Task<bool> UpdateAsync(TagDTO tag, CancellationToken token)
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
-
-            var valid = await validator.ValidateAsync(tag, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(tag.Tag!));
-                return new ApiResponse(Message.VALIDATIONERROR(tag.Tag!), false, [.. errors]);
-            }
+            var valid = await new Validation().ValidateTag(_context, ValidationMode.Update, tag, token);
+            if (!valid)
+                return false;
 
             _context.Tags.Update(tag);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.UPDATE(tag.Tag!));
-            return new ApiResponse(Message.UPDATE(tag.Tag!), true);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return false;
         }
     }
 }
