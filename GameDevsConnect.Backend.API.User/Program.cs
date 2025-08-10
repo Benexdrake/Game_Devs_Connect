@@ -16,6 +16,6 @@ if(modus.Equals("0") || modus.Equals("1"))
 
 // HTTP2
 if (modus.Equals("0") || modus.Equals("2"))
-    app.MapGrpcService<UserRPCService>();
+    app.MapGrpcService<APIService>();
 
 app.Run();

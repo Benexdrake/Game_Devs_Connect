@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+
+import "google/protobuf/empty.proto";
+
+package user;
+
+service UserProtoService
+{
+	rpc GetIds(google.protobuf.Empty) returns (UserIdsResponse);
+
+	rpc GetExist(IdRequest) returns (Response);
+
+	rpc GetFollowerCount(IdRequest) returns (CountResponse);
+
+	rpc GetFollowingCount(IdRequest) returns (CountResponse);
+
+	rpc GetFollowerIds(IdRequest) returns (UserIdsResponse);
+
+	rpc GetFollowingIds(IdRequest) returns (UserIdsResponse);
+
+	rpc GetIdsByProjectId(IdRequest) returns (UserIdsResponse);
+
+	rpc Get(IdRequest) returns (UserResponse);
+
+	rpc Create(UserRequest) returns (UserIdResponse);
+
+	rpc Update(UserRequest) returns (Response);
+
+	rpc Delete(IdRequest) returns (Response);
+}
+
+message Response
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+message User
+{
+	string id = 1;
+	string loginId = 2;
+	string username = 3;
+	string avatar = 4;
+	string accountType = 5;
+}
+
+// Request
+
+message UserRequest
+{
+	User user = 1;
+}
+
+message IdRequest
+{
+	string id = 1;
+}
+
+message GetUserRequest
+{
+	string id = 1;
+}
+
+// Response
+
+message UserIdsResponse
+{
+	Response response = 1;
+	repeated string ids = 2;
+}
+
+message CountResponse
+{
+	Response response = 1;
+	int32 count = 2;
+}
+
+message UserIdResponse
+{
+	Response response = 1;
+	string id = 2;
+}
+
+message UserResponse
+{
+	Response response = 1;
+	User user = 2;
+}

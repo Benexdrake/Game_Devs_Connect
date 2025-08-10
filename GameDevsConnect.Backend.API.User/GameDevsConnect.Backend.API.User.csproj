@@ -9,7 +9,7 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 	<ItemGroup>
-		<Protobuf Include="Protos\user.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\api.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Protos\user.proto">
+    <None Update="Protos\api.proto">
       <GrpcServices>Server</GrpcServices>
     </None>
   </ItemGroup>
