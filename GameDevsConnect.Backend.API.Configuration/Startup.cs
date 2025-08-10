@@ -73,12 +73,6 @@ public class Startup(string name)
         var app = build.Build();
         app.MapDefaultEndpoints();
 
-        if (modus.Equals("0") || modus.Equals("1"))
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
         app.UseHttpsRedirection();
         app.UseResponseCaching();
 
@@ -116,25 +110,30 @@ public class Startup(string name)
 
         if (modus.Equals("0") || modus.Equals("1"))
         {
-            app.MapGet("", () =>
+            if (app.Environment.IsDevelopment())
             {
-                var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
-                var endPoints = new List<string>();
-
-                foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                app.MapGet("", () =>
                 {
-                    var methodMetadata = endpoint.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
-                    var methods = methodMetadata?.HttpMethods;
+                    var endpointDataSource = app.Services.GetRequiredService<EndpointDataSource>();
+                    var endPoints = new List<string>();
 
-                    if (string.IsNullOrEmpty(endpoint.RoutePattern.RawText))
-                        continue;
+                    foreach (var endpoint in endpointDataSource.Endpoints.OfType<RouteEndpoint>())
+                    {
+                        var methodMetadata = endpoint.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
+                        var methods = methodMetadata?.HttpMethods;
 
-                    endPoints.Add(endpoint.DisplayName!);
-                }
+                        if (string.IsNullOrEmpty(endpoint.RoutePattern.RawText))
+                            continue;
 
-                endPoints.Add($"X-Access-Key: {accessKey}");
-                return endPoints;
-            });
+                        endPoints.Add(endpoint.DisplayName!);
+                    }
+
+                    endPoints.Add($"X-Access-Key: {accessKey}");
+                    return endPoints;
+                });
+            }
         }
 
         return app;
