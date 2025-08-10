@@ -6,6 +6,10 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 
     public async Task<string> AddAsync(UserDTO user, CancellationToken token = default)
     {
+        var valid = await new Validation().ValidateUser(_context, ValidationMode.Add, user, token);
+        if (!valid)
+            return "";
+
         user.Id = Guid.NewGuid().ToString();
         await _context.Users.AddAsync(user, token);
         await _context.Profiles.AddAsync(new ProfileDTO(user.Id), token);
@@ -93,6 +97,10 @@ public class UserRepository(GDCDbContext context) : IUserRepository
 
     public async Task<bool> UpdateAsync(UserDTO user, CancellationToken token = default)
     {
+        var valid = await new Validation().ValidateUser(_context, ValidationMode.Update, user, token);
+        if (!valid)
+            return false;
+
         _context.Users.Update(user);
         await _context.SaveChangesAsync(token);
         Log.Information(Message.UPDATE(user.Id));

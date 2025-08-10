@@ -9,16 +9,13 @@ public class UserService(GDCDbContext context, IUserRepository repo) : IUserServ
     {
         try
         {
-            string id = string.Empty;
-            var errors = await new UserValidation().Validate(_context, ValidationMode.Add, user, token);
-            if(errors.Length == 0)
-                id = await _repo.AddAsync(user, token);
-            return new GetUserIdResponse("", !id.Equals(string.Empty), id, errors);
+            string id = await _repo.AddAsync(user, token);
+            return new GetUserIdResponse("", !id.Equals(string.Empty), id);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetUserIdResponse(ex.Message, false, null!, null!);
+            return new GetUserIdResponse(ex.Message, false, null!);
         }
     }
 
@@ -60,7 +57,7 @@ public class UserService(GDCDbContext context, IUserRepository repo) : IUserServ
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetUserIdResponse(ex.Message, false, null!, null!);
+            return new ApiResponse(ex.Message, false);
         }
     }
 
@@ -152,16 +149,14 @@ public class UserService(GDCDbContext context, IUserRepository repo) : IUserServ
     {
         try
         {
-            bool status = false;
-            var errors = await new UserValidation().Validate(_context, ValidationMode.Update, user, token);
-            if(errors.Length == 0)
-                status = await _repo.UpdateAsync(user, token);
-            return new ApiResponse("", status, errors);
+            
+            var status = await _repo.UpdateAsync(user, token);
+            return new ApiResponse("", status);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetUserIdResponse(ex.Message, false, null!, null!);
+            return new ApiResponse(ex.Message, false);
         }
     }
 }
