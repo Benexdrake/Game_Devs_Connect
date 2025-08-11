@@ -2,8 +2,8 @@
 
 public interface ITagRepository
 {
-    Task<TagDTO[]> GetAsync(CancellationToken token);
-    Task<bool> AddAsync(TagDTO tag, CancellationToken token);
-    Task<bool> UpdateAsync(TagDTO tag, CancellationToken token);
-    Task<bool> DeleteAsync(string tag, CancellationToken token);
+    Task<GetTagsResponse> GetAsync(CancellationToken token);
+    Task<ApiResponse> AddAsync(TagDTO tag, CancellationToken token);
+    Task<ApiResponse> UpdateAsync(TagDTO tag, CancellationToken token);
+    Task<ApiResponse> DeleteAsync(string tag, CancellationToken token);
 }
