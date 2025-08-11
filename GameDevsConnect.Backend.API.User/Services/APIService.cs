@@ -1,8 +1,8 @@
 ﻿namespace GameDevsConnect.Backend.API.User.Services;
 
-public class APIService(IUserService service) : UserProtoService.UserProtoServiceBase
+public class APIService(IUserRepository repo) : UserProtoService.UserProtoServiceBase
 {
-    private readonly IUserService _service = service;
+    private readonly IUserRepository _repo = repo;
 
     public override async Task<UserIdResponse> Create(UserRequest request, ServerCallContext context)
     {
@@ -16,11 +16,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
             accounttype: request.User.AccountType
             );
 
-        var sr = await _service.AddAsync(user);
+        var sr = await _repo.AddAsync(user, context.CancellationToken);
 
         response.Id = sr.Id;
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -37,10 +38,10 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
             request.User.AccountType
             );
 
-        var sr = await _service.UpdateAsync(user);
+        var sr = await _repo.UpdateAsync(user, context.CancellationToken);
 
         response.Message = sr.Message;
-        response.Errors.AddRange(sr.ValidateErrors);
+        response.Errors.AddRange(sr.Errors);
         response.Status = sr.Status;
 
         return response;
@@ -50,10 +51,10 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new Response();
 
-        var sr = await _service.DeleteAsync(request.Id);
+        var sr = await _repo.DeleteAsync(request.Id, context.CancellationToken);
 
         response.Message = sr.Message;
-        response.Errors.AddRange(sr.ValidateErrors);
+        response.Errors.AddRange(sr.Errors);
         response.Status = sr.Status;
 
         return response;
@@ -63,11 +64,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new UserIdsResponse();
 
-        var sr = await _service.GetIdsAsync();
+        var sr = await _repo.GetIdsAsync(context.CancellationToken);
 
         response.Ids.AddRange(sr.UserIds);
+        response.Response = new ();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -77,7 +79,7 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new UserResponse();
 
-        var sr = await _service.GetAsync(request.Id);
+        var sr = await _repo.GetAsync(request.Id, context.CancellationToken);
 
         response.User = new User()
         {
@@ -88,8 +90,9 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
             Username = sr.User.Username
         };
 
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -99,10 +102,10 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new Response();
 
-        var sr = await _service.GetExistAsync(request.Id);
+        var sr = await _repo.GetExistAsync(request.Id, context.CancellationToken);
 
         response.Message = sr.Message;
-        response.Errors.AddRange(sr.ValidateErrors);
+        response.Errors.AddRange(sr.Errors);
         response.Status = sr.Status;
 
         return response;
@@ -112,11 +115,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new UserIdsResponse();
 
-        var sr = await _service.GetIdsByProjectIdAsync(request.Id);
+        var sr = await _repo.GetIdsByProjectIdAsync(request.Id, context.CancellationToken);
 
         response.Ids.AddRange(sr.UserIds);
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -126,11 +130,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new UserIdsResponse();
 
-        var sr = await _service.GetFollowerAsync(request.Id);
+        var sr = await _repo.GetFollowerAsync(request.Id, context.CancellationToken);
 
         response.Ids.AddRange(sr.UserIds);
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -140,11 +145,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new UserIdsResponse();
 
-        var sr = await _service.GetFollowingAsync(request.Id);
+        var sr = await _repo.GetFollowingAsync(request.Id, context.CancellationToken);
 
         response.Ids.AddRange(sr.UserIds);
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -154,11 +160,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new CountResponse();
 
-        var sr = await _service.GetFollowerCountAsync(request.Id);
+        var sr = await _repo.GetFollowerCountAsync(request.Id, context.CancellationToken);
 
         response.Count = sr.Count;
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
@@ -168,11 +175,12 @@ public class APIService(IUserService service) : UserProtoService.UserProtoServic
     {
         var response = new CountResponse();
 
-        var sr = await _service.GetFollowingCountAsync(request.Id);
+        var sr = await _repo.GetFollowingCountAsync(request.Id, context.CancellationToken);
 
         response.Count = sr.Count;
+        response.Response = new();
         response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.ValidateErrors);
+        response.Response.Errors.AddRange(sr.Errors ?? []);
         response.Response.Status = sr.Status;
 
         return response;
