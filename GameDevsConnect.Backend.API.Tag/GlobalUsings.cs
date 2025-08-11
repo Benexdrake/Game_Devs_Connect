@@ -3,3 +3,7 @@ global using GameDevsConnect.Backend.API.Tag.Endpoints.V1;
 global using GameDevsConnect.Backend.API.Configuration;
 global using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
 global using Microsoft.AspNetCore.Mvc;
+global using GameDevsConnect.Backend.API.Tag.Services;
+global using Google.Protobuf.WellKnownTypes;
+global using Grpc.Core;
+global using GameDevsConnect.Backend.API.User.Services;
