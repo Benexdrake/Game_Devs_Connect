@@ -29,14 +29,15 @@ var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamede
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-//var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevsconnect-backend-api-tag")
-//       .WithHttpEndpoint(port: 7008, name: "tag")
-//       .WithReplicas(replicas)
-//       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-//       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-//       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-//       .WithEnvironment("X-Access-Key", accessKey)
-//       .WaitFor(sql);
+var tag = builder.AddProject<Projects.GameDevsConnect_Backend_API_Tag>("gamedevsconnect-backend-api-tag")
+       .WithHttpsEndpoint(port: 7008, name: "tag")
+       .WithReplicas(replicas)
+       .WithArgs([modus])
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
 
 //var quest = builder.AddProject<Projects.GameDevsConnect_Backend_API_Quest>("gamedevsconnect-backend-api-quest")
 //       .WithHttpEndpoint(port: 7007, name: "quest")
