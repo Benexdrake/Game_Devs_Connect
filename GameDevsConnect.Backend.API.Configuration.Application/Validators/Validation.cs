@@ -2,14 +2,14 @@
 
 public class Validation
 {
-    public async Task<bool> ValidateTag(GDCDbContext context, ValidationMode mode, TagDTO tag, CancellationToken token)
+    public async Task<string[]> ValidateTag(GDCDbContext context, ValidationMode mode, TagDTO tag, CancellationToken token)
     {
         var validator = new TagValidator(context, mode);
         var valid = await validator.ValidateAsync(tag, token);
         return Validate(valid);
     }
 
-    public async Task<bool> ValidateUser(GDCDbContext context, ValidationMode mode, UserDTO user, CancellationToken token)
+    public async Task<string[]> ValidateUser(GDCDbContext context, ValidationMode mode, UserDTO user, CancellationToken token)
     {
         var validator = new UserValidator(context, mode);
         var valid = await validator.ValidateAsync(user, token);
@@ -17,15 +17,18 @@ public class Validation
     }
 
 
-    private bool Validate(ValidationResult valid)
+    private static string[] Validate(ValidationResult valid)
     {
         var errors = new List<string>();
         
         if (!valid.IsValid)
         {
             foreach (var error in valid.Errors)
+            {
+                errors.Add(error.ErrorMessage);
                 Log.Error($"Validation Error: {error.ErrorMessage}", error.ErrorMessage);
+            }
         }
-        return errors.Count > 0;
+        return [.. errors];
     }
 }
