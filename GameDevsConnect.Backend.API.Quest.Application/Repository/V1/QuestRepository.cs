@@ -1,6 +1,4 @@
-﻿using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
-
-namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Quest.Application.Repository.V1;
 public class QuestRepository(GDCDbContext context) : IQuestRepository
 {
     private readonly GDCDbContext _context = context;
@@ -9,21 +7,9 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Add);
-
-            var valid = await validator.ValidateAsync(quest, token);
-            quest.Id = Guid.NewGuid().ToString();
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(quest.Id!));
-                return new ApiResponse(Message.VALIDATIONERROR(quest.Id!), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidateQuest(_context, ValidationMode.Add, quest, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(quest.Id), false, errors);
 
             await _context.Quests.AddAsync(quest, token);
             await _context.SaveChangesAsync(token);
@@ -131,7 +117,7 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
         }
     }
 
-    public async Task<GetIdsResponse> GetFavoritesAsync(int page, int pageSize, string searchTerm, string userId, CancellationToken token)
+    public async Task<GetIdsResponse> GetIdsAsync(int page, int pageSize, string searchTerm, string userId, CancellationToken token)
     {
         try
         {
@@ -159,20 +145,9 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
-
-            var valid = await validator.ValidateAsync(quest, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(quest.Id!));
-                return new ApiResponse(Message.VALIDATIONERROR(quest.Id!), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidateQuest(_context, ValidationMode.Add, quest, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(quest.Id), false, errors);
 
             _context.Quests.Update(quest);
             await _context.SaveChangesAsync(token);
@@ -187,7 +162,7 @@ public class QuestRepository(GDCDbContext context) : IQuestRepository
         }
     }
 
-    public async Task<ApiResponse> UpsertFavoriteQuestAsync(FavoriteQuestResponse favoriteQuestResponse, CancellationToken token)
+    public async Task<ApiResponse> UpsertFavoriteQuestAsync(FavoriteQuestRequest favoriteQuestResponse, CancellationToken token)
     {
         try
         {

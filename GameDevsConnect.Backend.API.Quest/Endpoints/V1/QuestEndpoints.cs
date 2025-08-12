@@ -27,7 +27,7 @@ public static class QuestEndpoints
 
         group.MapGet(ApiEndpointsV1.Quest.GetFavorites, async ([FromServices] IQuestRepository repo, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchTerm = "", [FromQuery] string userId = "", CancellationToken token = default) =>
         {
-            return await repo.GetFavoritesAsync(page, pageSize, searchTerm, userId, token);
+            return await repo.GetIdsAsync(page, pageSize, searchTerm, userId, token);
         })
         .WithName(ApiEndpointsV1.Quest.MetaData.Name.GetFavorites)
         .WithDescription(ApiEndpointsV1.Quest.MetaData.Description.GetFavorites)
@@ -41,7 +41,7 @@ public static class QuestEndpoints
         .WithDescription(ApiEndpointsV1.Quest.MetaData.Description.Create)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Quest.Complete, async ([FromServices] IQuestRepository repo, [FromBody] CompleteQuestRequest complete, CancellationToken token) =>
+        group.MapPost(ApiEndpointsV1.Quest.Complete, async ([FromServices] IQuestRepository repo, [FromBody] Contract.Requests.CompleteQuestRequest complete, CancellationToken token) =>
         {
             return await repo.CompleteAsync(complete, token);
         })
@@ -65,7 +65,7 @@ public static class QuestEndpoints
         .WithDescription(ApiEndpointsV1.Quest.MetaData.Description.Delete)
         .Produces(StatusCodes.Status200OK);
 
-        group.MapPost(ApiEndpointsV1.Quest.Favorite, async ([FromServices] IQuestRepository repo, [FromBody] FavoriteQuestResponse favoriteQuestResponse, CancellationToken token) =>
+        group.MapPost(ApiEndpointsV1.Quest.Favorite, async ([FromServices] IQuestRepository repo, [FromBody] Contract.Requests.FavoriteQuestRequest favoriteQuestResponse, CancellationToken token) =>
         {
             return await repo.UpsertFavoriteQuestAsync(favoriteQuestResponse, token);
         })

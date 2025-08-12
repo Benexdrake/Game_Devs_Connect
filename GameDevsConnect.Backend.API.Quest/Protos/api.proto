@@ -1,81 +1,98 @@
 syntax = "proto3";
 
-option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+option csharp_namespace = "GameDevsConnect.Backend.API.Quest.Services";
 
 import "google/protobuf/empty.proto";
 
-package user;
+package quest;
 
-service UserProtoService
+service QuestProtoService
 {
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-
-	rpc GetExist(IdRequest) returns (Response);
-
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-
-	rpc Get(GetUserRequest) returns (User);
-
-	rpc Create(CreateUserRequest) returns (UserId);
-
-	rpc Update(UpdateUserRequest) returns (Response);
-
-	rpc Delete(IdRequest) returns (Response);
+	rpc AddQuest(AddQuestRequest) returns (Response);
+	rpc GetQuest(GetQuestRequest) returns (GetQuestResponse);
+	rpc UpdateQuest(UpdateQuestRequest) returns (Response);
+	rpc DeleteQuest(DeleteQuestRequest) returns (Response);
+	rpc CompleteQuest(CompleteQuestRequest) returns (Response);
+	rpc GetIds(GetIdsRequest) returns (GetIdsResponse);
+	rpc GetByPostId(GetByPostIdRequest) returns (GetIdsResponse);
 }
 
-message User
+message Quest
 {
 	string id = 1;
-	string loginId = 2;
-	string username = 3;
-	string avatar = 4;
-	string accountType = 5;
+	string postId = 2;
+	string ownerId = 3;
+	int32 difficulty = 4;
+	string title = 5;
+	string description = 6;
 }
 
-message UserId
+message Response 
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+// Request
+message AddQuestRequest
+{
+	Quest quest = 1;
+}
+
+message GetQuestRequest
 {
 	string id = 1;
+	string userId = 2;
 }
 
-message GetUserIdsResponse
+message UpdateQuestRequest
 {
-	repeated string ids = 1;
+	Quest quest = 1;
 }
 
-message GetCountResponse
-{
-	int32 count = 1;
-}
-
-message Response
-{
-	bool status = 1;
-}
-
-message GetUserRequest
+message DeleteQuestRequest
 {
 	string id = 1;
 }
 
-message CreateUserRequest
+message CompleteQuestRequest
 {
-	User user = 1;
+	string questId = 1;
+	string fileId = 2;
+	string ownerId = 3;
+	string message = 4;
 }
 
-message UpdateUserRequest
+message GetIdsRequest
 {
-	User user = 1;
+	int32 page = 1;
+	int32 pageSize = 2;
+	string searchTerm = 3;
+	string userId = 4;
 }
 
-message IdRequest
+message GetByPostIdRequest
 {
 	string id = 1;
+}
+
+message FavoriteQuestRequest
+{
+	string questId = 1;
+	string userId = 2;
+}
+
+
+// Response
+message GetQuestResponse
+{
+	Response response = 1;
+	Quest quest = 2;
+}
+
+message GetIdsResponse
+{
+	Response response = 1;
+	repeated string ids = 2;
 }

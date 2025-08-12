@@ -2,6 +2,13 @@
 
 public class Validation
 {
+    public async Task<string[]> ValidateQuest(GDCDbContext context, ValidationMode mode, QuestDTO quest, CancellationToken token)
+    {
+        var validator = new QuestValidator(context, mode);
+        var valid = await validator.ValidateAsync(quest, token);
+        return Validate(valid);
+    }
+
     public async Task<string[]> ValidateTag(GDCDbContext context, ValidationMode mode, TagDTO tag, CancellationToken token)
     {
         var validator = new TagValidator(context, mode);
