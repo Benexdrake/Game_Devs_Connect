@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
 public class NotificationRepository(GDCDbContext context) : INotificationRepository
 {
     private readonly GDCDbContext _context = context;
@@ -12,20 +9,20 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
         {
             notification.Id = Guid.NewGuid().ToString();
 
-            var validator = new NotificationValidator(_context, ValidationMode.Add);
+            //var validator = new NotificationValidator(_context, ValidationMode.Add);
 
-            var valid = await validator.ValidateAsync(notification, token);
+            //var valid = await validator.ValidateAsync(notification, token);
 
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
+            //if (!valid.IsValid)
+            //{
+            //    var errors = new List<string>();
 
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
+            //    foreach (var error in valid.Errors)
+            //        errors.Add(error.ErrorMessage);
 
-                Log.Error(Message.VALIDATIONERROR(notification.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(notification.Id), false, [.. errors]);
-            }
+            //    Log.Error(Message.VALIDATIONERROR(notification.Id));
+            //    return new ApiResponse(Message.VALIDATIONERROR(notification.Id), false, [.. errors]);
+            //}
 
             await _context.Notifications.AddAsync(notification, token);
             await _context.SaveChangesAsync();

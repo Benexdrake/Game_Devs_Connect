@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
 
-namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
-
-public class FileRepository(GDCDbContext context, IConfiguration config) : IFileRepository
+public class FileRepository(GDCDbContext context) : IFileRepository
 {
     private readonly GDCDbContext _context = context;
-    private readonly IConfiguration _config = config;
 
     public async Task<AddResponse> AddAsync(FileDTO file, CancellationToken token)
     {
@@ -19,23 +16,23 @@ public class FileRepository(GDCDbContext context, IConfiguration config) : IFile
             if(file.Type!.Split("/").Length > 1)
                 type = "."+file.Type.Split("/")[1];
             
-            file.Url = $"{_config["AZURE_STORAGE_BASE_URL"]}/{file.OwnerId}/{file.Id}{type}";
+            //file.Url = $"{_config["AZURE_STORAGE_BASE_URL"]}/{file.OwnerId}/{file.Id}{type}";
 
 
-            var validator = new Validator(_context, ValidationMode.Add);
+            //var validator = new FileValidator(_context, ValidationMode.Add);
 
-            var valid = await validator.ValidateAsync(file, token);
+            //var valid = await validator.ValidateAsync(file, token);
 
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
+            //if (!valid.IsValid)
+            //{
+            //    var errors = new List<string>();
 
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
+            //    foreach (var error in valid.Errors)
+            //        errors.Add(error.ErrorMessage);
 
-                Log.Error(Message.VALIDATIONERROR(file.Id));
-                return new AddResponse(Message.VALIDATIONERROR(file.Id), false, null, [.. errors]);
-            }
+            //    Log.Error(Message.VALIDATIONERROR(file.Id));
+            //    return new AddResponse(Message.VALIDATIONERROR(file.Id), false, null, [.. errors]);
+            //}
 
             await _context.Files.AddAsync(file, token);
             await _context.SaveChangesAsync(token);
@@ -114,20 +111,20 @@ public class FileRepository(GDCDbContext context, IConfiguration config) : IFile
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
+            //var validator = new FileValidator(_context, ValidationMode.Update);
 
-            var valid = await validator.ValidateAsync(file, token);
+            //var valid = await validator.ValidateAsync(file, token);
 
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
+            //if (!valid.IsValid)
+            //{
+            //    var errors = new List<string>();
 
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
+            //    foreach (var error in valid.Errors)
+            //        errors.Add(error.ErrorMessage);
 
-                Log.Error(Message.VALIDATIONERROR(file.Id!));
-                return new ApiResponse(Message.VALIDATIONERROR(file.Id!), false, [.. errors]);
-            }
+            //    Log.Error(Message.VALIDATIONERROR(file.Id!));
+            //    return new ApiResponse(Message.VALIDATIONERROR(file.Id!), false, [.. errors]);
+            //}
 
             _context.Files.Update(file);
             await _context.SaveChangesAsync(token);
