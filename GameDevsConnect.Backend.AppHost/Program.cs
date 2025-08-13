@@ -6,7 +6,7 @@ string azureBaseUrl = builder.Configuration["AZURE_STORAGE_BASE_URL"]!;
 
 int replicas = 1;
 
-// 0 = both, 1 = http, 2 = grcp
+// 0 = both, 1 = http, 2 = grpc
 string modus = "0";
 
 var accessKey = "123456";
@@ -49,32 +49,35 @@ var quest = builder.AddProject<Projects.GameDevsConnect_Backend_API_Quest>("game
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-//var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("gamedevsconnect-backend-api-project")
-//       .WithHttpEndpoint(port: 7006, name: "project")
-//       .WithReplicas(replicas)
-//       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-//       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-//       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-//       .WithEnvironment("X-Access-Key", accessKey)
-//       .WaitFor(sql);
+var project = builder.AddProject<Projects.GameDevsConnect_Backend_API_Project>("gamedevsconnect-backend-api-project")
+       .WithHttpsEndpoint(port: 7006, name: "project")
+       .WithReplicas(replicas)
+       .WithArgs([modus])
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
 
-//var profile = builder.AddProject<Projects.GameDevsConnect_Backend_API_Profile>("gamedevsconnect-backend-api-profile")
-//       .WithHttpEndpoint(port: 7005, name: "profile")
-//       .WithReplicas(replicas)
-//       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-//       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-//       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-//       .WithEnvironment("X-Access-Key", accessKey)
-//       .WaitFor(sql);
+var profile = builder.AddProject<Projects.GameDevsConnect_Backend_API_Profile>("gamedevsconnect-backend-api-profile")
+       .WithHttpsEndpoint(port: 7005, name: "profile")
+       .WithReplicas(replicas)
+       .WithArgs([modus])
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
 
-//var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamedevsconnect-backend-api-post")
-//       .WithHttpEndpoint(port: 7004, name: "post")
-//       .WithReplicas(replicas)
-//       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-//       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-//       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-//       .WithEnvironment("X-Access-Key", accessKey)
-//       .WaitFor(sql);
+var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamedevsconnect-backend-api-post")
+       .WithHttpsEndpoint(port: 7004, name: "post")
+       .WithReplicas(replicas)
+       .WithArgs([modus])
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
 
 //var notification = builder.AddProject<Projects.GameDevsConnect_Backend_API_Notification>("gamedevsconnect-backend-api-notification")
 //       .WithHttpEndpoint(port: 7003, name: "notification")
