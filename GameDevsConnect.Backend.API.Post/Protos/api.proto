@@ -1,34 +1,43 @@
 syntax = "proto3";
 
-option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+option csharp_namespace = "GameDevsConnect.Backend.API.Post.Services";
 
-import "google/protobuf/empty.proto";
+package post;
 
-package user;
-
-service UserProtoService
+service PostProtoService
 {
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-
-	rpc GetExist(IdRequest) returns (Response);
-
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-
-	rpc Get(GetUserRequest) returns (User);
-
-	rpc Create(CreateUserRequest) returns (UserId);
-
-	rpc Update(UpdateUserRequest) returns (Response);
-
+	rpc GetIds(GetPostIdsRequest) returns (GetIdsResponse);
+	rpc GetById(IdRequest) returns (GetPostResponse);
+	rpc GetFull(IdRequest) returns (GetFullResponse);
+	rpc GetByUserId(IdRequest) returns (GetIdsResponse);
+	rpc GetCommentIds(IdRequest) returns (GetIdsResponse);
+	rpc Add(UpsertPostRequest) returns (AddResponse);
+	rpc Update(UpsertPostRequest) returns (Response);
 	rpc Delete(IdRequest) returns (Response);
+}
+
+message Post
+{
+	string id = 1;
+	string parentId = 2;
+	bool hasQuest = 3;
+	string message = 4;
+	string created = 5;
+	string projectId = 6;
+	string ownerId = 7;
+	bool isDeleted = 8;
+	bool completed = 9;
+}
+
+message File
+{
+	string id = 1;
+	string url = 2;
+	string type = 3;
+	string extension = 4;
+	int32 size = 5;
+	string created = 6;
+	string ownerId = 7;
 }
 
 message User
@@ -40,42 +49,73 @@ message User
 	string accountType = 5;
 }
 
-message UserId
+message Tag
 {
-	string id = 1;
+	string tag = 1;
+	string type = 2;
 }
 
-message GetUserIdsResponse
-{
-	repeated string ids = 1;
-}
 
-message GetCountResponse
-{
-	int32 count = 1;
-}
+// Requests
 
-message Response
+message GetPostIdsRequest
 {
-	bool status = 1;
-}
-
-message GetUserRequest
-{
-	string id = 1;
-}
-
-message CreateUserRequest
-{
-	User user = 1;
-}
-
-message UpdateUserRequest
-{
-	User user = 1;
+	int32 page = 1;
+	int32 pageSize = 2;
+	string searchTerm = 3;
+	string parentId = 4;
 }
 
 message IdRequest
 {
 	string id = 1;
+}
+
+message UpsertPostRequest
+{
+	Post post = 1;
+	repeated Tag tags = 2;
+	repeated string fileIds = 3;
+}
+
+
+// Responses
+
+message Response
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+message GetIdsResponse
+{
+	Response response = 1;
+	repeated string ids = 2;
+}
+
+message GetPostResponse
+{
+	Response response = 1;
+	Post post = 2;
+}
+
+message GetFullResponse
+{
+	Response response = 1;
+	Post post = 2;
+	repeated File files = 3;
+	int32 questCount = 4;
+	repeated Tag tags = 5;
+	string projectTitle = 6;
+	User owner = 7;
+	int32 comments = 8;
+	int32 likes = 9;
+
+}
+
+message AddResponse
+{
+	Response respone = 1;
+	string id = 2;
 }

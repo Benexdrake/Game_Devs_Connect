@@ -1,140 +1,214 @@
-﻿//using GameDevsConnect.Backend.API.Configuration.Application.Data;
-//using GameDevsConnect.Backend.API.User.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.Post.Services;
 
-//namespace GameDevsConnect.Backend.API.User.Services;
+public class APIService(IPostRepository repo) : PostProtoService.PostProtoServiceBase
+{
+    private readonly IPostRepository _repo = repo;
 
-//public class APIService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
-//{
-//    private readonly IUserRepository _repo = repo;
-//    private readonly GDCDbContext _context = context;
+    public override async Task<AddResponse> Add(UpsertPostRequest request, ServerCallContext context)
+    {
+        var addResponse = new AddResponse();
+        var tags = new List<TagDTO>();
 
-//    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
-//    {
-//        string id = "";
+        var post = new PostDTO()
+        {
+            Id = request.Post.Id,
+            Completed = request.Post.Completed,
+            Created = DateTime.Parse(request.Post.Created),
+            HasQuest = request.Post.HasQuest,
+            IsDeleted = request.Post.IsDeleted,
+            Message = request.Post.Message,
+            OwnerId = request.Post.OwnerId,
+            ParentId = request.Post.ParentId,
+            ProjectId = request.Post.ProjectId
+        };
 
-//        UserDTO user = new (
-//            id: string.Empty,
-//            loginId: request.User.LoginId,
-//            username: request.User.Username,
-//            avatar: request.User.Avatar,
-//            accounttype: request.User.AccountType
-//            );
+        foreach (var tag in request.Tags)
+            tags.Add(new TagDTO(tag.Tag_, tag.Type));
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        var upsertPost = new UpsertPost(post, [.. tags], [.. request.FileIds]);
 
-//        if(validation.Length == 0)
-//            id = await _repo.AddAsync(user);
+        var response = await _repo.AddAsync(upsertPost, context.CancellationToken);
 
-//        return new UserId() { Id = id};
-//    }
+        addResponse.Id = response.Id;
+        addResponse.Respone.Message = response.Response.Message;
+        addResponse.Respone.Status = response.Response.Status;
+        addResponse.Respone.Errors.AddRange(response.Response.Errors);
 
-//    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
-//    {
-//        var response = new Response();
-//        UserDTO user = new ( 
-//            request.User.Id,
-//            request.User.LoginId,
-//            request.User.Username,
-//            request.User.Avatar,
-//            request.User.AccountType
-//            );
+        return addResponse;
+    }
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//        if (validation.Length == 0)
-//            response.Status = await _repo.UpdateAsync(user);
+        var deleteResponse = await _repo.DeleteAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        response.Message = deleteResponse.Message;
+        response.Status = deleteResponse.Status;
+        response.Errors.AddRange(deleteResponse.Errors);
 
-//    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
-//    {
-//        var response = new Response
-//        {
-//            Status = await _repo.DeleteAsync(request.Id)
-//        };
+        return response;
+    }
 
-//        return response;
-//    }
+    public override async Task<GetPostResponse> GetById(IdRequest request, ServerCallContext context)
+    {
+        var getPostResponse = new GetPostResponse();
 
-//    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
-//    {
-//        var response = new GetUserIdsResponse();
+        var getResponse = await _repo.GetByIdAsync(request.Id, context.CancellationToken);
 
-//        var ids = await _repo.GetIdsAsync();
+        getPostResponse.Post = new Post()
+        {
+            Id = getResponse.Post!.Id,
+            Completed = getResponse.Post.Completed,
+            Created = getResponse.Post.Created.ToString(),
+            HasQuest = getResponse.Post.HasQuest,
+            IsDeleted = getResponse.Post.IsDeleted,
+            Message = getResponse.Post.Message,
+            OwnerId = getResponse.Post.OwnerId,
+            ParentId = getResponse.Post.ParentId,
+            ProjectId = getResponse.Post.ProjectId
+        };
 
-//        response.Ids.AddRange(ids);
+        getPostResponse.Response.Message = getResponse.Response.Message;
+        getPostResponse.Response.Status = getResponse.Response.Status;
+        getPostResponse.Response.Errors.AddRange(getResponse.Response.Errors);
 
-//        return response;
-//    }
+        return getPostResponse;
+    }
 
-//    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
-//    {
-//        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
+    public override async Task<GetIdsResponse> GetByUserId(IdRequest request, ServerCallContext context)
+    {
+        var getIdsResponse = new GetIdsResponse();
 
-//        return new User()
-//        {
-//            Id = user.Id,
-//            LoginId = user.LoginId,
-//            Avatar = user.Avatar,
-//            AccountType = user.Accounttype,
-//            Username = user.Username
-//        };
-//    }
+        var idsResponse = await _repo.GetByUserIdAsync(request.Id, context.CancellationToken);
 
-//    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
-//    {
-//        return new Response()
-//        {
-//            Status = await _repo.GetExistAsync(request.Id)
-//        };
-//    }
+        getIdsResponse.Ids.AddRange(idsResponse.Ids);
+        getIdsResponse.Response.Message = idsResponse.Response.Message;
+        getIdsResponse.Response.Status = idsResponse.Response.Status;
+        getIdsResponse.Response.Errors.AddRange(idsResponse.Response.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+        return getIdsResponse;
+    }
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+    public override async Task<GetIdsResponse> GetCommentIds(IdRequest request, ServerCallContext context)
+    {
+        var getIdsResponse = new GetIdsResponse();
 
-//    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowerAsync(request.Id);
+        var idsResponse = await _repo.GetCommentIdsAsync(request.Id, context.CancellationToken);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        getIdsResponse.Ids.AddRange(idsResponse.Ids);
+        getIdsResponse.Response.Message = idsResponse.Response.Message;
+        getIdsResponse.Response.Status = idsResponse.Response.Status;
+        getIdsResponse.Response.Errors.AddRange(idsResponse.Response.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowingAsync(request.Id);
+        return getIdsResponse;
+    }
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+    public override async Task<GetFullResponse> GetFull(IdRequest request, ServerCallContext context)
+    {
+        var getFullResponse = new GetFullResponse();
 
-//    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowerCountAsync(request.Id);
+        var fullResponse = await _repo.GetFullByIdAsync(request.Id, context.CancellationToken);
 
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
+        getFullResponse.Comments = fullResponse.Comments;
+        getFullResponse.Likes = fullResponse.Likes;
+        getFullResponse.QuestCount = fullResponse.QuestCount;
+        getFullResponse.ProjectTitle = fullResponse.ProjectTitle;
 
-//    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowingCountAsync(request.Id);
+        getFullResponse.Post = new Post()
+        {
+            Id = fullResponse.Post!.Id,
+            Completed = fullResponse.Post.Completed,
+            Created = fullResponse.Post.Created.ToString(),
+            HasQuest = fullResponse.Post.HasQuest,
+            IsDeleted = fullResponse.Post.IsDeleted,
+            Message = fullResponse.Post.Message,
+            OwnerId = fullResponse.Post.OwnerId,
+            ParentId = fullResponse.Post.ParentId,
+            ProjectId = fullResponse.Post.ProjectId
+        };
 
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
+        getFullResponse.Owner = new User()
+        {
+            Id = fullResponse.Owner!.Id,
+            AccountType = fullResponse.Owner.Accounttype,
+            Avatar = fullResponse.Owner.Avatar,
+            LoginId = fullResponse.Owner.LoginId,
+            Username = fullResponse.Owner.Username
+        };
 
-//}
+        foreach(var tag in fullResponse.Tags!)
+        {
+            getFullResponse.Tags.Add(new Tag() { Tag_ = tag.Tag, Type = tag.Type });
+        }
+
+        foreach(var file in fullResponse.Files)
+        {
+            getFullResponse.Files.Add(new File()
+            {
+                Id = file.Id,
+                OwnerId = file.OwnerId,
+                Created = file.Created.ToString(),
+                Size = file.Size,
+                Extension = file.Extension,
+                Type = file.Type,
+                Url = file.Url
+            });
+        }
+        
+        getFullResponse.Response.Message = fullResponse.Response.Message;
+        getFullResponse.Response.Status = fullResponse.Response.Status;
+        getFullResponse.Response.Errors.AddRange(fullResponse.Response.Errors);
+
+        return getFullResponse;
+    }
+
+    public override async Task<GetIdsResponse> GetIds(GetPostIdsRequest request, ServerCallContext context)
+    {
+        var getIdsResponse = new GetIdsResponse();
+
+        var getPostIdsRequest = new Contract.Request.GetPostIdsRequest(request.Page, request.PageSize, request.SearchTerm, request.ParentId);
+
+        var idsResponse = await _repo.GetIdsAsync(getPostIdsRequest, context.CancellationToken);
+
+        getIdsResponse.Ids.AddRange(idsResponse.Ids);
+        getIdsResponse.Response.Message = idsResponse.Response.Message;
+        getIdsResponse.Response.Status = idsResponse.Response.Status;
+        getIdsResponse.Response.Errors.AddRange(idsResponse.Response.Errors);
+
+        return getIdsResponse;
+    }
+
+    public override async Task<Response> Update(UpsertPostRequest request, ServerCallContext context)
+    {
+        var response = new Response();
+
+        var tags = new List<TagDTO>();
+
+        var post = new PostDTO()
+        {
+            Id = request.Post.Id,
+            Completed = request.Post.Completed,
+            Created = DateTime.Parse(request.Post.Created),
+            HasQuest = request.Post.HasQuest,
+            IsDeleted = request.Post.IsDeleted,
+            Message = request.Post.Message,
+            OwnerId = request.Post.OwnerId,
+            ParentId = request.Post.ParentId,
+            ProjectId = request.Post.ProjectId
+        };
+
+        foreach (var tag in request.Tags)
+            tags.Add(new TagDTO(tag.Tag_, tag.Type));
+
+        var upsertPost = new UpsertPost(post, [.. tags], [.. request.FileIds]);
+
+        var updateResponse = await _repo.UpdateAsync(upsertPost, context.CancellationToken);
+        
+        response.Message = updateResponse.Message;
+        response.Status = updateResponse.Status;
+        response.Errors.AddRange(updateResponse.Errors);
+
+        return response;
+    }
+}

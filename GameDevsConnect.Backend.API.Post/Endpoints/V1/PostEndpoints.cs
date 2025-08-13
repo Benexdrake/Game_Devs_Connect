@@ -11,7 +11,7 @@ public static class PostEndpoints
 
         group.MapGet(ApiEndpointsV1.Post.Get, async ([FromServices] IPostRepository repo, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchTerm = "", [FromQuery] string parentId = "",  CancellationToken token = default) =>
         {
-            return await repo.GetIdsAsync(new GetPostIdsRequest(page, pageSize, searchTerm, parentId), token);
+            return await repo.GetIdsAsync(new Contract.Request.GetPostIdsRequest(page, pageSize, searchTerm, parentId), token);
         })
         .WithName(ApiEndpointsV1.Post.MetaData.Name.Get)
         .WithDescription(ApiEndpointsV1.Post.MetaData.Description.Get)

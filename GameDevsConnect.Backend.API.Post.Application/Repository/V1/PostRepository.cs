@@ -9,23 +9,11 @@ public class PostRepository(GDCDbContext context) : IPostRepository
         try
         {
             addPost.Post!.Id = Guid.NewGuid().ToString();
-
             addPost.Post!.Created = DateTime.UtcNow;
 
-            var validator = new PostValidator(_context, ValidationMode.Add);
-
-            var valid = await validator.ValidateAsync(addPost.Post!, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(addPost.Post!.Id));
-                return new AddResponse(Message.VALIDATIONERROR(addPost.Post!.Id), false, "", [.. errors]);
-            }
+            var errors = await new Validation().ValidatePost(_context, ValidationMode.Add, addPost.Post, token);
+            if (errors.Length > 0)
+                return new AddResponse(Message.VALIDATIONERROR(addPost.Post.Id), false, "", errors);
 
             await _context.Posts.AddAsync(addPost.Post!, token);
 
@@ -144,20 +132,9 @@ public class PostRepository(GDCDbContext context) : IPostRepository
     {
         try
         {
-            var validator = new PostValidator(_context, ValidationMode.Update);
-
-            var valid = await validator.ValidateAsync(updatePost.Post!, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(updatePost.Post!.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(updatePost.Post!.Id), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidatePost(_context, ValidationMode.Add, updatePost.Post, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(updatePost.Post.Id), false, errors);
 
             _context.Posts.Update(updatePost.Post!);
             await _context.SaveChangesAsync(token);
