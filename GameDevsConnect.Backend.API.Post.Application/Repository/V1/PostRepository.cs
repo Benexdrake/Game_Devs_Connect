@@ -12,7 +12,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
 
             addPost.Post!.Created = DateTime.UtcNow;
 
-            var validator = new Validator(_context, ValidationMode.Add);
+            var validator = new PostValidator(_context, ValidationMode.Add);
 
             var valid = await validator.ValidateAsync(addPost.Post!, token);
 
@@ -144,7 +144,7 @@ public class PostRepository(GDCDbContext context) : IPostRepository
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
+            var validator = new PostValidator(_context, ValidationMode.Update);
 
             var valid = await validator.ValidateAsync(updatePost.Post!, token);
 

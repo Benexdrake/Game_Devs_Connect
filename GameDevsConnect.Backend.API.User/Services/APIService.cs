@@ -20,9 +20,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Id = sr.Id;
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -68,9 +68,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Ids.AddRange(sr.UserIds);
         response.Response = new ();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -91,9 +91,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
         };
 
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -119,9 +119,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Ids.AddRange(sr.UserIds);
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -134,9 +134,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Ids.AddRange(sr.UserIds);
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -149,9 +149,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Ids.AddRange(sr.UserIds);
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -164,9 +164,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Count = sr.Count;
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }
@@ -179,9 +179,9 @@ public class APIService(IUserRepository repo) : UserProtoService.UserProtoServic
 
         response.Count = sr.Count;
         response.Response = new();
-        response.Response.Message = sr.Message;
-        response.Response.Errors.AddRange(sr.Errors ?? []);
-        response.Response.Status = sr.Status;
+        response.Response.Message = sr.Response.Message;
+        response.Response.Errors.AddRange(sr.Response.Errors ?? []);
+        response.Response.Status = sr.Response.Status;
 
         return response;
     }

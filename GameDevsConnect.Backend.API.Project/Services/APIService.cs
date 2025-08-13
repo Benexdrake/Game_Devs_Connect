@@ -50,9 +50,9 @@ public class APIService(IProjectRepository repo) : ProjectProtoService.ProjectPr
 
         var getResponse = await _repo.GetByIdAsync(request.Id, context.CancellationToken);
 
-        getProjectResponse.Response.Message = getResponse.Message;
-        getProjectResponse.Response.Status = getResponse.Status;
-        getProjectResponse.Response.Errors.AddRange(getResponse.Errors);
+        getProjectResponse.Response.Message = getResponse.Response.Message;
+        getProjectResponse.Response.Status = getResponse.Response.Status;
+        getProjectResponse.Response.Errors.AddRange(getResponse.Response.Errors);
         getProjectResponse.Project = new Project()
         {
             Id = getResponse.Project.Id,
@@ -70,9 +70,9 @@ public class APIService(IProjectRepository repo) : ProjectProtoService.ProjectPr
 
         var getProjectIdsResponse = await _repo.GetIdsAsync(context.CancellationToken);
 
-        getIdsResponse.Response.Message = getProjectIdsResponse.Message;
-        getIdsResponse.Response.Status = getProjectIdsResponse.Status;
-        getIdsResponse.Response.Errors.AddRange(getProjectIdsResponse.Errors);
+        getIdsResponse.Response.Message = getProjectIdsResponse.Response.Message;
+        getIdsResponse.Response.Status = getProjectIdsResponse.Response.Status;
+        getIdsResponse.Response.Errors.AddRange(getProjectIdsResponse.Response.Errors);
         getIdsResponse.Ids.AddRange(getProjectIdsResponse.Ids);
 
         return getIdsResponse;

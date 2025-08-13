@@ -62,9 +62,9 @@ public class APIService(IQuestRepository repo) : QuestProtoService.QuestProtoSer
 
         var response = await _repo.GetByPostIdAsync(request.Id, context.CancellationToken);
 
-        getIdsResponse.Response.Status = response.Status;
-        getIdsResponse.Response.Message = response.Message;
-        getIdsResponse.Response.Errors.AddRange(response.Errors);
+        getIdsResponse.Response.Status = response.Response.Status;
+        getIdsResponse.Response.Message = response.Response.Message;
+        getIdsResponse.Response.Errors.AddRange(response.Response.Errors);
         getIdsResponse.Ids.AddRange(response.Ids);
 
         return getIdsResponse;
@@ -76,9 +76,9 @@ public class APIService(IQuestRepository repo) : QuestProtoService.QuestProtoSer
 
         var response = await _repo.GetIdsAsync(request.Page, request.PageSize, request.SearchTerm, request.UserId, context.CancellationToken);
 
-        getIdsResponse.Response.Status = response.Status;
-        getIdsResponse.Response.Message = response.Message;
-        getIdsResponse.Response.Errors.AddRange(response.Errors);
+        getIdsResponse.Response.Status = response.Response.Status;
+        getIdsResponse.Response.Message = response.Response.Message;
+        getIdsResponse.Response.Errors.AddRange(response.Response.Errors);
         getIdsResponse.Ids.AddRange(response.Ids);
 
         return getIdsResponse;
@@ -100,9 +100,9 @@ public class APIService(IQuestRepository repo) : QuestProtoService.QuestProtoSer
             Title = questResponse.Quest.Title
         };
 
-        getQuestResponse.Response.Message = questResponse.Message;
-        getQuestResponse.Response.Status = questResponse.Status;
-        getQuestResponse.Response.Errors.AddRange(questResponse.Errors);
+        getQuestResponse.Response.Message = questResponse.Response.Message;
+        getQuestResponse.Response.Status = questResponse.Response.Status;
+        getQuestResponse.Response.Errors.AddRange(questResponse.Response.Errors);
 
         return getQuestResponse;
     }

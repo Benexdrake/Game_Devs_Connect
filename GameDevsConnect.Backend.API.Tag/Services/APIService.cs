@@ -11,9 +11,9 @@ public class APIService(ITagRepository repo) : TagProtoService.TagProtoServiceBa
         var tagsResponse = await _repo.GetAsync(context.CancellationToken);
 
         response.Response = new();
-        response.Response.Status = tagsResponse.Status;
-        response.Response.Message = tagsResponse.Message;
-        response.Response.Errors.AddRange(tagsResponse.Errors ?? []);
+        response.Response.Status = tagsResponse.Response.Status;
+        response.Response.Message = tagsResponse.Response.Message;
+        response.Response.Errors.AddRange(tagsResponse.Response.Errors ?? []);
 
         foreach (var tag in tagsResponse.Tags)
             response.Tags.Add(new TagRequest() { Tag = tag.Tag, Type = tag.Type });

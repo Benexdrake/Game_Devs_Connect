@@ -12,7 +12,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
         {
             notification.Id = Guid.NewGuid().ToString();
 
-            var validator = new Validator(_context, ValidationMode.Add);
+            var validator = new NotificationValidator(_context, ValidationMode.Add);
 
             var valid = await validator.ValidateAsync(notification, token);
 
