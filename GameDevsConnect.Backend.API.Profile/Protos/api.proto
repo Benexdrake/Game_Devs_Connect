@@ -1,34 +1,32 @@
 syntax = "proto3";
 
-option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+option csharp_namespace = "GameDevsConnect.Backend.API.Profile.Services";
 
 import "google/protobuf/empty.proto";
 
-package user;
+package profile;
 
-service UserProtoService
+service ProfileProtoService
 {
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-
-	rpc GetExist(IdRequest) returns (Response);
-
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-
-	rpc Get(GetUserRequest) returns (User);
-
-	rpc Create(CreateUserRequest) returns (UserId);
-
-	rpc Update(UpdateUserRequest) returns (Response);
-
+	rpc Get(IdRequest) returns (GetResponse);
+	rpc GetFull(IdRequest) returns (GetFullResponse);
+	rpc Add(IdRequest) returns (Response);
+	rpc Update(Profile) returns (Response);
 	rpc Delete(IdRequest) returns (Response);
+}
+
+message Profile
+{
+	string id = 1;
+	string userId = 2;
+	string discordUrl = 3;
+	string xUrl = 4;
+	string websiteUrl = 5;
+	string email = 6;
+	bool showDiscord = 7;
+	bool showX = 8;
+	bool showWebsite = 9;
+	bool showEmail = 10;
 }
 
 message User
@@ -40,42 +38,31 @@ message User
 	string accountType = 5;
 }
 
-message UserId
-{
-	string id = 1;
-}
-
-message GetUserIdsResponse
-{
-	repeated string ids = 1;
-}
-
-message GetCountResponse
-{
-	int32 count = 1;
-}
-
-message Response
-{
-	bool status = 1;
-}
-
-message GetUserRequest
-{
-	string id = 1;
-}
-
-message CreateUserRequest
-{
-	User user = 1;
-}
-
-message UpdateUserRequest
-{
-	User user = 1;
-}
-
+// Requests
 message IdRequest
 {
 	string id = 1;
+}
+
+// Responses
+message Response
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+message GetResponse
+{
+	Response response = 1;
+	Profile profile = 2;
+}
+
+message GetFullResponse
+{
+	Response response = 1;
+	Profile profile = 2;
+	User user = 3;
+	int32 followerCount = 4;
+	int32 followingCount = 5;
 }

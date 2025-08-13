@@ -1,140 +1,126 @@
-﻿//using GameDevsConnect.Backend.API.Configuration.Application.Data;
-//using GameDevsConnect.Backend.API.User.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.Profile.Services;
 
-//namespace GameDevsConnect.Backend.API.User.Services;
+public class APIService(IProfileRepository repo) : ProfileProtoService.ProfileProtoServiceBase
+{
+    private readonly IProfileRepository _repo = repo;
 
-//public class APIService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
-//{
-//    private readonly IUserRepository _repo = repo;
-//    private readonly GDCDbContext _context = context;
+    public override async Task<Response> Add(IdRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
-//    {
-//        string id = "";
+        var addResponse = await _repo.AddAsync(request.Id, context.CancellationToken);
 
-//        UserDTO user = new (
-//            id: string.Empty,
-//            loginId: request.User.LoginId,
-//            username: request.User.Username,
-//            avatar: request.User.Avatar,
-//            accounttype: request.User.AccountType
-//            );
+        response.Status = addResponse.Status;
+        response.Message = addResponse.Message;
+        response.Errors.AddRange(addResponse.Errors);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        return response;
+    }
 
-//        if(validation.Length == 0)
-//            id = await _repo.AddAsync(user);
+    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//        return new UserId() { Id = id};
-//    }
+        var deleteResponse = await _repo.DeleteAsync(request.Id,context.CancellationToken);
 
-//    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
-//    {
-//        var response = new Response();
-//        UserDTO user = new ( 
-//            request.User.Id,
-//            request.User.LoginId,
-//            request.User.Username,
-//            request.User.Avatar,
-//            request.User.AccountType
-//            );
+        response.Status = deleteResponse.Status;
+        response.Message = deleteResponse.Message;
+        response.Errors.AddRange(deleteResponse.Errors);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        return response;
+    }
 
-//        if (validation.Length == 0)
-//            response.Status = await _repo.UpdateAsync(user);
+    public override async Task<Response> Update(Profile request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//        return response;
-//    }
+        var profile = new ProfileDTO()
+        {
+            Id = request.Id,
+            DiscordUrl = request.DiscordUrl,
+            ShowDiscord = request.ShowDiscord,
+            Email = request.Email,
+            ShowEmail = request.ShowEmail,
+            ShowWebsite = request.ShowWebsite,
+            ShowX = request.ShowX,
+            UserId = request.UserId,
+            WebsiteUrl = request.WebsiteUrl,
+            XUrl = request.XUrl
+        };
 
-//    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
-//    {
-//        var response = new Response
-//        {
-//            Status = await _repo.DeleteAsync(request.Id)
-//        };
+        var updateResponse = await _repo.UpdateAsync(profile, context.CancellationToken);
 
-//        return response;
-//    }
+        response.Status = updateResponse.Status;
+        response.Message = updateResponse.Message;
+        response.Errors.AddRange(updateResponse.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
-//    {
-//        var response = new GetUserIdsResponse();
+        return response;
+    }
 
-//        var ids = await _repo.GetIdsAsync();
+    public override async Task<GetResponse> Get(IdRequest request, ServerCallContext context)
+    {
+        var getResponse = new GetResponse();
 
-//        response.Ids.AddRange(ids);
+        var getProfileResponse = await _repo.GetAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        getResponse.Profile = new Profile()
+        {
+            Id = getProfileResponse.Profile.Id,
+            DiscordUrl = getProfileResponse.Profile.DiscordUrl,
+            ShowDiscord = getProfileResponse.Profile.ShowDiscord,
+            Email = getProfileResponse.Profile.Email,
+            ShowEmail = getProfileResponse.Profile.ShowEmail,
+            ShowWebsite = getProfileResponse.Profile.ShowWebsite,
+            ShowX = getProfileResponse.Profile.ShowX,
+            UserId = getProfileResponse.Profile.UserId,
+            WebsiteUrl = getProfileResponse.Profile.WebsiteUrl,
+            XUrl = getProfileResponse.Profile.XUrl
+        };
+        
+        getResponse.Response.Status = getProfileResponse.Response.Status;
+        getResponse.Response.Message = getProfileResponse.Response.Message;
+        getResponse.Response.Errors.AddRange(getProfileResponse.Response.Errors);
 
-//    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
-//    {
-//        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
 
-//        return new User()
-//        {
-//            Id = user.Id,
-//            LoginId = user.LoginId,
-//            Avatar = user.Avatar,
-//            AccountType = user.Accounttype,
-//            Username = user.Username
-//        };
-//    }
+        return getResponse;
+    }
 
-//    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
-//    {
-//        return new Response()
-//        {
-//            Status = await _repo.GetExistAsync(request.Id)
-//        };
-//    }
+    public override async Task<GetFullResponse> GetFull(IdRequest request, ServerCallContext context)
+    {
+        var getFullResponse = new GetFullResponse();
 
-//    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+        var response = await _repo.GetFullAsync(request.Id, context.CancellationToken);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        getFullResponse.Profile = new Profile()
+        {
+            Id = response.Profile.Id,
+            DiscordUrl = response.Profile.DiscordUrl,
+            ShowDiscord = response.Profile.ShowDiscord,
+            Email = response.Profile.Email,
+            ShowEmail = response.Profile.ShowEmail,
+            ShowWebsite = response.Profile.ShowWebsite,
+            ShowX = response.Profile.ShowX,
+            UserId = response.Profile.UserId,
+            WebsiteUrl = response.Profile.WebsiteUrl,
+            XUrl = response.Profile.XUrl
+        };
 
-//    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowerAsync(request.Id);
+        getFullResponse.User = new User()
+        {
+            Id = response.User.Id,
+            LoginId = response.User.LoginId,
+            AccountType = response.User.Accounttype,
+            Avatar = response.User.Avatar,
+            Username = response.User.Username
+        };
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        getFullResponse.FollowerCount = response.FollowerCount;
+        getFullResponse.FollowingCount = response.FollowingCount;
 
-//    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowingAsync(request.Id);
+        getFullResponse.Response.Message = response.Response.Message;
+        getFullResponse.Response.Status = response.Response.Status;
+        getFullResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowerCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowingCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//}
+        return getFullResponse;
+    }
+}

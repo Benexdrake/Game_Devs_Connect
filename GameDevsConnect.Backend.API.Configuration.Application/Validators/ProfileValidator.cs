@@ -23,12 +23,12 @@ public class ProfileValidator : AbstractValidator<ProfileDTO>
         else
         {
             RuleFor(x => x.UserId)
-                .MustAsync(async (x, token) =>  await ValidateUserExist(x, token))
+                .MustAsync(ValidateUserExist)
+                .WithMessage(x => $"Profile mit User ID '{x.UserId}' exist bereits in der Datenbank.")
                 .NotEmpty()
                 .WithMessage(x => $"User ID darf nicht leer sein.")
                 .MinimumLength(8)
-                .WithMessage(x => $"User ID muss mindestens 8 Zeichen lang sein.")
-                .WithMessage(x => $"Profile mit User ID '{x.UserId}' exist bereits in der Datenbank.");
+                .WithMessage(x => $"User ID muss mindestens 8 Zeichen lang sein.");
         }
     }
 

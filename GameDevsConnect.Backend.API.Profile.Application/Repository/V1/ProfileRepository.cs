@@ -1,7 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Profile.Application.Repository.V1;
 
 public class ProfileRepository(GDCDbContext context) : IProfileRepository
 {
@@ -11,22 +8,11 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            var profile = new ProfileDTO(userId);
+            var profile = new ProfileDTO(Guid.NewGuid().ToString(), userId);
 
-            var validator = new Validator(_context, userId, ValidationMode.Add);
-
-            var valid = await validator.ValidateAsync(profile, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(profile.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidateProfile(_context, ValidationMode.Add, profile, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(userId), false, errors);
 
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync(token);
@@ -122,20 +108,9 @@ public class ProfileRepository(GDCDbContext context) : IProfileRepository
     {
         try
         {
-            var validator = new Validator(_context, "", ValidationMode.Update);
-
-            var valid = await validator.ValidateAsync(profile, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(profile.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidateProfile(_context, ValidationMode.Add, profile, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(profile.Id), false, errors);
 
             _context.Profiles.Update(profile);
             await _context.SaveChangesAsync(token);
