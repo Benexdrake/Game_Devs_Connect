@@ -1,12 +1,10 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
+﻿namespace GameDevsConnect.Backend.API.Configuration.Application.Validators;
 
-namespace GameDevsConnect.Backend.API.Project.Application.Validators;
-
-public class Validator : AbstractValidator<ProjectDTO>
+public class ProjectValidator : AbstractValidator<ProjectDTO>
 {
     private readonly GDCDbContext _context;
 
-    public Validator(GDCDbContext context, ValidationMode mode)
+    public ProjectValidator(GDCDbContext context, ValidationMode mode)
     {
         _context = context;
 

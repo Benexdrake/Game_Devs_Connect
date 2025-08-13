@@ -1,81 +1,56 @@
 syntax = "proto3";
 
-option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+option csharp_namespace = "GameDevsConnect.Backend.API.Project.Services";
 
 import "google/protobuf/empty.proto";
 
-package user;
+package project;
 
-service UserProtoService
+service ProjectProtoService
 {
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-
-	rpc GetExist(IdRequest) returns (Response);
-
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-
-	rpc Get(GetUserRequest) returns (User);
-
-	rpc Create(CreateUserRequest) returns (UserId);
-
-	rpc Update(UpdateUserRequest) returns (Response);
-
-	rpc Delete(IdRequest) returns (Response);
+	rpc GetProjectIds(google.protobuf.Empty) returns (GetIdsResponse);
+	rpc GetProject(IdRequest) returns (GetProjectResponse);
+	rpc AddProject(UpsertProjectRequest) returns (Response);
+	rpc UpdateProject(UpsertProjectRequest) returns (Response);
+	rpc DeleteProject(IdRequest) returns (Response);
 }
 
-message User
+message Project
 {
 	string id = 1;
-	string loginId = 2;
-	string username = 3;
-	string avatar = 4;
-	string accountType = 5;
+	string title = 2;
+	string description = 3;
+	string ownerId = 4;
 }
 
-message UserId
-{
-	string id = 1;
-}
-
-message GetUserIdsResponse
-{
-	repeated string ids = 1;
-}
-
-message GetCountResponse
-{
-	int32 count = 1;
-}
-
-message Response
-{
-	bool status = 1;
-}
-
-message GetUserRequest
-{
-	string id = 1;
-}
-
-message CreateUserRequest
-{
-	User user = 1;
-}
-
-message UpdateUserRequest
-{
-	User user = 1;
-}
-
+// Requests
 message IdRequest
 {
 	string id = 1;
+}
+
+message UpsertProjectRequest
+{
+	Project project = 1;
+}
+
+// Responses
+
+message Response
+{
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
+}
+
+message GetIdsResponse
+{
+	Response response = 1;
+	repeated string ids = 2;
+}
+
+message GetProjectResponse 
+{
+	Response response = 1;
+	Project project = 2;
 }

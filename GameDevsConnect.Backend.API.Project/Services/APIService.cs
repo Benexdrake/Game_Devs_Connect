@@ -1,140 +1,104 @@
-﻿//using GameDevsConnect.Backend.API.Configuration.Application.Data;
-//using GameDevsConnect.Backend.API.User.Application.Validators;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.DTOs;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 
-//namespace GameDevsConnect.Backend.API.User.Services;
+namespace GameDevsConnect.Backend.API.Project.Services;
 
-//public class APIService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
-//{
-//    private readonly IUserRepository _repo = repo;
-//    private readonly GDCDbContext _context = context;
+public class APIService(IProjectRepository repo) : ProjectProtoService.ProjectProtoServiceBase
+{
+    private readonly IProjectRepository _repo = repo;
 
-//    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
-//    {
-//        string id = "";
+    public override async Task<Response> AddProject(UpsertProjectRequest request, ServerCallContext context)
+    {
+        var response = new Response();
+        var project = new ProjectDTO()
+        {
+            Id = request.Project.Id,
+            Description = request.Project.Description,
+            OwnerId = request.Project.OwnerId,
+            Title = request.Project.Title
+        };
 
-//        UserDTO user = new (
-//            id: string.Empty,
-//            loginId: request.User.LoginId,
-//            username: request.User.Username,
-//            avatar: request.User.Avatar,
-//            accounttype: request.User.AccountType
-//            );
+        var upsertProject = new UpsertProject()
+        { Project = project };
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        var addProjectResponse = await _repo.AddAsync(upsertProject, context.CancellationToken);
 
-//        if(validation.Length == 0)
-//            id = await _repo.AddAsync(user);
+        response.Message = addProjectResponse.Message;
+        response.Status = addProjectResponse.Status;
+        response.Errors.AddRange(addProjectResponse.Errors);
 
-//        return new UserId() { Id = id};
-//    }
+        return response;
+    }
 
-//    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
-//    {
-//        var response = new Response();
-//        UserDTO user = new ( 
-//            request.User.Id,
-//            request.User.LoginId,
-//            request.User.Username,
-//            request.User.Avatar,
-//            request.User.AccountType
-//            );
+    public override async Task<Response> DeleteProject(IdRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        var deleteResponse = await _repo.DeleteAsync(request.Id, context.CancellationToken);
 
-//        if (validation.Length == 0)
-//            response.Status = await _repo.UpdateAsync(user);
+        response.Message = deleteResponse.Message;
+        response.Status = deleteResponse.Status;
+        response.Errors.AddRange(deleteResponse.Errors);
 
-//        return response;
-//    }
+        return response;
+    }
 
-//    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
-//    {
-//        var response = new Response
-//        {
-//            Status = await _repo.DeleteAsync(request.Id)
-//        };
+    public override async Task<GetProjectResponse> GetProject(IdRequest request, ServerCallContext context)
+    {
+        var getProjectResponse = new GetProjectResponse();
 
-//        return response;
-//    }
+        var getResponse = await _repo.GetByIdAsync(request.Id, context.CancellationToken);
 
-//    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
-//    {
-//        var response = new GetUserIdsResponse();
+        getProjectResponse.Response.Message = getResponse.Message;
+        getProjectResponse.Response.Status = getResponse.Status;
+        getProjectResponse.Response.Errors.AddRange(getResponse.Errors);
+        getProjectResponse.Project = new Project()
+        {
+            Id = getResponse.Project.Id,
+            Description = getResponse.Project.Description,
+            OwnerId = getResponse.Project.OwnerId,
+            Title = getResponse.Project.Title,
+        };
 
-//        var ids = await _repo.GetIdsAsync();
+        return getProjectResponse;
+    }
 
-//        response.Ids.AddRange(ids);
+    public override async Task<GetIdsResponse> GetProjectIds(Empty request, ServerCallContext context)
+    {
+        var getIdsResponse = new GetIdsResponse();
 
-//        return response;
-//    }
+        var getProjectIdsResponse = await _repo.GetIdsAsync(context.CancellationToken);
 
-//    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
-//    {
-//        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
+        getIdsResponse.Response.Message = getProjectIdsResponse.Message;
+        getIdsResponse.Response.Status = getProjectIdsResponse.Status;
+        getIdsResponse.Response.Errors.AddRange(getProjectIdsResponse.Errors);
+        getIdsResponse.Ids.AddRange(getProjectIdsResponse.Ids);
 
-//        return new User()
-//        {
-//            Id = user.Id,
-//            LoginId = user.LoginId,
-//            Avatar = user.Avatar,
-//            AccountType = user.Accounttype,
-//            Username = user.Username
-//        };
-//    }
+        return getIdsResponse;
+    }
 
-//    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
-//    {
-//        return new Response()
-//        {
-//            Status = await _repo.GetExistAsync(request.Id)
-//        };
-//    }
+    public override async Task<Response> UpdateProject(UpsertProjectRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+        var project = new ProjectDTO()
+        {
+            Id = request.Project.Id,
+            Description = request.Project.Description,
+            OwnerId = request.Project.OwnerId,
+            Title = request.Project.Title
+        };
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        var upsertProject = new UpsertProject()
+        { Project = project };
 
-//    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowerAsync(request.Id);
+        var updateResponse = await _repo.UpdateAsync(upsertProject, context.CancellationToken);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        response.Message = updateResponse.Message;
+        response.Status = updateResponse.Status;
+        response.Errors.AddRange(updateResponse.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowingAsync(request.Id);
-
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowerCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowingCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//}
+        return response;
+    }
+}

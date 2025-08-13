@@ -1,8 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Application.Data;
-using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-using static GameDevsConnect.Backend.API.Configuration.ApiEndpointsV1;
-
-namespace GameDevsConnect.Backend.API.Project.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Project.Application.Repository.V1;
 
 public class ProjectRepository(GDCDbContext context) : IProjectRepository
 {
@@ -13,31 +9,20 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         {
             addProject.Project!.Id = Guid.NewGuid().ToString();
 
-            var validator = new Validator(_context, ValidationMode.Add);
-
-            var valid = await validator.ValidateAsync(addProject.Project!, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(addProject.Project!.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(addProject.Project!.Id), false, [.. errors]);
-            }
+            var errors = await new Validation().ValidateProject(_context, ValidationMode.Add, addProject.Project, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(addProject.Project.OwnerId), false, errors);
 
             await _context.Projects.AddAsync(addProject.Project!, token);
             await _context.SaveChangesAsync();
 
             Log.Information(Message.ADD(addProject.Project!.Id));
-            return new ApiResponse(null!, true);
+            return new ApiResponse(null!, true, errors);
         }
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return new ApiResponse("", false, [ex.Message]);
         }
     }
 
@@ -101,30 +86,19 @@ public class ProjectRepository(GDCDbContext context) : IProjectRepository
         }
     }
 
-    public async Task<ApiResponse> UpdateAsync(UpsertProject updateRequest, CancellationToken token)
+    public async Task<ApiResponse> UpdateAsync(UpsertProject updateProject, CancellationToken token)
     {
         try
         {
-            var validator = new Validator(_context, ValidationMode.Update);
+            var errors = await new Validation().ValidateProject(_context, ValidationMode.Add, updateProject.Project!, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(updateProject.Project!.OwnerId), false, errors);
 
-            var valid = await validator.ValidateAsync(updateRequest.Project!, token);
-
-            if (!valid.IsValid)
-            {
-                var errors = new List<string>();
-
-                foreach (var error in valid.Errors)
-                    errors.Add(error.ErrorMessage);
-
-                Log.Error(Message.VALIDATIONERROR(updateRequest.Project!.Id));
-                return new ApiResponse(Message.VALIDATIONERROR(updateRequest.Project!.Id), false, [.. errors]);
-            }
-
-            _context.Projects.Update(updateRequest.Project!);
+            _context.Projects.Update(updateProject.Project!);
             await _context.SaveChangesAsync();
 
-            Log.Information(Message.UPDATE(updateRequest.Project!.Id));
-            return new ApiResponse(Message.UPDATE(updateRequest.Project!.Id), true);
+            Log.Information(Message.UPDATE(updateProject.Project!.Id));
+            return new ApiResponse(Message.UPDATE(updateProject.Project!.Id), true);
         }
         catch (Exception ex)
         {
