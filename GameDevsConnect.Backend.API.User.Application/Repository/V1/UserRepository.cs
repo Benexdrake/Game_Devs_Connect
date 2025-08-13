@@ -15,7 +15,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
             user.Id = Guid.NewGuid().ToString();
 
             await _context.Users.AddAsync(user, token);
-            await _context.Profiles.AddAsync(new ProfileDTO(user.Id), token);
+            await _context.Profiles.AddAsync(new ProfileDTO(Guid.NewGuid().ToString(), user.Id), token);
             await _context.SaveChangesAsync(token);
 
             Log.Information(Message.ADD(user.Id));
@@ -46,7 +46,7 @@ public class UserRepository(GDCDbContext context) : IUserRepository
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new GetUserIdResponse("", false, string.Empty, [ex.Message]);
+            return new ApiResponse("", false, [ex.Message]);
         }
     }
 
