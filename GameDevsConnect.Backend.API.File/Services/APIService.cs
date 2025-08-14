@@ -1,140 +1,105 @@
-﻿//using GameDevsConnect.Backend.API.Configuration.Application.Data;
-//using GameDevsConnect.Backend.API.User.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.File.Services;
 
-//namespace GameDevsConnect.Backend.API.User.Services;
+public class APIService(IFileRepository repo) : FileProtoService.FileProtoServiceBase
+{
+    private readonly IFileRepository _repo = repo;
 
-//public class APIService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
-//{
-//    private readonly IUserRepository _repo = repo;
-//    private readonly GDCDbContext _context = context;
+    public override async Task<AddResponse> Add(UpsertFileRequest request, ServerCallContext context)
+    {
+        var addResponse = new AddResponse();
 
-//    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
-//    {
-//        string id = "";
+        var file = new FileDTO()
+        {
+            Id = request.File.Id,
+            Url = request.File.Url,
+            Type = request.File.Type,
+            Extension = request.File.Extension,
+            Size = request.File.Size,
+            Created = DateTime.Now,
+            OwnerId = request.File.OwnerId
+        };
 
-//        UserDTO user = new (
-//            id: string.Empty,
-//            loginId: request.User.LoginId,
-//            username: request.User.Username,
-//            avatar: request.User.Avatar,
-//            accounttype: request.User.AccountType
-//            );
+        var response = await _repo.AddAsync(file, context.CancellationToken);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        addResponse.Id = response.Id;
+        addResponse.Response.Message = response.Response.Message;
+        addResponse.Response.Status = response.Response.Status;
+        addResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//        if(validation.Length == 0)
-//            id = await _repo.AddAsync(user);
+        return addResponse;
+    }
 
-//        return new UserId() { Id = id};
-//    }
+    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
-//    {
-//        var response = new Response();
-//        UserDTO user = new ( 
-//            request.User.Id,
-//            request.User.LoginId,
-//            request.User.Username,
-//            request.User.Avatar,
-//            request.User.AccountType
-//            );
+        var deleteResponse = await _repo.DeleteAsync(request.Id, context.CancellationToken);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        response.Message = deleteResponse.Message;
+        response.Status = deleteResponse.Status;
+        response.Errors.AddRange(deleteResponse.Errors);
 
-//        if (validation.Length == 0)
-//            response.Status = await _repo.UpdateAsync(user);
+        return response;
+    }
 
-//        return response;
-//    }
+    public override async Task<GetByIdResponse> GetById(IdRequest request, ServerCallContext context)
+    {
+        var getByIdResponse = new GetByIdResponse();
 
-//    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
-//    {
-//        var response = new Response
-//        {
-//            Status = await _repo.DeleteAsync(request.Id)
-//        };
+        var response = await _repo.GetByIdAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        getByIdResponse.File = new File()
+        {
+            Id = response.File.Id,
+            Url = response.File.Url,
+            Type = response.File.Type,
+            Extension = response.File.Extension,
+            Size = response.File.Size,
+            Created = response.File.Created.ToString(),
+            OwnerId = response.File.OwnerId
+        };
+        getByIdResponse.Response.Message = response.Response.Message;
+        getByIdResponse.Response.Status = response.Response.Status;
+        getByIdResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
-//    {
-//        var response = new GetUserIdsResponse();
+        return getByIdResponse;
+    }
 
-//        var ids = await _repo.GetIdsAsync();
+    public override async Task<GetIdsResponse> GetIdsByOwnerId(IdRequest request, ServerCallContext context)
+    {
+        var getIdsResponse = new GetIdsResponse();
 
-//        response.Ids.AddRange(ids);
+        var response = await _repo.GetIdsByOwnerIdAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        getIdsResponse.Ids.AddRange(response.Ids);
+        getIdsResponse.Response.Message = response.Response.Message;
+        getIdsResponse.Response.Status= response.Response.Status;
+        getIdsResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
-//    {
-//        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
+        return getIdsResponse;
+    }
 
-//        return new User()
-//        {
-//            Id = user.Id,
-//            LoginId = user.LoginId,
-//            Avatar = user.Avatar,
-//            AccountType = user.Accounttype,
-//            Username = user.Username
-//        };
-//    }
+    public override async Task<Response> Update(UpsertFileRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
-//    {
-//        return new Response()
-//        {
-//            Status = await _repo.GetExistAsync(request.Id)
-//        };
-//    }
+        var file = new FileDTO()
+        {
+            Id = request.File.Id,
+            Url = request.File.Url,
+            Type = request.File.Type,
+            Extension = request.File.Extension,
+            Size = request.File.Size,
+            Created = DateTime.Now,
+            OwnerId = request.File.OwnerId
+        };
 
-//    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+        var updateResponse = await _repo.UpdateAsync(file, context.CancellationToken);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        response.Message = updateResponse.Message;
+        response.Status = updateResponse.Status;
+        response.Errors.AddRange(response.Errors);
 
-//    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowerAsync(request.Id);
-
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
-
-//    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowingAsync(request.Id);
-
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowerCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowingCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//}
+        return response;
+    }
+}

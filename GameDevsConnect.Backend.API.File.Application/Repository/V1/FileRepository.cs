@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
+﻿using GameDevsConnect.Backend.API.Configuration.Application.Validators;
+
+namespace GameDevsConnect.Backend.API.File.Application.Repository.V1;
 
 public class FileRepository(GDCDbContext context) : IFileRepository
 {
@@ -11,28 +13,17 @@ public class FileRepository(GDCDbContext context) : IFileRepository
             file.Id = Guid.NewGuid().ToString();
             file.Created = DateTime.UtcNow;
 
-            string type = "";
+            //string type = "";
 
-            if(file.Type!.Split("/").Length > 1)
-                type = "."+file.Type.Split("/")[1];
+            //if(file.Type!.Split("/").Length > 1)
+            //    type = "."+file.Type.Split("/")[1];
             
             //file.Url = $"{_config["AZURE_STORAGE_BASE_URL"]}/{file.OwnerId}/{file.Id}{type}";
 
 
-            //var validator = new FileValidator(_context, ValidationMode.Add);
-
-            //var valid = await validator.ValidateAsync(file, token);
-
-            //if (!valid.IsValid)
-            //{
-            //    var errors = new List<string>();
-
-            //    foreach (var error in valid.Errors)
-            //        errors.Add(error.ErrorMessage);
-
-            //    Log.Error(Message.VALIDATIONERROR(file.Id));
-            //    return new AddResponse(Message.VALIDATIONERROR(file.Id), false, null, [.. errors]);
-            //}
+            var errors = await new Validation().ValidateFile(_context, ValidationMode.Add, file, token);
+            if(errors.Length > 0)
+                return new AddResponse(Message.VALIDATIONERROR(file.Id), false, "", errors);
 
             await _context.Files.AddAsync(file, token);
             await _context.SaveChangesAsync(token);
@@ -111,20 +102,9 @@ public class FileRepository(GDCDbContext context) : IFileRepository
     {
         try
         {
-            //var validator = new FileValidator(_context, ValidationMode.Update);
-
-            //var valid = await validator.ValidateAsync(file, token);
-
-            //if (!valid.IsValid)
-            //{
-            //    var errors = new List<string>();
-
-            //    foreach (var error in valid.Errors)
-            //        errors.Add(error.ErrorMessage);
-
-            //    Log.Error(Message.VALIDATIONERROR(file.Id!));
-            //    return new ApiResponse(Message.VALIDATIONERROR(file.Id!), false, [.. errors]);
-            //}
+            var errors = await new Validation().ValidateFile(_context, ValidationMode.Add, file, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(file.Id), false, errors);
 
             _context.Files.Update(file);
             await _context.SaveChangesAsync(token);
