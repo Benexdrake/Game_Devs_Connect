@@ -5,16 +5,21 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = start.Create(builder);
 
-string modus = "0";
+ApiMode apiMode = 0;
 
 if (args.Length > 0)
-    modus = args[0];
+{
+    var isNumber = int.TryParse(args[0], out int number);
+    if (isNumber)
+        apiMode = (ApiMode)number;
+}
 
 // HTTP1
-if (modus.Equals("0") || modus.Equals("1"))
+if (apiMode == ApiMode.Both || apiMode == ApiMode.HTTP)
     app.MapEndpointsV1();
 
-// HTTP2
-if (modus.Equals("0") || modus.Equals("2"))
+// gRPC
+if (apiMode == ApiMode.Both || apiMode == ApiMode.gRPC)
     app.MapGrpcService<APIService>();
+
 app.Run();

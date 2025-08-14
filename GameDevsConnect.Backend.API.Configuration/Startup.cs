@@ -4,7 +4,8 @@ public class Startup(string name)
 {
     private readonly string _name = name;
     private string accessKey = string.Empty;
-    private string modus = "0";
+    ApiMode apiMode = 0;
+
     public int APIVersion { get; } = 1;
 
     public WebApplicationBuilder Build(string[] args)
@@ -12,15 +13,19 @@ public class Startup(string name)
         var builder = WebApplication.CreateBuilder(args);
 
         if (args.Length > 0)
-            modus = args[0];
+        {
+            var isNumber = int.TryParse(args[0], out int number);
+            if (isNumber)
+                apiMode = (ApiMode)number;
+        }
 
         builder.AddServiceDefaults();
-        if (modus.Equals("0") || modus.Equals("1"))
+        if (apiMode == ApiMode.Both || apiMode == ApiMode.HTTP)
         {
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
         }
-        if (modus.Equals("0") || modus.Equals("2"))
+        if (apiMode == ApiMode.Both || apiMode == ApiMode.gRPC)
             builder.Services.AddGrpc();
 
         builder.Services.AddOpenTelemetry()
@@ -51,7 +56,7 @@ public class Startup(string name)
                 .MinimumLevel.Information()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"));
 
-        if (modus.Equals("0") || modus.Equals("1"))
+        if (apiMode == ApiMode.Both || apiMode == ApiMode.HTTP)
         {
             builder.Services.AddApiVersioning(o =>
             {
@@ -108,7 +113,7 @@ public class Startup(string name)
             return;
         });
 
-        if (modus.Equals("0") || modus.Equals("1"))
+        if (apiMode == ApiMode.Both || apiMode == ApiMode.HTTP)
         {
             if (app.Environment.IsDevelopment())
             {
