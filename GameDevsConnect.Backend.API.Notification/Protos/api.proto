@@ -1,81 +1,61 @@
 syntax = "proto3";
 
-option csharp_namespace = "GameDevsConnect.Backend.API.User.Services";
+option csharp_namespace = "GameDevsConnect.Backend.API.Notification.Services";
 
 import "google/protobuf/empty.proto";
 
-package user;
+package notification;
 
-service UserProtoService
+service NotificationProtoService
 {
-	rpc GetIds(google.protobuf.Empty) returns (GetUserIdsResponse);
-
-	rpc GetExist(IdRequest) returns (Response);
-
-	rpc GetFollowerCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowingCount(IdRequest) returns (GetCountResponse);
-
-	rpc GetFollowerIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetFollowingIds(IdRequest) returns (GetUserIdsResponse);
-
-	rpc GetIdsByProjectId(IdRequest) returns (GetUserIdsResponse);
-
-	rpc Get(GetUserRequest) returns (User);
-
-	rpc Create(CreateUserRequest) returns (UserId);
-
-	rpc Update(UpdateUserRequest) returns (Response);
-
-	rpc Delete(IdRequest) returns (Response);
+	rpc GetById(idRequest) returns (GetByIdResponse);
+	rpc GetIdsByUserId(idRequest) returns (GetIdsByUserIdResponse);
+	rpc Add(NotificationRequest) returns (Response);
+	rpc Update(idRequest) returns (Response);
+	rpc Delete(idRequest) returns (Response);
+	rpc GetUnseenCount(idRequest) returns (GetUnseenCountResponse);
 }
 
-message User
-{
-	string id = 1;
-	string loginId = 2;
-	string username = 3;
-	string avatar = 4;
-	string accountType = 5;
-}
-
-message UserId
+message Notification
 {
 	string id = 1;
 }
 
-message GetUserIdsResponse
+// Requests
+message idRequest
 {
-	repeated string ids = 1;
+	string id = 1;
 }
 
-message GetCountResponse
+message NotificationRequest
 {
-	int32 count = 1;
+	Notification notification = 1;
 }
+
+// Responses
 
 message Response
 {
-	bool status = 1;
+	string message = 1;
+	bool status = 2;
+	repeated string errors = 3;
 }
 
-message GetUserRequest
+message GetByIdResponse
 {
-	string id = 1;
+	Response response = 1;
+	Notification notification = 2;
 }
 
-message CreateUserRequest
+message GetIdsByUserIdResponse
 {
-	User user = 1;
+	Response response = 1;
+	repeated string ids = 2;
+
 }
 
-message UpdateUserRequest
+message GetUnseenCountResponse
 {
-	User user = 1;
-}
-
-message IdRequest
-{
-	string id = 1;
+	Response response = 1;
+	int32 count = 2;
 }

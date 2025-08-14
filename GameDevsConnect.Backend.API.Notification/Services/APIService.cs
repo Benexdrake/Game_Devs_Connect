@@ -1,140 +1,95 @@
-﻿//using GameDevsConnect.Backend.API.Configuration.Application.Data;
-//using GameDevsConnect.Backend.API.User.Application.Validators;
+﻿namespace GameDevsConnect.Backend.API.Notification.Services;
 
-//namespace GameDevsConnect.Backend.API.User.Services;
+public class APIService(INotificationRepository repo) : NotificationProtoService.NotificationProtoServiceBase
+{
+    private readonly INotificationRepository _repo = repo;
 
-//public class APIService(IUserRepository repo, GDCDbContext context) : UserProtoService.UserProtoServiceBase
-//{
-//    private readonly IUserRepository _repo = repo;
-//    private readonly GDCDbContext _context = context;
+    public override async Task<Response> Add(NotificationRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<UserId> Create(CreateUserRequest request, ServerCallContext context)
-//    {
-//        string id = "";
+        var notification = new NotificationDTO()
+        {
+            // Notification muss angepasst werden, da man nicht mehr nur noch durch posts welche bekommen kann, sondern auch angenommene quests und
+            // abgeschlossene Quests und später noch mehr.
+            Id = request.Notification.Id
+        };
 
-//        UserDTO user = new (
-//            id: string.Empty,
-//            loginId: request.User.LoginId,
-//            username: request.User.Username,
-//            avatar: request.User.Avatar,
-//            accounttype: request.User.AccountType
-//            );
+        var addNotificationResponse = await _repo.AddAsync(notification, context.CancellationToken);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        response.Message = addNotificationResponse.Message;
+        response.Status = addNotificationResponse.Status;
+        response.Errors.AddRange(addNotificationResponse.Errors);
 
-//        if(validation.Length == 0)
-//            id = await _repo.AddAsync(user);
+        return response;
+    }
 
-//        return new UserId() { Id = id};
-//    }
+    public override async Task<Response> Delete(idRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//    public override async Task<Response> Update(UpdateUserRequest request, ServerCallContext context)
-//    {
-//        var response = new Response();
-//        UserDTO user = new ( 
-//            request.User.Id,
-//            request.User.LoginId,
-//            request.User.Username,
-//            request.User.Avatar,
-//            request.User.AccountType
-//            );
+        var deleteNotificationResponse = await _repo.DeleteAsync(request.Id, context.CancellationToken);
 
-//        var validation = await new UserValidation().Validate(_context, ValidationMode.Add, user, default);
+        response.Message = deleteNotificationResponse.Message;
+        response.Status = deleteNotificationResponse.Status;
+        response.Errors.AddRange(deleteNotificationResponse.Errors);
 
-//        if (validation.Length == 0)
-//            response.Status = await _repo.UpdateAsync(user);
+        return response;
+    }
 
-//        return response;
-//    }
+    public override async Task<GetByIdResponse> GetById(idRequest request, ServerCallContext context)
+    {
+        var getByIdResponse = new GetByIdResponse();
 
-//    public override async Task<Response> Delete(IdRequest request, ServerCallContext context)
-//    {
-//        var response = new Response
-//        {
-//            Status = await _repo.DeleteAsync(request.Id)
-//        };
+        var response = await _repo.GetByIdAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        var notification = new Notification()
+        {
+            // Auch ändern, wie in Add
+            Id = response.Notification.Id
+        };
 
-//    public override async Task<GetUserIdsResponse> GetIds(Empty request, ServerCallContext context)
-//    {
-//        var response = new GetUserIdsResponse();
+        return getByIdResponse;
+    }
 
-//        var ids = await _repo.GetIdsAsync();
+    public override async Task<GetIdsByUserIdResponse> GetIdsByUserId(idRequest request, ServerCallContext context)
+    {
+        var getIdsByUserIdResponse = new GetIdsByUserIdResponse();
 
-//        response.Ids.AddRange(ids);
+        var response = await _repo.GetIdsByUserIdAsync(request.Id, context.CancellationToken);
 
-//        return response;
-//    }
+        getIdsByUserIdResponse.Ids.AddRange(response.Ids);
+        getIdsByUserIdResponse.Response.Message = response.Response.Message;
+        getIdsByUserIdResponse.Response.Status = response.Response.Status;
+        getIdsByUserIdResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//    public override async Task<User> Get(GetUserRequest request, ServerCallContext context)
-//    {
-//        var user = await _repo.GetAsync(request.Id) ?? new UserDTO(); 
+        return getIdsByUserIdResponse;
+    }
 
-//        return new User()
-//        {
-//            Id = user.Id,
-//            LoginId = user.LoginId,
-//            Avatar = user.Avatar,
-//            AccountType = user.Accounttype,
-//            Username = user.Username
-//        };
-//    }
+    public override async Task<GetUnseenCountResponse> GetUnseenCount(idRequest request, ServerCallContext context)
+    {
+        var getUnseenCountResponse = new GetUnseenCountResponse();
 
-//    public override async Task<Response> GetExist(IdRequest request, ServerCallContext context)
-//    {
-//        return new Response()
-//        {
-//            Status = await _repo.GetExistAsync(request.Id)
-//        };
-//    }
+        var response = await _repo.GetUnseenCountAsync(request.Id, context.CancellationToken);
 
-//    public override async Task<GetUserIdsResponse> GetIdsByProjectId(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetIdsByProjectIdAsync(request.Id);
+        getUnseenCountResponse.Count = response.Count;
+        getUnseenCountResponse.Response.Message= response.Response.Message;
+        getUnseenCountResponse.Response.Status= response.Response.Status;
+        getUnseenCountResponse.Response.Errors.AddRange(response.Response.Errors);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        return getUnseenCountResponse;
+    }
 
-//    public override async Task<GetUserIdsResponse> GetFollowerIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowerAsync(request.Id);
+    public override async Task<Response> Update(idRequest request, ServerCallContext context)
+    {
+        var response = new Response();
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
+        var updateNotificationResponse = await _repo.UpdateAsync(request.Id, context.CancellationToken);
 
-//    public override async Task<GetUserIdsResponse> GetFollowingIds(IdRequest request, ServerCallContext context)
-//    {
-//        var ids = await _repo.GetFollowingAsync(request.Id);
+        response.Message = updateNotificationResponse.Message;
+        response.Status = updateNotificationResponse.Status;
+        response.Errors.AddRange(updateNotificationResponse.Errors);
 
-//        var response = new GetUserIdsResponse();
-//        response.Ids.AddRange(ids);
-//        return response;
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowerCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowerCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//    public override async Task<GetCountResponse> GetFollowingCount(IdRequest request, ServerCallContext context)
-//    {
-//        var count = await _repo.GetFollowingCountAsync(request.Id);
-
-//        return new GetCountResponse()
-//        {
-//            Count = count
-//        };
-//    }
-
-//}
+        return response;
+    }
+}

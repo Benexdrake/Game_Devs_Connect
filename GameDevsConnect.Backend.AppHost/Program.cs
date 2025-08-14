@@ -79,14 +79,15 @@ var post = builder.AddProject<Projects.GameDevsConnect_Backend_API_Post>("gamede
        .WithEnvironment("X-Access-Key", accessKey)
        .WaitFor(sql);
 
-//var notification = builder.AddProject<Projects.GameDevsConnect_Backend_API_Notification>("gamedevsconnect-backend-api-notification")
-//       .WithHttpEndpoint(port: 7003, name: "notification")
-//       .WithReplicas(replicas)
-//       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
-//       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
-//       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
-//       .WithEnvironment("X-Access-Key", accessKey)
-//       .WaitFor(sql);
+var notification = builder.AddProject<Projects.GameDevsConnect_Backend_API_Notification>("gamedevsconnect-backend-api-notification")
+       .WithHttpsEndpoint(port: 7003, name: "notification")
+       .WithReplicas(replicas)
+       .WithArgs([modus])
+       .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
+       .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
+       .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
+       .WithEnvironment("X-Access-Key", accessKey)
+       .WaitFor(sql);
 
 //var file = builder.AddProject<Projects.GameDevsConnect_Backend_API_File>("gamedevsconnect-backend-api-file")
 //       .WithHttpEndpoint(port: 7002, name: "file")

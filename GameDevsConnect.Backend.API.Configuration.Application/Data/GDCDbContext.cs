@@ -50,9 +50,9 @@ public partial class GDCDbContext(DbContextOptions<GDCDbContext> options) : DbCo
             entity.Property(e => e.OwnerId)
                 .HasMaxLength(64)
                 .HasColumnName("owner_id");
-            entity.Property(e => e.RequestId)
+            entity.Property(e => e.PostId)
                 .HasMaxLength(64)
-                .HasColumnName("request_id");
+                .HasColumnName("post_id");
             entity.Property(e => e.Seen).HasColumnName("seen");
             entity.Property(e => e.Type).HasColumnName("type");
             entity.Property(e => e.UserId)

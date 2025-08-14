@@ -9,20 +9,9 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
         {
             notification.Id = Guid.NewGuid().ToString();
 
-            //var validator = new NotificationValidator(_context, ValidationMode.Add);
-
-            //var valid = await validator.ValidateAsync(notification, token);
-
-            //if (!valid.IsValid)
-            //{
-            //    var errors = new List<string>();
-
-            //    foreach (var error in valid.Errors)
-            //        errors.Add(error.ErrorMessage);
-
-            //    Log.Error(Message.VALIDATIONERROR(notification.Id));
-            //    return new ApiResponse(Message.VALIDATIONERROR(notification.Id), false, [.. errors]);
-            //}
+            var errors = await new Validation().ValidateNotification(_context, ValidationMode.Add, notification, token);
+            if (errors.Length > 0)
+                return new ApiResponse(Message.VALIDATIONERROR(notification.Id), false, errors);
 
             await _context.Notifications.AddAsync(notification, token);
             await _context.SaveChangesAsync();
@@ -33,7 +22,7 @@ public class NotificationRepository(GDCDbContext context) : INotificationReposit
         catch (Exception ex)
         {
             Log.Error(ex.Message);
-            return new ApiResponse(ex.Message, false);
+            return new ApiResponse("", false, [ex.Message]);
         }
     }
 

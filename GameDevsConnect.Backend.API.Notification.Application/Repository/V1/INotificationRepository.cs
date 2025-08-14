@@ -1,6 +1,4 @@
-﻿using GameDevsConnect.Backend.API.Configuration.Contract.Responses;
-
-namespace GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
+﻿namespace GameDevsConnect.Backend.API.Notification.Application.Repository.V1;
 public interface INotificationRepository
 {
     Task<GetByIdResponse> GetByIdAsync(string id, CancellationToken token);
