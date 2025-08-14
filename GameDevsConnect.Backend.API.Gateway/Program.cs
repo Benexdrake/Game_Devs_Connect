@@ -21,7 +21,16 @@ var apiEndpoints = new APIEndpoint[] {
 
 var devModus = Environment.GetEnvironmentVariable("DEVMODUS") ?? "";
 
-var yarpConfiguration = new YarpConfiguration(start.APIVersion, gatewayUrl, [.. apiEndpoints], accessKey, !string.IsNullOrEmpty(devModus));
+ApiMode apiMode = 0;
+
+if (args.Length > 0)
+{
+    var isNumber = int.TryParse(args[0], out int number);
+    if (isNumber)
+        apiMode = (ApiMode)number;
+}
+
+var yarpConfiguration = new YarpConfiguration(start.APIVersion, gatewayUrl, [.. apiEndpoints], accessKey, !string.IsNullOrEmpty(devModus), apiMode);
 
 builder.Services.AddReverseProxy().LoadFromMemory(yarpConfiguration.Routes, yarpConfiguration.Clusters);
 

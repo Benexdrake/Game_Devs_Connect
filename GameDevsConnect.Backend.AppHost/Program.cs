@@ -14,8 +14,7 @@ var accessKey = "123456";
 var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value: sqlPW);
 
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
-                 .WithVolume("sqlserver-data", "/var/opt/mssql")
-                 ;
+                 .WithVolume("sqlserver-data", "/var/opt/mssql");
 
 // HTTP1
 
@@ -113,6 +112,7 @@ var azure = builder.AddProject<Projects.GameDevsConnect_Backend_API_Azure>("game
 builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnect-backend-api-gateway")
        .WithHttpsEndpoint(port: 7000, name: "gateway")
        .WithReplicas(replicas)
+       .WithArgs([modus])
        .WithEnvironment("SQL_URL", "127.0.0.1, 1400")
        .WithEnvironment("SQL_ADMIN_USERNAME", "sa")
        .WithEnvironment("SQL_ADMIN_PASSWORD", sqlPW)
