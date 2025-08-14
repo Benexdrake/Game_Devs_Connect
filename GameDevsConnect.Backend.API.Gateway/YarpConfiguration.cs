@@ -1,4 +1,6 @@
-﻿namespace GameDevsConnect.Backend.API.Gateway;
+﻿using Yarp.ReverseProxy.Forwarder;
+
+namespace GameDevsConnect.Backend.API.Gateway;
 public class YarpConfiguration(int apiVersion, string gateway, APIEndpoint[] apis , string access_key, bool development, ApiMode apiMode)
 {
     private readonly string _gateway = gateway;
@@ -38,12 +40,12 @@ public class YarpConfiguration(int apiVersion, string gateway, APIEndpoint[] api
                 routeConfigs.Add(
                     new RouteConfig
                     {
-                        RouteId = $"{_gateway}/api/v{apiVersion}/{api.Name}",
-                        ClusterId = $"api-{api.Name}-cluster",
+                        RouteId = $"{_gateway}/grpc/{api.Name}",
+                        ClusterId = $"grpc-{api.Name}-cluster",
                         AuthorizationPolicy = _development ? "anonymous" : "default",
                         Match = new RouteMatch
                         {
-                            Path = $"api/v{apiVersion}/{api.Name}/{{**catch-all}}",
+                            Path = $"grpc/{api.Name}/{{**catch-all}}",
                         },
                         Transforms = new List<Dictionary<string, string>>
                                      { new() { { "RequestHeader", "X-Access-Key" }, { "Set", access_Key ?? "" }} }
@@ -60,6 +62,7 @@ public class YarpConfiguration(int apiVersion, string gateway, APIEndpoint[] api
 
         foreach( var api in _apis)
         {
+            //http
             clusterConfigs.Add(new ClusterConfig
             {
                 ClusterId = $"api-{api.Name}-cluster",
@@ -68,9 +71,28 @@ public class YarpConfiguration(int apiVersion, string gateway, APIEndpoint[] api
                     {
                         "1", new DestinationConfig
                         {
-                            Address = api.Url!
+                            Address = api.Url
                         }
                     }
+                }
+            });
+
+            //grpc
+            clusterConfigs.Add(new ClusterConfig
+            {
+                ClusterId = $"grpc-{api.Name}-cluster",
+                Destinations = new Dictionary<string, DestinationConfig>
+                {
+                    {
+                        "1", new DestinationConfig
+                        {
+                            Address = api.Url
+                        }
+                    }
+                },
+                HttpRequest = new ForwarderRequestConfig
+                {
+                    Version = new Version(2, 0) // Erzwingt HTTP/2
                 }
             });
         }
