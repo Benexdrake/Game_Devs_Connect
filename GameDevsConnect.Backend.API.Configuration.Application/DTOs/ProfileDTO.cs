@@ -2,31 +2,6 @@
 
 public partial class ProfileDTO
 {
-    public ProfileDTO(string id, string? userId, string? discordUrl, string? xUrl, string? websiteUrl, string? email, bool showDiscord, bool showX, bool showWebsite, bool showEmail)
-    {
-        Id = id;
-        UserId = userId;
-        DiscordUrl = discordUrl;
-        XUrl = xUrl;
-        WebsiteUrl = websiteUrl;
-        Email = email;
-        ShowDiscord = showDiscord;
-        ShowX = showX;
-        ShowWebsite = showWebsite;
-        ShowEmail = showEmail;
-    }
-
-    public ProfileDTO()
-    {
-        
-    }
-
-    public ProfileDTO(string id, string userId)
-    {
-        Id = id;
-        UserId = userId;
-    }
-
     public string Id { get; init; } = string.Empty;
 
     public string UserId { get; set; } = string.Empty;
@@ -46,4 +21,26 @@ public partial class ProfileDTO
     public bool ShowWebsite { get; set; }
 
     public bool ShowEmail { get; set; }
+
+    public ProfileDTO(string id, string userId, string discordUrl, string xUrl, string websiteUrl, string email, bool showDiscord, bool showX, bool showWebsite, bool showEmail)
+    {
+        Id = id;
+        UserId = userId;
+        DiscordUrl = discordUrl;
+        XUrl = xUrl;
+        WebsiteUrl = websiteUrl;
+        Email = email;
+        ShowDiscord = showDiscord;
+        ShowX = showX;
+        ShowWebsite = showWebsite;
+        ShowEmail = showEmail;
+    }
+
+    public ProfileDTO() { }
+
+    public ProfileDTO(string id, string userId)
+    {
+        Id = id;
+        UserId = userId;
+    }
 }

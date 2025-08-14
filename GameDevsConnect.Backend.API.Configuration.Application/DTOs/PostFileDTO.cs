@@ -2,6 +2,14 @@
 
 public class PostFileDTO
 {
-    public string PostId { get; set; }
-    public string FileId { get; set; }
+    public string PostId { get; set; } = string.Empty;
+    public string FileId { get; set; } = string.Empty;
+
+    public PostFileDTO(string postId, string fileId)
+    {
+        PostId = postId;
+        FileId = fileId;
+    }
+
+    public PostFileDTO() { }
 }

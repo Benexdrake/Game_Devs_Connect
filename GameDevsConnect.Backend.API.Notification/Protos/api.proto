@@ -2,8 +2,6 @@ syntax = "proto3";
 
 option csharp_namespace = "GameDevsConnect.Backend.API.Notification.Services";
 
-import "google/protobuf/empty.proto";
-
 package notification;
 
 service NotificationProtoService
