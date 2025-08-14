@@ -16,8 +16,6 @@ var sqlServerPassword = builder.AddParameter("sqlPassword", secret: true, value:
 var sql = builder.AddSqlServer("gamedevsconnect-backend-sql", port: 1400, password: sqlServerPassword)
                  .WithVolume("sqlserver-data", "/var/opt/mssql");
 
-// HTTP1
-
 var user = builder.AddProject<Projects.GameDevsConnect_Backend_API_User>("gamedevsconnect-backend-api-user")
        .WithHttpsEndpoint(port: 7009, name: "user")
        .WithReplicas(replicas)
@@ -136,7 +134,6 @@ builder.AddProject<Projects.GameDevsConnect_Backend_API_Gateway>("gamedevsconnec
        .WaitFor(quest)
        .WaitFor(tag)
        .WaitFor(user);
-
 
 var build = builder.Build();
 
